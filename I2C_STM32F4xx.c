@@ -1,7 +1,7 @@
 /**
  * @file    I2C_STM32F4xx.c
  * @author  Deadline039
- * @brief   Connectivity Support Package of I2C on STM32F4xx
+ * @brief   Chip Support Package of I2C on STM32F4xx
  * @version 1.0
  * @date    2024-10-22
  */
@@ -12,6 +12,8 @@
  * @defgroup I2C1 Functions
  * @{
  */
+
+#if I2C1_ENABLE
 
 I2C_HandleTypeDef i2c1_handle = {.Instance = I2C1,
                                  .Init = {
@@ -56,17 +58,23 @@ static DMA_HandleTypeDef i2c1_dmatx_handle = {
  * @param address The address of this device, 7-bit or 10-bit.
  * @param address_mode Specific the address length, this parameter can ref
  *                    `I2C_addressing_mode`.
+ * @return I2C init status.
+ * @retval 0-`I2C_INIT_OK`:       Success.
+ * @retval 1-`I2C_INIT_FAIL`:     I2C init failed.
+ * @retval 2-`I2C_INIT_DMA_FAIL`: I2C DMA init failed.
+ * @retval 3-`I2C_INITED`:        I2C is inited.
  */
-void i2c1_init(uint32_t clock_speed, uint32_t address, uint32_t address_mode) {
+uint8_t i2c1_init(uint32_t clock_speed, uint32_t address,
+                  uint32_t address_mode) {
     if (__HAL_RCC_I2C1_IS_CLK_ENABLED()) {
-        return;
+        return I2C_INITED;
     }
 
     GPIO_InitTypeDef gpio_init_struct = {.Mode = GPIO_MODE_AF_OD,
                                          .Pull = GPIO_PULLUP,
                                          .Speed = GPIO_SPEED_FREQ_VERY_HIGH,
                                          .Alternate = GPIO_AF4_I2C1};
-    HAL_StatusTypeDef res = HAL_OK;
+
     i2c1_handle.Init.ClockSpeed = clock_speed;
     i2c1_handle.Init.AddressingMode = address_mode;
     i2c1_handle.Init.OwnAddress1 = address;
@@ -90,10 +98,9 @@ void i2c1_init(uint32_t clock_speed, uint32_t address, uint32_t address_mode) {
 
     CSP_DMA_CLK_ENABLE(I2C1_RX_DMA_NUMBER);
 
-    res = HAL_DMA_Init(&i2c1_dmarx_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
+    if (HAL_DMA_Init(&i2c1_dmarx_handle) != HAL_OK) {
+        return I2C_INIT_DMA_FAIL;
+    }
 
     __HAL_LINKDMA(&i2c1_handle, hdmarx, i2c1_dmarx_handle);
 
@@ -109,10 +116,9 @@ void i2c1_init(uint32_t clock_speed, uint32_t address, uint32_t address_mode) {
 
     CSP_DMA_CLK_ENABLE(I2C1_TX_DMA_NUMBER);
 
-    res = HAL_DMA_Init(&i2c1_dmatx_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
+    if (HAL_DMA_Init(&i2c1_dmatx_handle) != HAL_OK) {
+        return I2C_INIT_DMA_FAIL;
+    }
 
     __HAL_LINKDMA(&i2c1_handle, hdmatx, i2c1_dmatx_handle);
 
@@ -124,10 +130,11 @@ void i2c1_init(uint32_t clock_speed, uint32_t address, uint32_t address_mode) {
 
 #endif /* I2C1_TX_DMA */
 
-    res = HAL_I2C_Init(&i2c1_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
+    if (HAL_I2C_Init(&i2c1_handle) != HAL_OK) {
+        return I2C_INIT_FAIL;
+    }
+
+    return I2C_INIT_OK;
 }
 
 #if I2C1_IT_ENABLE
@@ -169,13 +176,16 @@ void I2C1_TX_DMA_IRQHandler(void) {
 /**
  * @brief I2C1 deinitialization.
  *
+ * @return I2C1 deinit status.
+ * @retval 0-`I2C_DEINIT_OK`:       Success.
+ * @retval 1-`I2C_DEINIT_FAIL`:     I2C deinit failed.
+ * @retval 2-`I2C_DEINIT_DMA_FAIL`: I2C DMA deinit failed.
+ * @retval 3-`I2C_NO_INIT`:         I2C is not init.
  */
-void i2c1_deinit(void) {
+uint8_t i2c1_deinit(void) {
     if (__HAL_RCC_I2C1_IS_CLK_DISABLED()) {
-        return;
+        return I2C_NO_INIT;
     }
-
-    HAL_StatusTypeDef res = HAL_OK;
 
     __HAL_RCC_I2C1_CLK_DISABLE();
 
@@ -184,10 +194,9 @@ void i2c1_deinit(void) {
 
 #if I2C1_RX_DMA
     HAL_DMA_Abort(&i2c1_dmarx_handle);
-    res = HAL_DMA_DeInit(&i2c1_dmarx_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
+    if (HAL_DMA_DeInit(&i2c1_dmarx_handle) != HAL_OK) {
+        return I2C_DEINIT_DMA_FAIL;
+    }
 
     HAL_NVIC_DisableIRQ(
         CSP_DMA_STREAM_IRQn(I2C1_RX_DMA_NUMBER, I2C1_RX_DMA_STREAM));
@@ -196,21 +205,23 @@ void i2c1_deinit(void) {
 
 #if I2C1_TX_DMA
     HAL_DMA_Abort(&i2c1_dmatx_handle);
-    res = HAL_DMA_DeInit(&i2c1_dmatx_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
+    if (HAL_DMA_DeInit(&i2c1_dmatx_handle) != HAL_OK) {
+        return I2C_DEINIT_DMA_FAIL;
+    }
 
     HAL_NVIC_DisableIRQ(
         CSP_DMA_STREAM_IRQn(I2C1_TX_DMA_NUMBER, I2C1_TX_DMA_STREAM));
     i2c1_handle.hdmatx = NULL;
 #endif /* I2C1_TX_DMA */
 
-    res = HAL_I2C_DeInit(&i2c1_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
+    if (HAL_I2C_DeInit(&i2c1_handle) != HAL_OK) {
+        return I2C_DEINIT_FAIL;
+    }
+
+    return I2C_DEINIT_OK;
 }
+
+#endif /* I2C1_ENABLE */
 
 /**
  * @}
@@ -220,6 +231,8 @@ void i2c1_deinit(void) {
  * @defgroup I2C2 Functions
  * @{
  */
+
+#if I2C2_ENABLE
 
 I2C_HandleTypeDef i2c2_handle = {.Instance = I2C2,
                                  .Init = {
@@ -264,27 +277,34 @@ static DMA_HandleTypeDef i2c2_dmatx_handle = {
  * @param address The address of this device, 7-bit or 10-bit.
  * @param address_mode Specific the address length, this parameter can ref
  *                    `I2C_addressing_mode`.
+ * @return I2C init status.
+ * @retval 0-`I2C_INIT_OK`:       Success.
+ * @retval 1-`I2C_INIT_FAIL`:     I2C init failed.
+ * @retval 2-`I2C_INIT_DMA_FAIL`: I2C DMA init failed.
+ * @retval 3-`I2C_INITED`:        I2C is inited.
  */
-void i2c2_init(uint32_t clock_speed, uint32_t address, uint32_t address_mode) {
+uint8_t i2c2_init(uint32_t clock_speed, uint32_t address,
+                  uint32_t address_mode) {
     if (__HAL_RCC_I2C2_IS_CLK_ENABLED()) {
-        return;
+        return I2C_INITED;
     }
 
     GPIO_InitTypeDef gpio_init_struct = {.Mode = GPIO_MODE_AF_OD,
                                          .Pull = GPIO_PULLUP,
-                                         .Speed = GPIO_SPEED_FREQ_VERY_HIGH,
-                                         .Alternate = GPIO_AF4_I2C2};
-    HAL_StatusTypeDef res = HAL_OK;
+                                         .Speed = GPIO_SPEED_FREQ_VERY_HIGH};
+
     i2c2_handle.Init.ClockSpeed = clock_speed;
     i2c2_handle.Init.AddressingMode = address_mode;
     i2c2_handle.Init.OwnAddress1 = address;
 
     CSP_GPIO_CLK_ENABLE(I2C2_SCL_PORT);
     gpio_init_struct.Pin = I2C2_SCL_PIN;
+    gpio_init_struct.Alternate = GPIO_AF4_I2C2;
     HAL_GPIO_Init(CSP_GPIO_PORT(I2C2_SCL_PORT), &gpio_init_struct);
 
     CSP_GPIO_CLK_ENABLE(I2C2_SDA_PORT);
     gpio_init_struct.Pin = I2C2_SDA_PIN;
+    gpio_init_struct.Alternate = I2C2_SDA_GPIO_AF;
     HAL_GPIO_Init(CSP_GPIO_PORT(I2C2_SDA_PORT), &gpio_init_struct);
 
     __HAL_RCC_I2C2_CLK_ENABLE();
@@ -298,10 +318,9 @@ void i2c2_init(uint32_t clock_speed, uint32_t address, uint32_t address_mode) {
 
     CSP_DMA_CLK_ENABLE(I2C2_RX_DMA_NUMBER);
 
-    res = HAL_DMA_Init(&i2c2_dmarx_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
+    if (HAL_DMA_Init(&i2c2_dmarx_handle) != HAL_OK) {
+        return I2C_INIT_DMA_FAIL;
+    }
 
     __HAL_LINKDMA(&i2c2_handle, hdmarx, i2c2_dmarx_handle);
 
@@ -317,10 +336,9 @@ void i2c2_init(uint32_t clock_speed, uint32_t address, uint32_t address_mode) {
 
     CSP_DMA_CLK_ENABLE(I2C2_TX_DMA_NUMBER);
 
-    res = HAL_DMA_Init(&i2c2_dmatx_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
+    if (HAL_DMA_Init(&i2c2_dmatx_handle) != HAL_OK) {
+        return I2C_INIT_DMA_FAIL;
+    }
 
     __HAL_LINKDMA(&i2c2_handle, hdmatx, i2c2_dmatx_handle);
 
@@ -332,10 +350,11 @@ void i2c2_init(uint32_t clock_speed, uint32_t address, uint32_t address_mode) {
 
 #endif /* I2C2_TX_DMA */
 
-    res = HAL_I2C_Init(&i2c2_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
+    if (HAL_I2C_Init(&i2c2_handle) != HAL_OK) {
+        return I2C_INIT_FAIL;
+    }
+
+    return I2C_INIT_OK;
 }
 
 #if I2C2_IT_ENABLE
@@ -377,13 +396,16 @@ void I2C2_TX_DMA_IRQHandler(void) {
 /**
  * @brief I2C2 deinitialization.
  *
+ * @return I2C2 deinit status.
+ * @retval 0-`I2C_DEINIT_OK`:       Success.
+ * @retval 1-`I2C_DEINIT_FAIL`:     I2C deinit failed.
+ * @retval 2-`I2C_DEINIT_DMA_FAIL`: I2C DMA deinit failed.
+ * @retval 3-`I2C_NO_INIT`:         I2C is not init.
  */
-void i2c2_deinit(void) {
+uint8_t i2c2_deinit(void) {
     if (__HAL_RCC_I2C2_IS_CLK_DISABLED()) {
-        return;
+        return I2C_NO_INIT;
     }
-
-    HAL_StatusTypeDef res = HAL_OK;
 
     __HAL_RCC_I2C2_CLK_DISABLE();
 
@@ -392,10 +414,9 @@ void i2c2_deinit(void) {
 
 #if I2C2_RX_DMA
     HAL_DMA_Abort(&i2c2_dmarx_handle);
-    res = HAL_DMA_DeInit(&i2c2_dmarx_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
+    if (HAL_DMA_DeInit(&i2c2_dmarx_handle) != HAL_OK) {
+        return I2C_DEINIT_DMA_FAIL;
+    }
 
     HAL_NVIC_DisableIRQ(
         CSP_DMA_STREAM_IRQn(I2C2_RX_DMA_NUMBER, I2C2_RX_DMA_STREAM));
@@ -404,21 +425,23 @@ void i2c2_deinit(void) {
 
 #if I2C2_TX_DMA
     HAL_DMA_Abort(&i2c2_dmatx_handle);
-    res = HAL_DMA_DeInit(&i2c2_dmatx_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
+    if (HAL_DMA_DeInit(&i2c2_dmatx_handle) != HAL_OK) {
+        return I2C_DEINIT_DMA_FAIL;
+    }
 
     HAL_NVIC_DisableIRQ(
         CSP_DMA_STREAM_IRQn(I2C2_TX_DMA_NUMBER, I2C2_TX_DMA_STREAM));
     i2c2_handle.hdmatx = NULL;
 #endif /* I2C2_TX_DMA */
 
-    res = HAL_I2C_DeInit(&i2c2_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
+    if (HAL_I2C_DeInit(&i2c2_handle) != HAL_OK) {
+        return I2C_DEINIT_FAIL;
+    }
+
+    return I2C_DEINIT_OK;
 }
+
+#endif /* I2C2_ENABLE */
 
 /**
  * @}
@@ -428,6 +451,8 @@ void i2c2_deinit(void) {
  * @defgroup I2C3 Functions
  * @{
  */
+
+#if I2C3_ENABLE
 
 I2C_HandleTypeDef i2c3_handle = {.Instance = I2C3,
                                  .Init = {
@@ -472,27 +497,34 @@ static DMA_HandleTypeDef i2c3_dmatx_handle = {
  * @param address The address of this device, 7-bit or 10-bit.
  * @param address_mode Specific the address length, this parameter can ref
  *                    `I2C_addressing_mode`.
+ * @return I2C init status.
+ * @retval 0-`I2C_INIT_OK`:       Success.
+ * @retval 1-`I2C_INIT_FAIL`:     I2C init failed.
+ * @retval 2-`I2C_INIT_DMA_FAIL`: I2C DMA init failed.
+ * @retval 3-`I2C_INITED`:        I2C is inited.
  */
-void i2c3_init(uint32_t clock_speed, uint32_t address, uint32_t address_mode) {
+uint8_t i2c3_init(uint32_t clock_speed, uint32_t address,
+                  uint32_t address_mode) {
     if (__HAL_RCC_I2C3_IS_CLK_ENABLED()) {
-        return;
+        return I2C_INITED;
     }
 
     GPIO_InitTypeDef gpio_init_struct = {.Mode = GPIO_MODE_AF_OD,
                                          .Pull = GPIO_PULLUP,
-                                         .Speed = GPIO_SPEED_FREQ_VERY_HIGH,
-                                         .Alternate = GPIO_AF4_I2C3};
-    HAL_StatusTypeDef res = HAL_OK;
+                                         .Speed = GPIO_SPEED_FREQ_VERY_HIGH};
+
     i2c3_handle.Init.ClockSpeed = clock_speed;
     i2c3_handle.Init.AddressingMode = address_mode;
     i2c3_handle.Init.OwnAddress1 = address;
 
     CSP_GPIO_CLK_ENABLE(I2C3_SCL_PORT);
     gpio_init_struct.Pin = I2C3_SCL_PIN;
+    gpio_init_struct.Alternate = GPIO_AF4_I2C3;
     HAL_GPIO_Init(CSP_GPIO_PORT(I2C3_SCL_PORT), &gpio_init_struct);
 
     CSP_GPIO_CLK_ENABLE(I2C3_SDA_PORT);
     gpio_init_struct.Pin = I2C3_SDA_PIN;
+    gpio_init_struct.Alternate = I2C3_SDA_GPIO_AF;
     HAL_GPIO_Init(CSP_GPIO_PORT(I2C3_SDA_PORT), &gpio_init_struct);
 
     __HAL_RCC_I2C3_CLK_ENABLE();
@@ -506,10 +538,9 @@ void i2c3_init(uint32_t clock_speed, uint32_t address, uint32_t address_mode) {
 
     CSP_DMA_CLK_ENABLE(I2C3_RX_DMA_NUMBER);
 
-    res = HAL_DMA_Init(&i2c3_dmarx_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
+    if (HAL_DMA_Init(&i2c3_dmarx_handle) != HAL_OK) {
+        return I2C_INIT_DMA_FAIL;
+    }
 
     __HAL_LINKDMA(&i2c3_handle, hdmarx, i2c3_dmarx_handle);
 
@@ -525,10 +556,9 @@ void i2c3_init(uint32_t clock_speed, uint32_t address, uint32_t address_mode) {
 
     CSP_DMA_CLK_ENABLE(I2C3_TX_DMA_NUMBER);
 
-    res = HAL_DMA_Init(&i2c3_dmatx_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
+    if (HAL_DMA_Init(&i2c3_dmatx_handle) != HAL_OK) {
+        return I2C_INIT_DMA_FAIL;
+    }
 
     __HAL_LINKDMA(&i2c3_handle, hdmatx, i2c3_dmatx_handle);
 
@@ -540,10 +570,11 @@ void i2c3_init(uint32_t clock_speed, uint32_t address, uint32_t address_mode) {
 
 #endif /* I2C3_TX_DMA */
 
-    res = HAL_I2C_Init(&i2c3_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
+    if (HAL_I2C_Init(&i2c3_handle) != HAL_OK) {
+        return I2C_INIT_FAIL;
+    }
+
+    return I2C_INIT_OK;
 }
 
 #if I2C3_IT_ENABLE
@@ -585,13 +616,16 @@ void I2C3_TX_DMA_IRQHandler(void) {
 /**
  * @brief I2C3 deinitialization.
  *
+ * @return I2C3 deinit status.
+ * @retval 0-`I2C_DEINIT_OK`:       Success.
+ * @retval 1-`I2C_DEINIT_FAIL`:     I2C deinit failed.
+ * @retval 2-`I2C_DEINIT_DMA_FAIL`: I2C DMA deinit failed.
+ * @retval 3-`I2C_NO_INIT`:         I2C is not init.
  */
-void i2c3_deinit(void) {
+uint8_t i2c3_deinit(void) {
     if (__HAL_RCC_I2C3_IS_CLK_DISABLED()) {
-        return;
+        return I2C_NO_INIT;
     }
-
-    HAL_StatusTypeDef res = HAL_OK;
 
     __HAL_RCC_I2C3_CLK_DISABLE();
 
@@ -600,10 +634,9 @@ void i2c3_deinit(void) {
 
 #if I2C3_RX_DMA
     HAL_DMA_Abort(&i2c3_dmarx_handle);
-    res = HAL_DMA_DeInit(&i2c3_dmarx_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
+    if (HAL_DMA_DeInit(&i2c3_dmarx_handle) != HAL_OK) {
+        return I2C_DEINIT_DMA_FAIL;
+    }
 
     HAL_NVIC_DisableIRQ(
         CSP_DMA_STREAM_IRQn(I2C3_RX_DMA_NUMBER, I2C3_RX_DMA_STREAM));
@@ -612,21 +645,23 @@ void i2c3_deinit(void) {
 
 #if I2C3_TX_DMA
     HAL_DMA_Abort(&i2c3_dmatx_handle);
-    res = HAL_DMA_DeInit(&i2c3_dmatx_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
+    if (HAL_DMA_DeInit(&i2c3_dmatx_handle) != HAL_OK) {
+        return I2C_DEINIT_DMA_FAIL;
+    }
 
     HAL_NVIC_DisableIRQ(
         CSP_DMA_STREAM_IRQn(I2C3_TX_DMA_NUMBER, I2C3_TX_DMA_STREAM));
     i2c3_handle.hdmatx = NULL;
 #endif /* I2C3_TX_DMA */
 
-    res = HAL_I2C_DeInit(&i2c3_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
+    if (HAL_I2C_DeInit(&i2c3_handle) != HAL_OK) {
+        return I2C_DEINIT_FAIL;
+    }
+
+    return I2C_DEINIT_OK;
 }
+
+#endif /* I2C3_ENABLE */
 
 /**
  * @}

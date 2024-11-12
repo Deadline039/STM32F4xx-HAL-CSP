@@ -104,7 +104,7 @@
 //     <o8> The size of Receive FIFO [byte] (Must be power of 2)
 //     <i>  Using FIFO and Buf to implement high reliable USART Receive
 //   </e>
-#define USART1_RX_DMA             1
+#define USART1_RX_DMA             0
 #define USART1_RX_DMA_NUMBER      2
 #define USART1_RX_DMA_STREAM      2
 #define USART1_RX_DMA_CHANNEL     4
@@ -130,7 +130,7 @@
 //     <o7> The size of Send buf [byte]
 //     <i>  Write data to Send buf, and sending with thread safety
 //   </e>
-#define USART1_TX_DMA             1
+#define USART1_TX_DMA             0
 #define USART1_TX_DMA_NUMBER      2
 #define USART1_TX_DMA_STREAM      7
 #define USART1_TX_DMA_CHANNEL     4
@@ -1086,7 +1086,7 @@
 // </e>
 
 // <e> UART10 (Universal asynchronous receiver transmitter)
-#define UART10                   0
+#define UART10_ENABLE            0
 
 //   <o> UART10_TX Pin <0=>Not Used <1=>PE3 <2=>PG12
 #define UART10_TX_ID             0
@@ -2310,17 +2310,53 @@
 #error "Invalid CAN1_TX Pin Configuration!"
 #endif
 
-// <o> CAN1 hash table key
-//   <i> Using the hash table to store and process can message.
-#define CAN1_HASH_KEY   8
+//   <e> Enable CAN Transmit Interrupt
+#define CAN1_ENABLE_TX_IT    0
+//     <o> CAN Transmit Interrupt Priority <0-15>
+//     <i> The Interrupt Priority of CAN Transmit
+#define CAN1_TX_IT_PRIORITY  2
+//     <o> CAN Transmit Interrupt SubPriority <0-15>
+//     <i> The Interrupt SubPriority of CAN Transmit
+#define CAN1_TX_IT_SUB       3
+//   </e>
+
+//   <e> Enable CAN Receive FIFO0 Interrupt
+#define CAN1_ENABLE_RX0_IT   0
+//     <o> CAN Receive FIFO0 Interrupt Priority <0-15>
+//     <i> The Interrupt Priority of CAN Receive FIFO0
+#define CAN1_RX0_IT_PRIORITY 2
+//     <o> CAN Receive FIFO0 Interrupt SubPriority <0-15>
+//     <i> The Interrupt SubPriority of CAN Receive FIFO0
+#define CAN1_RX0_IT_SUB      3
+//   </e>
+
+//   <e> Enable CAN Receive FIFO1 Interrupt
+#define CAN1_ENABLE_RX1_IT   0
+//     <o> CAN Receive FIFO1 Interrupt Priority <0-15>
+//     <i> The Interrupt Priority of CAN Receive FIFO1
+#define CAN1_RX1_IT_PRIORITY 2
+//     <o> CAN Receive FIFO1 Interrupt SubPriority <0-15>
+//     <i> The Interrupt SubPriority of CAN Receive FIFO1
+#define CAN1_RX1_IT_SUB      3
+//   </e>
+
+//   <e> Enable CAN Stauts Change or Error (SCE) Interrupt
+#define CAN1_ENABLE_SCE_IT   0
+//     <o> CAN SCE Interrupt Priority <0-15>
+//     <i> The Interrupt Priority of CAN Receive FIFO0
+#define CAN1_SCE_IT_PRIORITY 2
+//     <o> CAN SCE Interrupt SubPriority <0-15>
+//     <i> The Interrupt SubPriority of CAN Receive FIFO0
+#define CAN1_SCE_IT_SUB      3
+//   </e>
 
 // </e>
 
 // <e> CAN2 (Controller Area Network 2)
-#define CAN2_ENABLE     0
+#define CAN2_ENABLE          0
 
 //   <o> CAN2_RX Pin <0=>PB5 <1=>PB12 <2=>PG11
-#define CAN2_RX_PORT_ID 0
+#define CAN2_RX_PORT_ID      0
 #if (CAN2_RX_PORT_ID == 0)
 #define CAN2_RX_PORT B
 #define CAN2_RX_PIN  GPIO_PIN_5
@@ -2349,18 +2385,44 @@
 #error "Invalid CAN2_TX Pin Configuration!"
 #endif
 
-// <o> CAN2 hash table key
-//   <i> Using the hash table to store and process can message.
-#define CAN2_HASH_KEY   8
+//   <e> Enable CAN Receive FIFO0 Interrupt
+#define CAN2_ENABLE_RX0_IT   0
+//     <o> CAN Receive FIFO0 Interrupt Priority <0-15>
+//     <i> The Interrupt Priority of CAN Receive FIFO0
+#define CAN2_RX0_IT_PRIORITY 2
+//     <o> CAN Receive FIFO0 Interrupt SubPriority <0-15>
+//     <i> The Interrupt SubPriority of CAN Receive FIFO0
+#define CAN2_RX0_IT_SUB      3
+//   </e>
+
+//   <e> Enable CAN Receive FIFO1 Interrupt
+#define CAN2_ENABLE_RX1_IT   0
+//     <o> CAN Receive FIFO1 Interrupt Priority <0-15>
+//     <i> The Interrupt Priority of CAN Receive FIFO1
+#define CAN2_RX1_IT_PRIORITY 2
+//     <o> CAN Receive FIFO1 Interrupt SubPriority <0-15>
+//     <i> The Interrupt SubPriority of CAN Receive FIFO1
+#define CAN2_RX1_IT_SUB      3
+//   </e>
+
+//   <e> Enable CAN Stauts Change or Error (SCE) Interrupt
+#define CAN2_ENABLE_SCE_IT   0
+//     <o> CAN SCE Interrupt Priority <0-15>
+//     <i> The Interrupt Priority of CAN Receive FIFO0
+#define CAN2_SCE_IT_PRIORITY 2
+//     <o> CAN SCE Interrupt SubPriority <0-15>
+//     <i> The Interrupt SubPriority of CAN Receive FIFO0
+#define CAN2_SCE_IT_SUB      3
+//   </e>
 
 // </e>
 
 // <e> CAN3 (Controller Area Network 3)
 // <i> Available only on STM32F413xx and STM32F423xx device series
-#define CAN3_ENABLE     0
+#define CAN3_ENABLE          0
 
 //   <o> CAN3_RX Pin <0=>PA8 <1=>PB3
-#define CAN3_RX_PORT_ID 0
+#define CAN3_RX_PORT_ID      0
 #if (CAN3_RX_PORT_ID == 0)
 #define CAN3_RX_PORT A
 #define CAN3_RX_PIN  GPIO_PIN_8
@@ -2383,9 +2445,35 @@
 #error "Invalid CAN3_TX Pin Configuration!"
 #endif
 
-// <o> CAN3 hash table key
-//   <i> Using the hash table to store and process can message.
-#define CAN3_HASH_KEY 8
+//   <e> Enable CAN Receive FIFO0 Interrupt
+#define CAN3_ENABLE_RX0_IT   0
+//     <o> CAN Receive FIFO0 Interrupt Priority <0-15>
+//     <i> The Interrupt Priority of CAN Receive FIFO0
+#define CAN3_RX0_IT_PRIORITY 2
+//     <o> CAN Receive FIFO0 Interrupt SubPriority <0-15>
+//     <i> The Interrupt SubPriority of CAN Receive FIFO0
+#define CAN3_RX0_IT_SUB      3
+//   </e>
+
+//   <e> Enable CAN Receive FIFO1 Interrupt
+#define CAN3_ENABLE_RX1_IT   0
+//     <o> CAN Receive FIFO1 Interrupt Priority <0-15>
+//     <i> The Interrupt Priority of CAN Receive FIFO1
+#define CAN3_RX1_IT_PRIORITY 2
+//     <o> CAN Receive FIFO1 Interrupt SubPriority <0-15>
+//     <i> The Interrupt SubPriority of CAN Receive FIFO1
+#define CAN3_RX1_IT_SUB      3
+//   </e>
+
+//   <e> Enable CAN Stauts Change or Error (SCE) Interrupt
+#define CAN3_ENABLE_SCE_IT   0
+//     <o> CAN SCE Interrupt Priority <0-15>
+//     <i> The Interrupt Priority of CAN Receive FIFO0
+#define CAN3_SCE_IT_PRIORITY 2
+//     <o> CAN SCE Interrupt SubPriority <0-15>
+//     <i> The Interrupt SubPriority of CAN Receive FIFO0
+#define CAN3_SCE_IT_SUB      3
+//   </e>
 
 // </e>
 
@@ -2432,7 +2520,8 @@ extern "C" {
 #define CSP_REALLOC                realloc
 #include <stdlib.h>
 
-#include <assert.h>
+/* Devices Family header files.  */
+#include "stm32f4xx_hal.h"
 
 #if (USART1_ENABLE || USART2_ENABLE || USART3_ENABLE || UART4_ENABLE ||        \
      UART5_ENABLE || USART6_ENABLE || UART7_ENABLE || UART8_ENABLE ||          \

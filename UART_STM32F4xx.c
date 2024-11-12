@@ -1,12 +1,12 @@
 /**
  * @file    UART_STM32F4xx.c
  * @author  Deadline039
- * @brief   Connectivity Support Package of USART on STM32F4xx
+ * @brief   Chip Support Package of USART on STM32F4xx
  * @version 1.0
  * @date    2024-10-22
  */
 
-#include "CSP_Config.h"
+#include "UART_STM32F4xx.h"
 #include "ring_fifo.h"
 
 #include <stdio.h>
@@ -111,18 +111,23 @@ static uart_tx_buf_t usart1_tx_buf = {.buf_size = USART1_TX_DMA_BUF_SIZE};
  * @brief USART1 initialization
  *
  * @param baud_rate Baud rate.
+ * @return USART1 init status.
+ * @retval 0-`UART_INIT_OK`:       Success.
+ * @retval 1-`UART_INIT_FAIL`:     UART init failed.
+ * @retval 2-`UART_INIT_DMA_FAIL`: UART DMA init failed.
+ * @retval 3-`UART_INIT_MEM_FAIL`: UART buffer memory init failed (It will
+ *                                 dynamic allocate memroy when using DMA).
+ * @retval 4-`UART_INITED`:        This uart is inited.
  */
-void usart1_init(uint32_t baud_rate) {
+uint8_t usart1_init(uint32_t baud_rate) {
     if (__HAL_RCC_USART1_IS_CLK_ENABLED()) {
-        return;
+        return UART_INITED;
     }
 
     GPIO_InitTypeDef gpio_init_struct = {.Pull = GPIO_PULLUP,
                                          .Speed = GPIO_SPEED_FREQ_HIGH,
                                          .Alternate = GPIO_AF7_USART1,
                                          .Mode = GPIO_MODE_AF_PP};
-    HAL_StatusTypeDef res = HAL_OK;
-
     usart1_handle.Init.BaudRate = baud_rate;
 #if USART1_TX
     usart1_handle.Init.Mode |= UART_MODE_TX;
@@ -158,12 +163,6 @@ void usart1_init(uint32_t baud_rate) {
 
     __HAL_RCC_USART1_CLK_ENABLE();
 
-    res = HAL_UART_Init(&usart1_handle);
-
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
-
     HAL_NVIC_EnableIRQ(USART1_IRQn);
     HAL_NVIC_SetPriority(USART1_IRQn, USART1_IT_PRIORITY, USART1_IT_SUB);
 
@@ -171,26 +170,25 @@ void usart1_init(uint32_t baud_rate) {
     usart1_rx_fifo.head_ptr = 0;
 
     usart1_rx_fifo.recv_buf = CSP_MALLOC(usart1_rx_fifo.buf_size);
-#ifdef DEBUG
-    assert(usart1_rx_fifo.recv_buf != NULL);
-#endif /* DEBUG */
+    if (usart1_rx_fifo.recv_buf == NULL) {
+        return UART_INIT_MEM_FAIL;
+    }
 
     usart1_rx_fifo.rx_fifo_buf = CSP_MALLOC(usart1_rx_fifo.fifo_size);
-#ifdef DEBUG
-    assert(usart1_rx_fifo.rx_fifo_buf != NULL);
-#endif /* DEBUG */
+    if (usart1_rx_fifo.rx_fifo_buf == NULL) {
+        return UART_INIT_MEM_FAIL;
+    }
 
     usart1_rx_fifo.rx_fifo = ring_fifo_init(
         usart1_rx_fifo.rx_fifo_buf, usart1_rx_fifo.fifo_size, RF_TYPE_STREAM);
-#ifdef DEBUG
-    assert(usart1_rx_fifo.rx_fifo != NULL);
-#endif /* DEBUG */
+    if (usart1_rx_fifo.rx_fifo == NULL) {
+        return UART_INIT_MEM_FAIL;
+    }
 
     CSP_DMA_CLK_ENABLE(USART1_RX_DMA_NUMBER);
-    res = HAL_DMA_Init(&usart1_dmarx_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
+    if (HAL_DMA_Init(&usart1_dmarx_handle) != HAL_OK) {
+        return UART_INIT_DMA_FAIL;
+    }
 
     __HAL_LINKDMA(&usart1_handle, hdmarx, usart1_dmarx_handle);
 
@@ -216,16 +214,14 @@ void usart1_init(uint32_t baud_rate) {
 
 #if USART1_TX_DMA
     usart1_tx_buf.send_buf = CSP_MALLOC(usart1_tx_buf.buf_size);
-
-#ifdef DEBUG
-    assert(usart1_tx_buf.send_buf != NULL);
-#endif /* DEBUG */
+    if (usart1_tx_buf.send_buf == NULL) {
+        return UART_INIT_MEM_FAIL;
+    }
 
     CSP_DMA_CLK_ENABLE(USART1_TX_DMA_NUMBER);
-    res = HAL_DMA_Init(&usart1_dmatx_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
+    if (HAL_DMA_Init(&usart1_dmatx_handle) != HAL_OK) {
+        return UART_INIT_DMA_FAIL;
+    }
 
     __HAL_LINKDMA(&usart1_handle, hdmatx, usart1_dmatx_handle);
 
@@ -235,6 +231,12 @@ void usart1_init(uint32_t baud_rate) {
     HAL_NVIC_EnableIRQ(
         CSP_DMA_STREAM_IRQn(USART1_TX_DMA_NUMBER, USART1_TX_DMA_STREAM));
 #endif /* USART1_TX_DMA */
+
+    if (HAL_UART_Init(&usart1_handle) != HAL_OK) {
+        return UART_INIT_FAIL;
+    }
+
+    return UART_INIT_OK;
 }
 
 /**
@@ -277,10 +279,15 @@ void USART1_TX_DMA_IRQHandler(void) {
 /**
  * @brief USART1 deinitialization.
  *
+ * @return UART deinit status.
+ * @retval 0-`UART_DEINIT_OK`:       Success.
+ * @retval 1-`UART_DEINIT_FAIL`:     UART deinit failed.
+ * @retval 2-`UART_DEINIT_DMA_FAIL`: UART DMA deinit failed.
+ * @retval 3-`UART_NO_INIT`:         UART is not init.
  */
-void usart1_deinit(void) {
+uint8_t usart1_deinit(void) {
     if (__HAL_RCC_USART1_IS_CLK_DISABLED()) {
-        return;
+        return UART_NO_INIT;
     }
 
     HAL_StatusTypeDef res = HAL_OK;
@@ -302,12 +309,6 @@ void usart1_deinit(void) {
 #if USART1_RTS
     HAL_GPIO_DeInit(CSP_GPIO_PORT(USART1_RTS_PORT), USART1_RTS_PIN);
 #endif /* USART1_RTS */
-
-    res = HAL_UART_DeInit(&usart1_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
-
     HAL_NVIC_DisableIRQ(USART1_IRQn);
 
 #if USART1_RX_DMA
@@ -317,10 +318,9 @@ void usart1_deinit(void) {
     CSP_FREE(usart1_rx_fifo.rx_fifo_buf);
     ring_fifo_destroy(usart1_rx_fifo.rx_fifo);
 
-    res = HAL_DMA_DeInit(&usart1_dmarx_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
+    if (HAL_DMA_DeInit(&usart1_dmarx_handle) != HAL_OK) {
+        return UART_DEINIT_DMA_FAIL;
+    }
 
     HAL_NVIC_DisableIRQ(
         CSP_DMA_STREAM_IRQn(USART1_RX_DMA_NUMBER, USART1_RX_DMA_STREAM));
@@ -337,16 +337,21 @@ void usart1_deinit(void) {
     HAL_DMA_Abort(&usart1_dmatx_handle);
     CSP_FREE(usart1_tx_buf.send_buf);
 
-    res = HAL_DMA_DeInit(&usart1_dmatx_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
+    if (HAL_DMA_DeInit(&usart1_dmatx_handle) != HAL_OK) {
+        return UART_DEINIT_DMA_FAIL;
+    }
 
     HAL_NVIC_DisableIRQ(
         CSP_DMA_STREAM_IRQn(USART1_TX_DMA_NUMBER, USART1_TX_DMA_STREAM));
 
     usart1_handle.hdmatx = NULL;
 #endif /* USART1_TX_DMA */
+
+    if (HAL_UART_DeInit(&usart1_handle) != HAL_OK) {
+        return UART_DEINIT_FAIL;
+    }
+
+    return UART_DEINIT_OK;
 }
 
 #endif /* USART1_ENABLE */
@@ -406,18 +411,23 @@ static uart_tx_buf_t usart2_tx_buf = {.buf_size = USART2_TX_DMA_BUF_SIZE};
  * @brief USART2 initialization
  *
  * @param baud_rate Baud rate.
+ * @return USART2 init status.
+ * @retval 0-`UART_INIT_OK`:       Success.
+ * @retval 1-`UART_INIT_FAIL`:     UART init failed.
+ * @retval 2-`UART_INIT_DMA_FAIL`: UART DMA init failed.
+ * @retval 3-`UART_INIT_MEM_FAIL`: UART buffer memory init failed (It will
+ *                                 dynamic allocate memroy when using DMA).
+ * @retval 4-`UART_INITED`:        This uart is inited.
  */
-void usart2_init(uint32_t baud_rate) {
+uint8_t usart2_init(uint32_t baud_rate) {
     if (__HAL_RCC_USART2_IS_CLK_ENABLED()) {
-        return;
+        return UART_INITED;
     }
 
     GPIO_InitTypeDef gpio_init_struct = {.Pull = GPIO_PULLUP,
                                          .Speed = GPIO_SPEED_FREQ_HIGH,
                                          .Alternate = GPIO_AF7_USART2,
                                          .Mode = GPIO_MODE_AF_PP};
-    HAL_StatusTypeDef res = HAL_OK;
-
     usart2_handle.Init.BaudRate = baud_rate;
 #if USART2_TX
     usart2_handle.Init.Mode |= UART_MODE_TX;
@@ -453,12 +463,6 @@ void usart2_init(uint32_t baud_rate) {
 
     __HAL_RCC_USART2_CLK_ENABLE();
 
-    res = HAL_UART_Init(&usart2_handle);
-
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
-
     HAL_NVIC_EnableIRQ(USART2_IRQn);
     HAL_NVIC_SetPriority(USART2_IRQn, USART2_IT_PRIORITY, USART2_IT_SUB);
 
@@ -466,26 +470,25 @@ void usart2_init(uint32_t baud_rate) {
     usart2_rx_fifo.head_ptr = 0;
 
     usart2_rx_fifo.recv_buf = CSP_MALLOC(usart2_rx_fifo.buf_size);
-#ifdef DEBUG
-    assert(usart2_rx_fifo.recv_buf != NULL);
-#endif /* DEBUG */
+    if (usart2_rx_fifo.recv_buf == NULL) {
+        return UART_INIT_MEM_FAIL;
+    }
 
     usart2_rx_fifo.rx_fifo_buf = CSP_MALLOC(usart2_rx_fifo.fifo_size);
-#ifdef DEBUG
-    assert(usart2_rx_fifo.rx_fifo_buf != NULL);
-#endif /* DEBUG */
+    if (usart2_rx_fifo.rx_fifo_buf == NULL) {
+        return UART_INIT_MEM_FAIL;
+    }
 
     usart2_rx_fifo.rx_fifo = ring_fifo_init(
         usart2_rx_fifo.rx_fifo_buf, usart2_rx_fifo.fifo_size, RF_TYPE_STREAM);
-#ifdef DEBUG
-    assert(usart2_rx_fifo.rx_fifo != NULL);
-#endif /* DEBUG */
+    if (usart2_rx_fifo.rx_fifo == NULL) {
+        return UART_INIT_MEM_FAIL;
+    }
 
     CSP_DMA_CLK_ENABLE(USART2_RX_DMA_NUMBER);
-    res = HAL_DMA_Init(&usart2_dmarx_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
+    if (HAL_DMA_Init(&usart2_dmarx_handle) != HAL_OK) {
+        return UART_INIT_DMA_FAIL;
+    }
 
     __HAL_LINKDMA(&usart2_handle, hdmarx, usart2_dmarx_handle);
 
@@ -511,16 +514,14 @@ void usart2_init(uint32_t baud_rate) {
 
 #if USART2_TX_DMA
     usart2_tx_buf.send_buf = CSP_MALLOC(usart2_tx_buf.buf_size);
-
-#ifdef DEBUG
-    assert(usart2_tx_buf.send_buf != NULL);
-#endif /* DEBUG */
+    if (usart2_tx_buf.send_buf == NULL) {
+        return UART_INIT_MEM_FAIL;
+    }
 
     CSP_DMA_CLK_ENABLE(USART2_TX_DMA_NUMBER);
-    res = HAL_DMA_Init(&usart2_dmatx_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
+    if (HAL_DMA_Init(&usart2_dmatx_handle) != HAL_OK) {
+        return UART_INIT_DMA_FAIL;
+    }
 
     __HAL_LINKDMA(&usart2_handle, hdmatx, usart2_dmatx_handle);
 
@@ -530,6 +531,12 @@ void usart2_init(uint32_t baud_rate) {
     HAL_NVIC_EnableIRQ(
         CSP_DMA_STREAM_IRQn(USART2_TX_DMA_NUMBER, USART2_TX_DMA_STREAM));
 #endif /* USART2_TX_DMA */
+
+    if (HAL_UART_Init(&usart2_handle) != HAL_OK) {
+        return UART_INIT_FAIL;
+    }
+
+    return UART_INIT_OK;
 }
 
 /**
@@ -572,10 +579,14 @@ void USART2_TX_DMA_IRQHandler(void) {
 /**
  * @brief USART2 deinitialization.
  *
- */
-void usart2_deinit(void) {
+ * @return UART deinit status.
+ * @retval 0-`UART_DEINIT_OK`:       Success.
+ * @retval 1-`UART_DEINIT_FAIL`:     UART deinit failed.
+ * @retval 2-`UART_DEINIT_DMA_FAIL`: UART DMA deinit failed.
+ * @retval 3-`UART_NO_INIT`:         UART is not init.
+uint8_t usart2_deinit(void) {
     if (__HAL_RCC_USART2_IS_CLK_DISABLED()) {
-        return;
+        return UART_NO_INIT;
     }
 
     HAL_StatusTypeDef res = HAL_OK;
@@ -587,61 +598,59 @@ void usart2_deinit(void) {
 #endif /* USART2_TX */
 
 #if USART2_RX
-    HAL_GPIO_DeInit(CSP_GPIO_PORT(USART2_RX_PORT), USART2_RX_PIN);
+HAL_GPIO_DeInit(CSP_GPIO_PORT(USART2_RX_PORT), USART2_RX_PIN);
 #endif /* USART2_RX */
 
 #if USART2_CTS
-    HAL_GPIO_DeInit(CSP_GPIO_PORT(USART2_CTS_PORT), USART2_CTS_PIN);
+HAL_GPIO_DeInit(CSP_GPIO_PORT(USART2_CTS_PORT), USART2_CTS_PIN);
 #endif /* USART2_USART2_CTS */
 
 #if USART2_RTS
-    HAL_GPIO_DeInit(CSP_GPIO_PORT(USART2_RTS_PORT), USART2_RTS_PIN);
+HAL_GPIO_DeInit(CSP_GPIO_PORT(USART2_RTS_PORT), USART2_RTS_PIN);
 #endif /* USART2_RTS */
-
-    res = HAL_UART_DeInit(&usart2_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
-
-    HAL_NVIC_DisableIRQ(USART2_IRQn);
+HAL_NVIC_DisableIRQ(USART2_IRQn);
 
 #if USART2_RX_DMA
 
-    HAL_DMA_Abort(&usart2_dmarx_handle);
-    CSP_FREE(usart2_rx_fifo.recv_buf);
-    CSP_FREE(usart2_rx_fifo.rx_fifo_buf);
-    ring_fifo_destroy(usart2_rx_fifo.rx_fifo);
+HAL_DMA_Abort(&usart2_dmarx_handle);
+CSP_FREE(usart2_rx_fifo.recv_buf);
+CSP_FREE(usart2_rx_fifo.rx_fifo_buf);
+ring_fifo_destroy(usart2_rx_fifo.rx_fifo);
 
-    res = HAL_DMA_DeInit(&usart2_dmarx_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
+if (HAL_DMA_DeInit(&usart2_dmarx_handle) != HAL_OK) {
+    return UART_DEINIT_DMA_FAIL;
+}
 
-    HAL_NVIC_DisableIRQ(
-        CSP_DMA_STREAM_IRQn(USART2_RX_DMA_NUMBER, USART2_RX_DMA_STREAM));
+HAL_NVIC_DisableIRQ(CSP_DMA_STREAM_IRQn(USART2_RX_DMA_NUMBER,
+                                        USART2_RX_DMA_STREAM));
 
 #if USE_HAL_UART_REGISTER_CALLBACKS
-    HAL_UART_UnRegisterCallback(&usart2_handle, HAL_UART_RX_HALFCOMPLETE_CB_ID);
-    HAL_UART_UnRegisterCallback(&usart2_handle, HAL_UART_RX_COMPLETE_CB_ID);
+HAL_UART_UnRegisterCallback(&usart2_handle, HAL_UART_RX_HALFCOMPLETE_CB_ID);
+HAL_UART_UnRegisterCallback(&usart2_handle, HAL_UART_RX_COMPLETE_CB_ID);
 #endif /* USE_HAL_UART_REGISTER_CALLBACKS */
-    usart2_handle.hdmarx = NULL;
+usart2_handle.hdmarx = NULL;
 
 #endif /* USART2_RX_DMA */
 
 #if USART2_TX_DMA
-    HAL_DMA_Abort(&usart2_dmatx_handle);
-    CSP_FREE(usart2_tx_buf.send_buf);
+HAL_DMA_Abort(&usart2_dmatx_handle);
+CSP_FREE(usart2_tx_buf.send_buf);
 
-    res = HAL_DMA_DeInit(&usart2_dmatx_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
+if (HAL_DMA_DeInit(&usart2_dmatx_handle) != HAL_OK) {
+    return UART_DEINIT_DMA_FAIL;
+}
 
-    HAL_NVIC_DisableIRQ(
-        CSP_DMA_STREAM_IRQn(USART2_TX_DMA_NUMBER, USART2_TX_DMA_STREAM));
+HAL_NVIC_DisableIRQ(CSP_DMA_STREAM_IRQn(USART2_TX_DMA_NUMBER,
+                                        USART2_TX_DMA_STREAM));
 
-    usart2_handle.hdmatx = NULL;
+usart2_handle.hdmatx = NULL;
 #endif /* USART2_TX_DMA */
+
+if (HAL_UART_DeInit(&usart2_handle) != HAL_OK) {
+    return UART_DEINIT_FAIL;
+}
+
+return UART_DEINIT_OK;
 }
 
 #endif /* USART2_ENABLE */
@@ -701,24 +710,30 @@ static uart_tx_buf_t usart3_tx_buf = {.buf_size = USART3_TX_DMA_BUF_SIZE};
  * @brief USART3 initialization
  *
  * @param baud_rate Baud rate.
+ * @return USART3 init status.
+ * @retval 0-`UART_INIT_OK`:       Success.
+ * @retval 1-`UART_INIT_FAIL`:     UART init failed.
+ * @retval 2-`UART_INIT_DMA_FAIL`: UART DMA init failed.
+ * @retval 3-`UART_INIT_MEM_FAIL`: UART buffer memory init failed (It will
+ *                                 dynamic allocate memroy when using DMA).
+ * @retval 4-`UART_INITED`:        This uart is inited.
  */
-void usart3_init(uint32_t baud_rate) {
+uint8_t usart3_init(uint32_t baud_rate) {
     if (__HAL_RCC_USART3_IS_CLK_ENABLED()) {
-        return;
+        return UART_INITED;
     }
 
     GPIO_InitTypeDef gpio_init_struct = {.Pull = GPIO_PULLUP,
                                          .Speed = GPIO_SPEED_FREQ_HIGH,
-                                         .Alternate = GPIO_AF7_USART3,
-                                         .Mode = GPIO_MODE_AF_PP};
-    HAL_StatusTypeDef res = HAL_OK;
 
+                                         .Mode = GPIO_MODE_AF_PP};
     usart3_handle.Init.BaudRate = baud_rate;
 #if USART3_TX
     usart3_handle.Init.Mode |= UART_MODE_TX;
 
     CSP_GPIO_CLK_ENABLE(USART3_TX_PORT);
     gpio_init_struct.Pin = USART3_TX_PIN;
+    gpio_init_struct.Alternate = GPIO_AF7_USART3;
     HAL_GPIO_Init(CSP_GPIO_PORT(USART3_TX_PORT), &gpio_init_struct);
 #endif /* USART3_TX */
 
@@ -727,6 +742,7 @@ void usart3_init(uint32_t baud_rate) {
 
     CSP_GPIO_CLK_ENABLE(USART3_RX_PORT);
     gpio_init_struct.Pin = USART3_RX_PIN;
+    gpio_init_struct.Alternate = GPIO_AF7_USART3;
     HAL_GPIO_Init(CSP_GPIO_PORT(USART3_RX_PORT), &gpio_init_struct);
 #endif /* USART3_RX */
 
@@ -735,6 +751,7 @@ void usart3_init(uint32_t baud_rate) {
 
     CSP_GPIO_CLK_ENABLE(USART3_CTS_PORT);
     gpio_init_struct.Pin = USART3_CTS_PIN;
+    gpio_init_struct.Alternate = USART3_CTS_GPIO_AF;
     HAL_GPIO_Init(CSP_GPIO_PORT(USART3_CTS_PORT), &gpio_init_struct);
 #endif /* USART3_USART3_CTS */
 
@@ -743,16 +760,11 @@ void usart3_init(uint32_t baud_rate) {
 
     CSP_GPIO_CLK_ENABLE(USART3_RTS_PORT);
     gpio_init_struct.Pin = USART3_RTS_PIN;
+    gpio_init_struct.Alternate = GPIO_AF7_USART3;
     HAL_GPIO_Init(CSP_GPIO_PORT(USART3_RTS_PORT), &gpio_init_struct);
 #endif /* USART3_RTS */
 
     __HAL_RCC_USART3_CLK_ENABLE();
-
-    res = HAL_UART_Init(&usart3_handle);
-
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
 
     HAL_NVIC_EnableIRQ(USART3_IRQn);
     HAL_NVIC_SetPriority(USART3_IRQn, USART3_IT_PRIORITY, USART3_IT_SUB);
@@ -761,26 +773,25 @@ void usart3_init(uint32_t baud_rate) {
     usart3_rx_fifo.head_ptr = 0;
 
     usart3_rx_fifo.recv_buf = CSP_MALLOC(usart3_rx_fifo.buf_size);
-#ifdef DEBUG
-    assert(usart3_rx_fifo.recv_buf != NULL);
-#endif /* DEBUG */
+    if (usart3_rx_fifo.recv_buf == NULL) {
+        return UART_INIT_MEM_FAIL;
+    }
 
     usart3_rx_fifo.rx_fifo_buf = CSP_MALLOC(usart3_rx_fifo.fifo_size);
-#ifdef DEBUG
-    assert(usart3_rx_fifo.rx_fifo_buf != NULL);
-#endif /* DEBUG */
+    if (usart3_rx_fifo.rx_fifo_buf == NULL) {
+        return UART_INIT_MEM_FAIL;
+    }
 
     usart3_rx_fifo.rx_fifo = ring_fifo_init(
         usart3_rx_fifo.rx_fifo_buf, usart3_rx_fifo.fifo_size, RF_TYPE_STREAM);
-#ifdef DEBUG
-    assert(usart3_rx_fifo.rx_fifo != NULL);
-#endif /* DEBUG */
+    if (usart3_rx_fifo.rx_fifo == NULL) {
+        return UART_INIT_MEM_FAIL;
+    }
 
     CSP_DMA_CLK_ENABLE(USART3_RX_DMA_NUMBER);
-    res = HAL_DMA_Init(&usart3_dmarx_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
+    if (HAL_DMA_Init(&usart3_dmarx_handle) != HAL_OK) {
+        return UART_INIT_DMA_FAIL;
+    }
 
     __HAL_LINKDMA(&usart3_handle, hdmarx, usart3_dmarx_handle);
 
@@ -806,16 +817,14 @@ void usart3_init(uint32_t baud_rate) {
 
 #if USART3_TX_DMA
     usart3_tx_buf.send_buf = CSP_MALLOC(usart3_tx_buf.buf_size);
-
-#ifdef DEBUG
-    assert(usart3_tx_buf.send_buf != NULL);
-#endif /* DEBUG */
+    if (usart3_tx_buf.send_buf == NULL) {
+        return UART_INIT_MEM_FAIL;
+    }
 
     CSP_DMA_CLK_ENABLE(USART3_TX_DMA_NUMBER);
-    res = HAL_DMA_Init(&usart3_dmatx_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
+    if (HAL_DMA_Init(&usart3_dmatx_handle) != HAL_OK) {
+        return UART_INIT_DMA_FAIL;
+    }
 
     __HAL_LINKDMA(&usart3_handle, hdmatx, usart3_dmatx_handle);
 
@@ -825,6 +834,12 @@ void usart3_init(uint32_t baud_rate) {
     HAL_NVIC_EnableIRQ(
         CSP_DMA_STREAM_IRQn(USART3_TX_DMA_NUMBER, USART3_TX_DMA_STREAM));
 #endif /* USART3_TX_DMA */
+
+    if (HAL_UART_Init(&usart3_handle) != HAL_OK) {
+        return UART_INIT_FAIL;
+    }
+
+    return UART_INIT_OK;
 }
 
 /**
@@ -867,10 +882,14 @@ void USART3_TX_DMA_IRQHandler(void) {
 /**
  * @brief USART3 deinitialization.
  *
- */
-void usart3_deinit(void) {
+ * @return UART deinit status.
+ * @retval 0-`UART_DEINIT_OK`:       Success.
+ * @retval 1-`UART_DEINIT_FAIL`:     UART deinit failed.
+ * @retval 2-`UART_DEINIT_DMA_FAIL`: UART DMA deinit failed.
+ * @retval 3-`UART_NO_INIT`:         UART is not init.
+uint8_t usart3_deinit(void) {
     if (__HAL_RCC_USART3_IS_CLK_DISABLED()) {
-        return;
+        return UART_NO_INIT;
     }
 
     HAL_StatusTypeDef res = HAL_OK;
@@ -882,61 +901,59 @@ void usart3_deinit(void) {
 #endif /* USART3_TX */
 
 #if USART3_RX
-    HAL_GPIO_DeInit(CSP_GPIO_PORT(USART3_RX_PORT), USART3_RX_PIN);
+HAL_GPIO_DeInit(CSP_GPIO_PORT(USART3_RX_PORT), USART3_RX_PIN);
 #endif /* USART3_RX */
 
 #if USART3_CTS
-    HAL_GPIO_DeInit(CSP_GPIO_PORT(USART3_CTS_PORT), USART3_CTS_PIN);
+HAL_GPIO_DeInit(CSP_GPIO_PORT(USART3_CTS_PORT), USART3_CTS_PIN);
 #endif /* USART3_USART3_CTS */
 
 #if USART3_RTS
-    HAL_GPIO_DeInit(CSP_GPIO_PORT(USART3_RTS_PORT), USART3_RTS_PIN);
+HAL_GPIO_DeInit(CSP_GPIO_PORT(USART3_RTS_PORT), USART3_RTS_PIN);
 #endif /* USART3_RTS */
-
-    res = HAL_UART_DeInit(&usart3_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
-
-    HAL_NVIC_DisableIRQ(USART3_IRQn);
+HAL_NVIC_DisableIRQ(USART3_IRQn);
 
 #if USART3_RX_DMA
 
-    HAL_DMA_Abort(&usart3_dmarx_handle);
-    CSP_FREE(usart3_rx_fifo.recv_buf);
-    CSP_FREE(usart3_rx_fifo.rx_fifo_buf);
-    ring_fifo_destroy(usart3_rx_fifo.rx_fifo);
+HAL_DMA_Abort(&usart3_dmarx_handle);
+CSP_FREE(usart3_rx_fifo.recv_buf);
+CSP_FREE(usart3_rx_fifo.rx_fifo_buf);
+ring_fifo_destroy(usart3_rx_fifo.rx_fifo);
 
-    res = HAL_DMA_DeInit(&usart3_dmarx_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
+if (HAL_DMA_DeInit(&usart3_dmarx_handle) != HAL_OK) {
+    return UART_DEINIT_DMA_FAIL;
+}
 
-    HAL_NVIC_DisableIRQ(
-        CSP_DMA_STREAM_IRQn(USART3_RX_DMA_NUMBER, USART3_RX_DMA_STREAM));
+HAL_NVIC_DisableIRQ(CSP_DMA_STREAM_IRQn(USART3_RX_DMA_NUMBER,
+                                        USART3_RX_DMA_STREAM));
 
 #if USE_HAL_UART_REGISTER_CALLBACKS
-    HAL_UART_UnRegisterCallback(&usart3_handle, HAL_UART_RX_HALFCOMPLETE_CB_ID);
-    HAL_UART_UnRegisterCallback(&usart3_handle, HAL_UART_RX_COMPLETE_CB_ID);
+HAL_UART_UnRegisterCallback(&usart3_handle, HAL_UART_RX_HALFCOMPLETE_CB_ID);
+HAL_UART_UnRegisterCallback(&usart3_handle, HAL_UART_RX_COMPLETE_CB_ID);
 #endif /* USE_HAL_UART_REGISTER_CALLBACKS */
-    usart3_handle.hdmarx = NULL;
+usart3_handle.hdmarx = NULL;
 
 #endif /* USART3_RX_DMA */
 
 #if USART3_TX_DMA
-    HAL_DMA_Abort(&usart3_dmatx_handle);
-    CSP_FREE(usart3_tx_buf.send_buf);
+HAL_DMA_Abort(&usart3_dmatx_handle);
+CSP_FREE(usart3_tx_buf.send_buf);
 
-    res = HAL_DMA_DeInit(&usart3_dmatx_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
+if (HAL_DMA_DeInit(&usart3_dmatx_handle) != HAL_OK) {
+    return UART_DEINIT_DMA_FAIL;
+}
 
-    HAL_NVIC_DisableIRQ(
-        CSP_DMA_STREAM_IRQn(USART3_TX_DMA_NUMBER, USART3_TX_DMA_STREAM));
+HAL_NVIC_DisableIRQ(CSP_DMA_STREAM_IRQn(USART3_TX_DMA_NUMBER,
+                                        USART3_TX_DMA_STREAM));
 
-    usart3_handle.hdmatx = NULL;
+usart3_handle.hdmatx = NULL;
 #endif /* USART3_TX_DMA */
+
+if (HAL_UART_DeInit(&usart3_handle) != HAL_OK) {
+    return UART_DEINIT_FAIL;
+}
+
+return UART_DEINIT_OK;
 }
 
 #endif /* USART3_ENABLE */
@@ -996,24 +1013,29 @@ static uart_tx_buf_t uart4_tx_buf = {.buf_size = UART4_TX_DMA_BUF_SIZE};
  * @brief UART4 initialization
  *
  * @param baud_rate Baud rate.
+ * @return UART4 init status.
+ * @retval 0-`UART_INIT_OK`:       Success.
+ * @retval 1-`UART_INIT_FAIL`:     UART init failed.
+ * @retval 2-`UART_INIT_DMA_FAIL`: UART DMA init failed.
+ * @retval 3-`UART_INIT_MEM_FAIL`: UART buffer memory init failed (It will
+ *                                 dynamic allocate memroy when using DMA).
+ * @retval 4-`UART_INITED`:        This uart is inited.
  */
-void uart4_init(uint32_t baud_rate) {
+uint8_t uart4_init(uint32_t baud_rate) {
     if (__HAL_RCC_UART4_IS_CLK_ENABLED()) {
-        return;
+        return UART_INITED;
     }
 
     GPIO_InitTypeDef gpio_init_struct = {.Pull = GPIO_PULLUP,
                                          .Speed = GPIO_SPEED_FREQ_HIGH,
-                                         .Alternate = GPIO_AF8_UART4,
                                          .Mode = GPIO_MODE_AF_PP};
-    HAL_StatusTypeDef res = HAL_OK;
-
     uart4_handle.Init.BaudRate = baud_rate;
 #if UART4_TX
     uart4_handle.Init.Mode |= UART_MODE_TX;
 
     CSP_GPIO_CLK_ENABLE(UART4_TX_PORT);
     gpio_init_struct.Pin = UART4_TX_PIN;
+    gpio_init_struct.Alternate = UART4_TX_GPIO_AF;
     HAL_GPIO_Init(CSP_GPIO_PORT(UART4_TX_PORT), &gpio_init_struct);
 #endif /* UART4_TX */
 
@@ -1022,16 +1044,11 @@ void uart4_init(uint32_t baud_rate) {
 
     CSP_GPIO_CLK_ENABLE(UART4_RX_PORT);
     gpio_init_struct.Pin = UART4_RX_PIN;
+    gpio_init_struct.Alternate = UART4_RX_GPIO_AF;
     HAL_GPIO_Init(CSP_GPIO_PORT(UART4_RX_PORT), &gpio_init_struct);
 #endif /* UART4_RX */
 
     __HAL_RCC_UART4_CLK_ENABLE();
-
-    res = HAL_UART_Init(&uart4_handle);
-
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
 
     HAL_NVIC_EnableIRQ(UART4_IRQn);
     HAL_NVIC_SetPriority(UART4_IRQn, UART4_IT_PRIORITY, UART4_IT_SUB);
@@ -1040,26 +1057,25 @@ void uart4_init(uint32_t baud_rate) {
     uart4_rx_fifo.head_ptr = 0;
 
     uart4_rx_fifo.recv_buf = CSP_MALLOC(uart4_rx_fifo.buf_size);
-#ifdef DEBUG
-    assert(uart4_rx_fifo.recv_buf != NULL);
-#endif /* DEBUG */
+    if (uart4_rx_fifo.recv_buf == NULL) {
+        return UART_INIT_MEM_FAIL;
+    }
 
     uart4_rx_fifo.rx_fifo_buf = CSP_MALLOC(uart4_rx_fifo.fifo_size);
-#ifdef DEBUG
-    assert(uart4_rx_fifo.rx_fifo_buf != NULL);
-#endif /* DEBUG */
+    if (uart4_rx_fifo.rx_fifo_buf == NULL) {
+        return UART_INIT_MEM_FAIL;
+    }
 
     uart4_rx_fifo.rx_fifo = ring_fifo_init(
         uart4_rx_fifo.rx_fifo_buf, uart4_rx_fifo.fifo_size, RF_TYPE_STREAM);
-#ifdef DEBUG
-    assert(uart4_rx_fifo.rx_fifo != NULL);
-#endif /* DEBUG */
+    if (uart4_rx_fifo.rx_fifo == NULL) {
+        return UART_INIT_MEM_FAIL;
+    }
 
     CSP_DMA_CLK_ENABLE(UART4_RX_DMA_NUMBER);
-    res = HAL_DMA_Init(&uart4_dmarx_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
+    if (HAL_DMA_Init(&uart4_dmarx_handle) != HAL_OK) {
+        return UART_INIT_DMA_FAIL;
+    }
 
     __HAL_LINKDMA(&uart4_handle, hdmarx, uart4_dmarx_handle);
 
@@ -1085,16 +1101,14 @@ void uart4_init(uint32_t baud_rate) {
 
 #if UART4_TX_DMA
     uart4_tx_buf.send_buf = CSP_MALLOC(uart4_tx_buf.buf_size);
-
-#ifdef DEBUG
-    assert(uart4_tx_buf.send_buf != NULL);
-#endif /* DEBUG */
+    if (uart4_tx_buf.send_buf == NULL) {
+        return UART_INIT_MEM_FAIL;
+    }
 
     CSP_DMA_CLK_ENABLE(UART4_TX_DMA_NUMBER);
-    res = HAL_DMA_Init(&uart4_dmatx_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
+    if (HAL_DMA_Init(&uart4_dmatx_handle) != HAL_OK) {
+        return UART_INIT_DMA_FAIL;
+    }
 
     __HAL_LINKDMA(&uart4_handle, hdmatx, uart4_dmatx_handle);
 
@@ -1104,6 +1118,12 @@ void uart4_init(uint32_t baud_rate) {
     HAL_NVIC_EnableIRQ(
         CSP_DMA_STREAM_IRQn(UART4_TX_DMA_NUMBER, UART4_TX_DMA_STREAM));
 #endif /* UART4_TX_DMA */
+
+    if (HAL_UART_Init(&uart4_handle) != HAL_OK) {
+        return UART_INIT_FAIL;
+    }
+
+    return UART_INIT_OK;
 }
 
 /**
@@ -1146,10 +1166,14 @@ void UART4_TX_DMA_IRQHandler(void) {
 /**
  * @brief UART4 deinitialization.
  *
- */
-void uart4_deinit(void) {
+ * @return UART deinit status.
+ * @retval 0-`UART_DEINIT_OK`:       Success.
+ * @retval 1-`UART_DEINIT_FAIL`:     UART deinit failed.
+ * @retval 2-`UART_DEINIT_DMA_FAIL`: UART DMA deinit failed.
+ * @retval 3-`UART_NO_INIT`:         UART is not init.
+uint8_t uart4_deinit(void) {
     if (__HAL_RCC_UART4_IS_CLK_DISABLED()) {
-        return;
+        return UART_NO_INIT;
     }
 
     HAL_StatusTypeDef res = HAL_OK;
@@ -1161,53 +1185,50 @@ void uart4_deinit(void) {
 #endif /* UART4_TX */
 
 #if UART4_RX
-    HAL_GPIO_DeInit(CSP_GPIO_PORT(UART4_RX_PORT), UART4_RX_PIN);
+HAL_GPIO_DeInit(CSP_GPIO_PORT(UART4_RX_PORT), UART4_RX_PIN);
 #endif /* UART4_RX */
-
-    res = HAL_UART_DeInit(&uart4_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
-
-    HAL_NVIC_DisableIRQ(UART4_IRQn);
 
 #if UART4_RX_DMA
 
-    HAL_DMA_Abort(&uart4_dmarx_handle);
-    CSP_FREE(uart4_rx_fifo.recv_buf);
-    CSP_FREE(uart4_rx_fifo.rx_fifo_buf);
-    ring_fifo_destroy(uart4_rx_fifo.rx_fifo);
+HAL_DMA_Abort(&uart4_dmarx_handle);
+CSP_FREE(uart4_rx_fifo.recv_buf);
+CSP_FREE(uart4_rx_fifo.rx_fifo_buf);
+ring_fifo_destroy(uart4_rx_fifo.rx_fifo);
 
-    res = HAL_DMA_DeInit(&uart4_dmarx_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
+if (HAL_DMA_DeInit(&uart4_dmarx_handle) != HAL_OK) {
+    return UART_DEINIT_DMA_FAIL;
+}
 
-    HAL_NVIC_DisableIRQ(
-        CSP_DMA_STREAM_IRQn(UART4_RX_DMA_NUMBER, UART4_RX_DMA_STREAM));
+HAL_NVIC_DisableIRQ(CSP_DMA_STREAM_IRQn(UART4_RX_DMA_NUMBER,
+                                        UART4_RX_DMA_STREAM));
 
 #if USE_HAL_UART_REGISTER_CALLBACKS
-    HAL_UART_UnRegisterCallback(&uart4_handle, HAL_UART_RX_HALFCOMPLETE_CB_ID);
-    HAL_UART_UnRegisterCallback(&uart4_handle, HAL_UART_RX_COMPLETE_CB_ID);
+HAL_UART_UnRegisterCallback(&uart4_handle, HAL_UART_RX_HALFCOMPLETE_CB_ID);
+HAL_UART_UnRegisterCallback(&uart4_handle, HAL_UART_RX_COMPLETE_CB_ID);
 #endif /* USE_HAL_UART_REGISTER_CALLBACKS */
-    uart4_handle.hdmarx = NULL;
+uart4_handle.hdmarx = NULL;
 
 #endif /* UART4_RX_DMA */
 
 #if UART4_TX_DMA
-    HAL_DMA_Abort(&uart4_dmatx_handle);
-    CSP_FREE(uart4_tx_buf.send_buf);
+HAL_DMA_Abort(&uart4_dmatx_handle);
+CSP_FREE(uart4_tx_buf.send_buf);
 
-    res = HAL_DMA_DeInit(&uart4_dmatx_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
+if (HAL_DMA_DeInit(&uart4_dmatx_handle) != HAL_OK) {
+    return UART_DEINIT_DMA_FAIL;
+}
 
-    HAL_NVIC_DisableIRQ(
-        CSP_DMA_STREAM_IRQn(UART4_TX_DMA_NUMBER, UART4_TX_DMA_STREAM));
+HAL_NVIC_DisableIRQ(CSP_DMA_STREAM_IRQn(UART4_TX_DMA_NUMBER,
+                                        UART4_TX_DMA_STREAM));
 
-    uart4_handle.hdmatx = NULL;
+uart4_handle.hdmatx = NULL;
 #endif /* UART4_TX_DMA */
+
+if (HAL_UART_DeInit(&uart4_handle) != HAL_OK) {
+    return UART_DEINIT_FAIL;
+}
+
+return UART_DEINIT_OK;
 }
 
 #endif /* UART4_ENABLE */
@@ -1267,24 +1288,29 @@ static uart_tx_buf_t uart5_tx_buf = {.buf_size = UART5_TX_DMA_BUF_SIZE};
  * @brief UART5 initialization
  *
  * @param baud_rate Baud rate.
+ * @return UART5 init status.
+ * @retval 0-`UART_INIT_OK`:       Success.
+ * @retval 1-`UART_INIT_FAIL`:     UART init failed.
+ * @retval 2-`UART_INIT_DMA_FAIL`: UART DMA init failed.
+ * @retval 3-`UART_INIT_MEM_FAIL`: UART buffer memory init failed (It will
+ *                                 dynamic allocate memroy when using DMA).
+ * @retval 4-`UART_INITED`:        This uart is inited.
  */
-void uart5_init(uint32_t baud_rate) {
+uint8_t uart5_init(uint32_t baud_rate) {
     if (__HAL_RCC_UART5_IS_CLK_ENABLED()) {
-        return;
+        return UART_INITED;
     }
 
     GPIO_InitTypeDef gpio_init_struct = {.Pull = GPIO_PULLUP,
                                          .Speed = GPIO_SPEED_FREQ_HIGH,
-                                         .Alternate = GPIO_AF8_UART5,
                                          .Mode = GPIO_MODE_AF_PP};
-    HAL_StatusTypeDef res = HAL_OK;
-
     uart5_handle.Init.BaudRate = baud_rate;
 #if UART5_TX
     uart5_handle.Init.Mode |= UART_MODE_TX;
 
     CSP_GPIO_CLK_ENABLE(UART5_TX_PORT);
     gpio_init_struct.Pin = UART5_TX_PIN;
+    gpio_init_struct.Alternate = UART5_TX_GPIO_AF,
     HAL_GPIO_Init(CSP_GPIO_PORT(UART5_TX_PORT), &gpio_init_struct);
 #endif /* UART5_TX */
 
@@ -1293,16 +1319,11 @@ void uart5_init(uint32_t baud_rate) {
 
     CSP_GPIO_CLK_ENABLE(UART5_RX_PORT);
     gpio_init_struct.Pin = UART5_RX_PIN;
+    gpio_init_struct.Alternate = UART5_RX_GPIO_AF,
     HAL_GPIO_Init(CSP_GPIO_PORT(UART5_RX_PORT), &gpio_init_struct);
 #endif /* UART5_RX */
 
     __HAL_RCC_UART5_CLK_ENABLE();
-
-    res = HAL_UART_Init(&uart5_handle);
-
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
 
     HAL_NVIC_EnableIRQ(UART5_IRQn);
     HAL_NVIC_SetPriority(UART5_IRQn, UART5_IT_PRIORITY, UART5_IT_SUB);
@@ -1311,26 +1332,25 @@ void uart5_init(uint32_t baud_rate) {
     uart5_rx_fifo.head_ptr = 0;
 
     uart5_rx_fifo.recv_buf = CSP_MALLOC(uart5_rx_fifo.buf_size);
-#ifdef DEBUG
-    assert(uart5_rx_fifo.recv_buf != NULL);
-#endif /* DEBUG */
+    if (uart5_rx_fifo.recv_buf == NULL) {
+        return UART_INIT_MEM_FAIL;
+    }
 
     uart5_rx_fifo.rx_fifo_buf = CSP_MALLOC(uart5_rx_fifo.fifo_size);
-#ifdef DEBUG
-    assert(uart5_rx_fifo.rx_fifo_buf != NULL);
-#endif /* DEBUG */
+    if (uart5_rx_fifo.rx_fifo_buf == NULL) {
+        return UART_INIT_MEM_FAIL;
+    }
 
     uart5_rx_fifo.rx_fifo = ring_fifo_init(
         uart5_rx_fifo.rx_fifo_buf, uart5_rx_fifo.fifo_size, RF_TYPE_STREAM);
-#ifdef DEBUG
-    assert(uart5_rx_fifo.rx_fifo != NULL);
-#endif /* DEBUG */
+    if (uart5_rx_fifo.rx_fifo == NULL) {
+        return UART_INIT_MEM_FAIL;
+    }
 
     CSP_DMA_CLK_ENABLE(UART5_RX_DMA_NUMBER);
-    res = HAL_DMA_Init(&uart5_dmarx_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
+    if (HAL_DMA_Init(&uart5_dmarx_handle) != HAL_OK) {
+        return UART_INIT_DMA_FAIL;
+    }
 
     __HAL_LINKDMA(&uart5_handle, hdmarx, uart5_dmarx_handle);
 
@@ -1356,16 +1376,14 @@ void uart5_init(uint32_t baud_rate) {
 
 #if UART5_TX_DMA
     uart5_tx_buf.send_buf = CSP_MALLOC(uart5_tx_buf.buf_size);
-
-#ifdef DEBUG
-    assert(uart5_tx_buf.send_buf != NULL);
-#endif /* DEBUG */
+    if (uart5_tx_buf.send_buf == NULL) {
+        return UART_INIT_MEM_FAIL;
+    }
 
     CSP_DMA_CLK_ENABLE(UART5_TX_DMA_NUMBER);
-    res = HAL_DMA_Init(&uart5_dmatx_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
+    if (HAL_DMA_Init(&uart5_dmatx_handle) != HAL_OK) {
+        return UART_INIT_DMA_FAIL;
+    }
 
     __HAL_LINKDMA(&uart5_handle, hdmatx, uart5_dmatx_handle);
 
@@ -1375,6 +1393,12 @@ void uart5_init(uint32_t baud_rate) {
     HAL_NVIC_EnableIRQ(
         CSP_DMA_STREAM_IRQn(UART5_TX_DMA_NUMBER, UART5_TX_DMA_STREAM));
 #endif /* UART5_TX_DMA */
+
+    if (HAL_UART_Init(&uart5_handle) != HAL_OK) {
+        return UART_INIT_FAIL;
+    }
+
+    return UART_INIT_OK;
 }
 
 /**
@@ -1417,10 +1441,14 @@ void UART5_TX_DMA_IRQHandler(void) {
 /**
  * @brief UART5 deinitialization.
  *
- */
-void uart5_deinit(void) {
+ * @return UART deinit status.
+ * @retval 0-`UART_DEINIT_OK`:       Success.
+ * @retval 1-`UART_DEINIT_FAIL`:     UART deinit failed.
+ * @retval 2-`UART_DEINIT_DMA_FAIL`: UART DMA deinit failed.
+ * @retval 3-`UART_NO_INIT`:         UART is not init.
+uint8_t uart5_deinit(void) {
     if (__HAL_RCC_UART5_IS_CLK_DISABLED()) {
-        return;
+        return UART_NO_INIT;
     }
 
     HAL_StatusTypeDef res = HAL_OK;
@@ -1432,53 +1460,50 @@ void uart5_deinit(void) {
 #endif /* UART5_TX */
 
 #if UART5_RX
-    HAL_GPIO_DeInit(CSP_GPIO_PORT(UART5_RX_PORT), UART5_RX_PIN);
+HAL_GPIO_DeInit(CSP_GPIO_PORT(UART5_RX_PORT), UART5_RX_PIN);
 #endif /* UART5_RX */
-
-    res = HAL_UART_DeInit(&uart5_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
-
-    HAL_NVIC_DisableIRQ(UART5_IRQn);
 
 #if UART5_RX_DMA
 
-    HAL_DMA_Abort(&uart5_dmarx_handle);
-    CSP_FREE(uart5_rx_fifo.recv_buf);
-    CSP_FREE(uart5_rx_fifo.rx_fifo_buf);
-    ring_fifo_destroy(uart5_rx_fifo.rx_fifo);
+HAL_DMA_Abort(&uart5_dmarx_handle);
+CSP_FREE(uart5_rx_fifo.recv_buf);
+CSP_FREE(uart5_rx_fifo.rx_fifo_buf);
+ring_fifo_destroy(uart5_rx_fifo.rx_fifo);
 
-    res = HAL_DMA_DeInit(&uart5_dmarx_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
+if (HAL_DMA_DeInit(&uart5_dmarx_handle) != HAL_OK) {
+    return UART_DEINIT_DMA_FAIL;
+}
 
-    HAL_NVIC_DisableIRQ(
-        CSP_DMA_STREAM_IRQn(UART5_RX_DMA_NUMBER, UART5_RX_DMA_STREAM));
+HAL_NVIC_DisableIRQ(CSP_DMA_STREAM_IRQn(UART5_RX_DMA_NUMBER,
+                                        UART5_RX_DMA_STREAM));
 
 #if USE_HAL_UART_REGISTER_CALLBACKS
-    HAL_UART_UnRegisterCallback(&uart5_handle, HAL_UART_RX_HALFCOMPLETE_CB_ID);
-    HAL_UART_UnRegisterCallback(&uart5_handle, HAL_UART_RX_COMPLETE_CB_ID);
+HAL_UART_UnRegisterCallback(&uart5_handle, HAL_UART_RX_HALFCOMPLETE_CB_ID);
+HAL_UART_UnRegisterCallback(&uart5_handle, HAL_UART_RX_COMPLETE_CB_ID);
 #endif /* USE_HAL_UART_REGISTER_CALLBACKS */
-    uart5_handle.hdmarx = NULL;
+uart5_handle.hdmarx = NULL;
 
 #endif /* UART5_RX_DMA */
 
 #if UART5_TX_DMA
-    HAL_DMA_Abort(&uart5_dmatx_handle);
-    CSP_FREE(uart5_tx_buf.send_buf);
+HAL_DMA_Abort(&uart5_dmatx_handle);
+CSP_FREE(uart5_tx_buf.send_buf);
 
-    res = HAL_DMA_DeInit(&uart5_dmatx_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
+if (HAL_DMA_DeInit(&uart5_dmatx_handle) != HAL_OK) {
+    return UART_DEINIT_DMA_FAIL;
+}
 
-    HAL_NVIC_DisableIRQ(
-        CSP_DMA_STREAM_IRQn(UART5_TX_DMA_NUMBER, UART5_TX_DMA_STREAM));
+HAL_NVIC_DisableIRQ(CSP_DMA_STREAM_IRQn(UART5_TX_DMA_NUMBER,
+                                        UART5_TX_DMA_STREAM));
 
-    uart5_handle.hdmatx = NULL;
+uart5_handle.hdmatx = NULL;
 #endif /* UART5_TX_DMA */
+
+if (HAL_UART_DeInit(&uart5_handle) != HAL_OK) {
+    return UART_DEINIT_FAIL;
+}
+
+return UART_DEINIT_OK;
 }
 
 #endif /* UART5_ENABLE */
@@ -1538,18 +1563,23 @@ static uart_tx_buf_t usart6_tx_buf = {.buf_size = USART6_TX_DMA_BUF_SIZE};
  * @brief USART6 initialization
  *
  * @param baud_rate Baud rate.
+ * @return USART6 init status.
+ * @retval 0-`UART_INIT_OK`:       Success.
+ * @retval 1-`UART_INIT_FAIL`:     UART init failed.
+ * @retval 2-`UART_INIT_DMA_FAIL`: UART DMA init failed.
+ * @retval 3-`UART_INIT_MEM_FAIL`: UART buffer memory init failed (It will
+ *                                 dynamic allocate memroy when using DMA).
+ * @retval 4-`UART_INITED`:        This uart is inited.
  */
-void usart6_init(uint32_t baud_rate) {
+uint8_t usart6_init(uint32_t baud_rate) {
     if (__HAL_RCC_USART6_IS_CLK_ENABLED()) {
-        return;
+        return UART_INITED;
     }
 
     GPIO_InitTypeDef gpio_init_struct = {.Pull = GPIO_PULLUP,
                                          .Speed = GPIO_SPEED_FREQ_HIGH,
-                                         .Alternate = GPIO_AF8_USART6,
+                                         .Alternate = GPIO_AF7_USART6,
                                          .Mode = GPIO_MODE_AF_PP};
-    HAL_StatusTypeDef res = HAL_OK;
-
     usart6_handle.Init.BaudRate = baud_rate;
 #if USART6_TX
     usart6_handle.Init.Mode |= UART_MODE_TX;
@@ -1585,12 +1615,6 @@ void usart6_init(uint32_t baud_rate) {
 
     __HAL_RCC_USART6_CLK_ENABLE();
 
-    res = HAL_UART_Init(&usart6_handle);
-
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
-
     HAL_NVIC_EnableIRQ(USART6_IRQn);
     HAL_NVIC_SetPriority(USART6_IRQn, USART6_IT_PRIORITY, USART6_IT_SUB);
 
@@ -1598,26 +1622,25 @@ void usart6_init(uint32_t baud_rate) {
     usart6_rx_fifo.head_ptr = 0;
 
     usart6_rx_fifo.recv_buf = CSP_MALLOC(usart6_rx_fifo.buf_size);
-#ifdef DEBUG
-    assert(usart6_rx_fifo.recv_buf != NULL);
-#endif /* DEBUG */
+    if (usart6_rx_fifo.recv_buf == NULL) {
+        return UART_INIT_MEM_FAIL;
+    }
 
     usart6_rx_fifo.rx_fifo_buf = CSP_MALLOC(usart6_rx_fifo.fifo_size);
-#ifdef DEBUG
-    assert(usart6_rx_fifo.rx_fifo_buf != NULL);
-#endif /* DEBUG */
+    if (usart6_rx_fifo.rx_fifo_buf == NULL) {
+        return UART_INIT_MEM_FAIL;
+    }
 
     usart6_rx_fifo.rx_fifo = ring_fifo_init(
         usart6_rx_fifo.rx_fifo_buf, usart6_rx_fifo.fifo_size, RF_TYPE_STREAM);
-#ifdef DEBUG
-    assert(usart6_rx_fifo.rx_fifo != NULL);
-#endif /* DEBUG */
+    if (usart6_rx_fifo.rx_fifo == NULL) {
+        return UART_INIT_MEM_FAIL;
+    }
 
     CSP_DMA_CLK_ENABLE(USART6_RX_DMA_NUMBER);
-    res = HAL_DMA_Init(&usart6_dmarx_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
+    if (HAL_DMA_Init(&usart6_dmarx_handle) != HAL_OK) {
+        return UART_INIT_DMA_FAIL;
+    }
 
     __HAL_LINKDMA(&usart6_handle, hdmarx, usart6_dmarx_handle);
 
@@ -1643,16 +1666,14 @@ void usart6_init(uint32_t baud_rate) {
 
 #if USART6_TX_DMA
     usart6_tx_buf.send_buf = CSP_MALLOC(usart6_tx_buf.buf_size);
-
-#ifdef DEBUG
-    assert(usart6_tx_buf.send_buf != NULL);
-#endif /* DEBUG */
+    if (usart6_tx_buf.send_buf == NULL) {
+        return UART_INIT_MEM_FAIL;
+    }
 
     CSP_DMA_CLK_ENABLE(USART6_TX_DMA_NUMBER);
-    res = HAL_DMA_Init(&usart6_dmatx_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
+    if (HAL_DMA_Init(&usart6_dmatx_handle) != HAL_OK) {
+        return UART_INIT_DMA_FAIL;
+    }
 
     __HAL_LINKDMA(&usart6_handle, hdmatx, usart6_dmatx_handle);
 
@@ -1662,6 +1683,12 @@ void usart6_init(uint32_t baud_rate) {
     HAL_NVIC_EnableIRQ(
         CSP_DMA_STREAM_IRQn(USART6_TX_DMA_NUMBER, USART6_TX_DMA_STREAM));
 #endif /* USART6_TX_DMA */
+
+    if (HAL_UART_Init(&usart6_handle) != HAL_OK) {
+        return UART_INIT_FAIL;
+    }
+
+    return UART_INIT_OK;
 }
 
 /**
@@ -1704,10 +1731,14 @@ void USART6_TX_DMA_IRQHandler(void) {
 /**
  * @brief USART6 deinitialization.
  *
- */
-void usart6_deinit(void) {
+ * @return UART deinit status.
+ * @retval 0-`UART_DEINIT_OK`:       Success.
+ * @retval 1-`UART_DEINIT_FAIL`:     UART deinit failed.
+ * @retval 2-`UART_DEINIT_DMA_FAIL`: UART DMA deinit failed.
+ * @retval 3-`UART_NO_INIT`:         UART is not init.
+uint8_t usart6_deinit(void) {
     if (__HAL_RCC_USART6_IS_CLK_DISABLED()) {
-        return;
+        return UART_NO_INIT;
     }
 
     HAL_StatusTypeDef res = HAL_OK;
@@ -1719,67 +1750,70 @@ void usart6_deinit(void) {
 #endif /* USART6_TX */
 
 #if USART6_RX
-    HAL_GPIO_DeInit(CSP_GPIO_PORT(USART6_RX_PORT), USART6_RX_PIN);
+HAL_GPIO_DeInit(CSP_GPIO_PORT(USART6_RX_PORT), USART6_RX_PIN);
 #endif /* USART6_RX */
 
 #if USART6_CTS
-    HAL_GPIO_DeInit(CSP_GPIO_PORT(USART6_CTS_PORT), USART6_CTS_PIN);
+HAL_GPIO_DeInit(CSP_GPIO_PORT(USART6_CTS_PORT), USART6_CTS_PIN);
 #endif /* USART6_USART6_CTS */
 
 #if USART6_RTS
-    HAL_GPIO_DeInit(CSP_GPIO_PORT(USART6_RTS_PORT), USART6_RTS_PIN);
+HAL_GPIO_DeInit(CSP_GPIO_PORT(USART6_RTS_PORT), USART6_RTS_PIN);
 #endif /* USART6_RTS */
-
-    res = HAL_UART_DeInit(&usart6_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
-
-    HAL_NVIC_DisableIRQ(USART6_IRQn);
+HAL_NVIC_DisableIRQ(USART6_IRQn);
 
 #if USART6_RX_DMA
 
-    HAL_DMA_Abort(&usart6_dmarx_handle);
-    CSP_FREE(usart6_rx_fifo.recv_buf);
-    CSP_FREE(usart6_rx_fifo.rx_fifo_buf);
-    ring_fifo_destroy(usart6_rx_fifo.rx_fifo);
+HAL_DMA_Abort(&usart6_dmarx_handle);
+CSP_FREE(usart6_rx_fifo.recv_buf);
+CSP_FREE(usart6_rx_fifo.rx_fifo_buf);
+ring_fifo_destroy(usart6_rx_fifo.rx_fifo);
 
-    res = HAL_DMA_DeInit(&usart6_dmarx_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
+if (HAL_DMA_DeInit(&usart6_dmarx_handle) != HAL_OK) {
+    return UART_DEINIT_DMA_FAIL;
+}
 
-    HAL_NVIC_DisableIRQ(
-        CSP_DMA_STREAM_IRQn(USART6_RX_DMA_NUMBER, USART6_RX_DMA_STREAM));
+HAL_NVIC_DisableIRQ(CSP_DMA_STREAM_IRQn(USART6_RX_DMA_NUMBER,
+                                        USART6_RX_DMA_STREAM));
 
 #if USE_HAL_UART_REGISTER_CALLBACKS
-    HAL_UART_UnRegisterCallback(&usart6_handle, HAL_UART_RX_HALFCOMPLETE_CB_ID);
-    HAL_UART_UnRegisterCallback(&usart6_handle, HAL_UART_RX_COMPLETE_CB_ID);
+HAL_UART_UnRegisterCallback(&usart6_handle, HAL_UART_RX_HALFCOMPLETE_CB_ID);
+HAL_UART_UnRegisterCallback(&usart6_handle, HAL_UART_RX_COMPLETE_CB_ID);
 #endif /* USE_HAL_UART_REGISTER_CALLBACKS */
-    usart6_handle.hdmarx = NULL;
+usart6_handle.hdmarx = NULL;
 
 #endif /* USART6_RX_DMA */
 
 #if USART6_TX_DMA
-    HAL_DMA_Abort(&usart6_dmatx_handle);
-    CSP_FREE(usart6_tx_buf.send_buf);
+HAL_DMA_Abort(&usart6_dmatx_handle);
+CSP_FREE(usart6_tx_buf.send_buf);
 
-    res = HAL_DMA_DeInit(&usart6_dmatx_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
+if (HAL_DMA_DeInit(&usart6_dmatx_handle) != HAL_OK) {
+    return UART_DEINIT_DMA_FAIL;
+}
 
-    HAL_NVIC_DisableIRQ(
-        CSP_DMA_STREAM_IRQn(USART6_TX_DMA_NUMBER, USART6_TX_DMA_STREAM));
+HAL_NVIC_DisableIRQ(CSP_DMA_STREAM_IRQn(USART6_TX_DMA_NUMBER,
+                                        USART6_TX_DMA_STREAM));
 
-    usart6_handle.hdmatx = NULL;
+usart6_handle.hdmatx = NULL;
 #endif /* USART6_TX_DMA */
+
+if (HAL_UART_DeInit(&usart6_handle) != HAL_OK) {
+    return UART_DEINIT_FAIL;
+}
+
+return UART_DEINIT_OK;
 }
 
 #endif /* USART6_ENABLE */
 
 /**
  * @}
+ */
+
+/*****************************************************************************
+ * @defgroup UART7 Functions
+ * @{
  */
 
 /*****************************************************************************
@@ -1833,18 +1867,23 @@ static uart_tx_buf_t uart7_tx_buf = {.buf_size = UART7_TX_DMA_BUF_SIZE};
  * @brief UART7 initialization
  *
  * @param baud_rate Baud rate.
+ * @return UART7 init status.
+ * @retval 0-`UART_INIT_OK`:       Success.
+ * @retval 1-`UART_INIT_FAIL`:     UART init failed.
+ * @retval 2-`UART_INIT_DMA_FAIL`: UART DMA init failed.
+ * @retval 3-`UART_INIT_MEM_FAIL`: UART buffer memory init failed (It will
+ *                                 dynamic allocate memroy when using DMA).
+ * @retval 4-`UART_INITED`:        This uart is inited.
  */
-void uart7_init(uint32_t baud_rate) {
+uint8_t uart7_init(uint32_t baud_rate) {
     if (__HAL_RCC_UART7_IS_CLK_ENABLED()) {
-        return;
+        return UART_INITED;
     }
 
     GPIO_InitTypeDef gpio_init_struct = {.Pull = GPIO_PULLUP,
                                          .Speed = GPIO_SPEED_FREQ_HIGH,
-                                         .Alternate = GPIO_AF8_UART7,
+                                         .Alternate = GPIO_AF7_UART7,
                                          .Mode = GPIO_MODE_AF_PP};
-    HAL_StatusTypeDef res = HAL_OK;
-
     uart7_handle.Init.BaudRate = baud_rate;
 #if UART7_TX
     uart7_handle.Init.Mode |= UART_MODE_TX;
@@ -1864,12 +1903,6 @@ void uart7_init(uint32_t baud_rate) {
 
     __HAL_RCC_UART7_CLK_ENABLE();
 
-    res = HAL_UART_Init(&uart7_handle);
-
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
-
     HAL_NVIC_EnableIRQ(UART7_IRQn);
     HAL_NVIC_SetPriority(UART7_IRQn, UART7_IT_PRIORITY, UART7_IT_SUB);
 
@@ -1877,26 +1910,25 @@ void uart7_init(uint32_t baud_rate) {
     uart7_rx_fifo.head_ptr = 0;
 
     uart7_rx_fifo.recv_buf = CSP_MALLOC(uart7_rx_fifo.buf_size);
-#ifdef DEBUG
-    assert(uart7_rx_fifo.recv_buf != NULL);
-#endif /* DEBUG */
+    if (uart7_rx_fifo.recv_buf == NULL) {
+        return UART_INIT_MEM_FAIL;
+    }
 
     uart7_rx_fifo.rx_fifo_buf = CSP_MALLOC(uart7_rx_fifo.fifo_size);
-#ifdef DEBUG
-    assert(uart7_rx_fifo.rx_fifo_buf != NULL);
-#endif /* DEBUG */
+    if (uart7_rx_fifo.rx_fifo_buf == NULL) {
+        return UART_INIT_MEM_FAIL;
+    }
 
     uart7_rx_fifo.rx_fifo = ring_fifo_init(
         uart7_rx_fifo.rx_fifo_buf, uart7_rx_fifo.fifo_size, RF_TYPE_STREAM);
-#ifdef DEBUG
-    assert(uart7_rx_fifo.rx_fifo != NULL);
-#endif /* DEBUG */
+    if (uart7_rx_fifo.rx_fifo == NULL) {
+        return UART_INIT_MEM_FAIL;
+    }
 
     CSP_DMA_CLK_ENABLE(UART7_RX_DMA_NUMBER);
-    res = HAL_DMA_Init(&uart7_dmarx_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
+    if (HAL_DMA_Init(&uart7_dmarx_handle) != HAL_OK) {
+        return UART_INIT_DMA_FAIL;
+    }
 
     __HAL_LINKDMA(&uart7_handle, hdmarx, uart7_dmarx_handle);
 
@@ -1922,16 +1954,14 @@ void uart7_init(uint32_t baud_rate) {
 
 #if UART7_TX_DMA
     uart7_tx_buf.send_buf = CSP_MALLOC(uart7_tx_buf.buf_size);
-
-#ifdef DEBUG
-    assert(uart7_tx_buf.send_buf != NULL);
-#endif /* DEBUG */
+    if (uart7_tx_buf.send_buf == NULL) {
+        return UART_INIT_MEM_FAIL;
+    }
 
     CSP_DMA_CLK_ENABLE(UART7_TX_DMA_NUMBER);
-    res = HAL_DMA_Init(&uart7_dmatx_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
+    if (HAL_DMA_Init(&uart7_dmatx_handle) != HAL_OK) {
+        return UART_INIT_DMA_FAIL;
+    }
 
     __HAL_LINKDMA(&uart7_handle, hdmatx, uart7_dmatx_handle);
 
@@ -1941,6 +1971,12 @@ void uart7_init(uint32_t baud_rate) {
     HAL_NVIC_EnableIRQ(
         CSP_DMA_STREAM_IRQn(UART7_TX_DMA_NUMBER, UART7_TX_DMA_STREAM));
 #endif /* UART7_TX_DMA */
+
+    if (HAL_UART_Init(&uart7_handle) != HAL_OK) {
+        return UART_INIT_FAIL;
+    }
+
+    return UART_INIT_OK;
 }
 
 /**
@@ -1983,10 +2019,14 @@ void UART7_TX_DMA_IRQHandler(void) {
 /**
  * @brief UART7 deinitialization.
  *
- */
-void uart7_deinit(void) {
+ * @return UART deinit status.
+ * @retval 0-`UART_DEINIT_OK`:       Success.
+ * @retval 1-`UART_DEINIT_FAIL`:     UART deinit failed.
+ * @retval 2-`UART_DEINIT_DMA_FAIL`: UART DMA deinit failed.
+ * @retval 3-`UART_NO_INIT`:         UART is not init.
+uint8_t uart7_deinit(void) {
     if (__HAL_RCC_UART7_IS_CLK_DISABLED()) {
-        return;
+        return UART_NO_INIT;
     }
 
     HAL_StatusTypeDef res = HAL_OK;
@@ -1998,53 +2038,50 @@ void uart7_deinit(void) {
 #endif /* UART7_TX */
 
 #if UART7_RX
-    HAL_GPIO_DeInit(CSP_GPIO_PORT(UART7_RX_PORT), UART7_RX_PIN);
+HAL_GPIO_DeInit(CSP_GPIO_PORT(UART7_RX_PORT), UART7_RX_PIN);
 #endif /* UART7_RX */
-
-    res = HAL_UART_DeInit(&uart7_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
-
-    HAL_NVIC_DisableIRQ(UART7_IRQn);
 
 #if UART7_RX_DMA
 
-    HAL_DMA_Abort(&uart7_dmarx_handle);
-    CSP_FREE(uart7_rx_fifo.recv_buf);
-    CSP_FREE(uart7_rx_fifo.rx_fifo_buf);
-    ring_fifo_destroy(uart7_rx_fifo.rx_fifo);
+HAL_DMA_Abort(&uart7_dmarx_handle);
+CSP_FREE(uart7_rx_fifo.recv_buf);
+CSP_FREE(uart7_rx_fifo.rx_fifo_buf);
+ring_fifo_destroy(uart7_rx_fifo.rx_fifo);
 
-    res = HAL_DMA_DeInit(&uart7_dmarx_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
+if (HAL_DMA_DeInit(&uart7_dmarx_handle) != HAL_OK) {
+    return UART_DEINIT_DMA_FAIL;
+}
 
-    HAL_NVIC_DisableIRQ(
-        CSP_DMA_STREAM_IRQn(UART7_RX_DMA_NUMBER, UART7_RX_DMA_STREAM));
+HAL_NVIC_DisableIRQ(CSP_DMA_STREAM_IRQn(UART7_RX_DMA_NUMBER,
+                                        UART7_RX_DMA_STREAM));
 
 #if USE_HAL_UART_REGISTER_CALLBACKS
-    HAL_UART_UnRegisterCallback(&uart7_handle, HAL_UART_RX_HALFCOMPLETE_CB_ID);
-    HAL_UART_UnRegisterCallback(&uart7_handle, HAL_UART_RX_COMPLETE_CB_ID);
+HAL_UART_UnRegisterCallback(&uart7_handle, HAL_UART_RX_HALFCOMPLETE_CB_ID);
+HAL_UART_UnRegisterCallback(&uart7_handle, HAL_UART_RX_COMPLETE_CB_ID);
 #endif /* USE_HAL_UART_REGISTER_CALLBACKS */
-    uart7_handle.hdmarx = NULL;
+uart7_handle.hdmarx = NULL;
 
 #endif /* UART7_RX_DMA */
 
 #if UART7_TX_DMA
-    HAL_DMA_Abort(&uart7_dmatx_handle);
-    CSP_FREE(uart7_tx_buf.send_buf);
+HAL_DMA_Abort(&uart7_dmatx_handle);
+CSP_FREE(uart7_tx_buf.send_buf);
 
-    res = HAL_DMA_DeInit(&uart7_dmatx_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
+if (HAL_DMA_DeInit(&uart7_dmatx_handle) != HAL_OK) {
+    return UART_DEINIT_DMA_FAIL;
+}
 
-    HAL_NVIC_DisableIRQ(
-        CSP_DMA_STREAM_IRQn(UART7_TX_DMA_NUMBER, UART7_TX_DMA_STREAM));
+HAL_NVIC_DisableIRQ(CSP_DMA_STREAM_IRQn(UART7_TX_DMA_NUMBER,
+                                        UART7_TX_DMA_STREAM));
 
-    uart7_handle.hdmatx = NULL;
+uart7_handle.hdmatx = NULL;
 #endif /* UART7_TX_DMA */
+
+if (HAL_UART_DeInit(&uart7_handle) != HAL_OK) {
+    return UART_DEINIT_FAIL;
+}
+
+return UART_DEINIT_OK;
 }
 
 #endif /* UART7_ENABLE */
@@ -2104,18 +2141,23 @@ static uart_tx_buf_t uart8_tx_buf = {.buf_size = UART8_TX_DMA_BUF_SIZE};
  * @brief UART8 initialization
  *
  * @param baud_rate Baud rate.
+ * @return UART8 init status.
+ * @retval 0-`UART_INIT_OK`:       Success.
+ * @retval 1-`UART_INIT_FAIL`:     UART init failed.
+ * @retval 2-`UART_INIT_DMA_FAIL`: UART DMA init failed.
+ * @retval 3-`UART_INIT_MEM_FAIL`: UART buffer memory init failed (It will
+ *                                 dynamic allocate memroy when using DMA).
+ * @retval 4-`UART_INITED`:        This uart is inited.
  */
-void uart8_init(uint32_t baud_rate) {
+uint8_t uart8_init(uint32_t baud_rate) {
     if (__HAL_RCC_UART8_IS_CLK_ENABLED()) {
-        return;
+        return UART_INITED;
     }
 
     GPIO_InitTypeDef gpio_init_struct = {.Pull = GPIO_PULLUP,
                                          .Speed = GPIO_SPEED_FREQ_HIGH,
-                                         .Alternate = GPIO_AF8_UART8,
+                                         .Alternate = GPIO_AF7_UART8,
                                          .Mode = GPIO_MODE_AF_PP};
-    HAL_StatusTypeDef res = HAL_OK;
-
     uart8_handle.Init.BaudRate = baud_rate;
 #if UART8_TX
     uart8_handle.Init.Mode |= UART_MODE_TX;
@@ -2135,12 +2177,6 @@ void uart8_init(uint32_t baud_rate) {
 
     __HAL_RCC_UART8_CLK_ENABLE();
 
-    res = HAL_UART_Init(&uart8_handle);
-
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
-
     HAL_NVIC_EnableIRQ(UART8_IRQn);
     HAL_NVIC_SetPriority(UART8_IRQn, UART8_IT_PRIORITY, UART8_IT_SUB);
 
@@ -2148,26 +2184,25 @@ void uart8_init(uint32_t baud_rate) {
     uart8_rx_fifo.head_ptr = 0;
 
     uart8_rx_fifo.recv_buf = CSP_MALLOC(uart8_rx_fifo.buf_size);
-#ifdef DEBUG
-    assert(uart8_rx_fifo.recv_buf != NULL);
-#endif /* DEBUG */
+    if (uart8_rx_fifo.recv_buf == NULL) {
+        return UART_INIT_MEM_FAIL;
+    }
 
     uart8_rx_fifo.rx_fifo_buf = CSP_MALLOC(uart8_rx_fifo.fifo_size);
-#ifdef DEBUG
-    assert(uart8_rx_fifo.rx_fifo_buf != NULL);
-#endif /* DEBUG */
+    if (uart8_rx_fifo.rx_fifo_buf == NULL) {
+        return UART_INIT_MEM_FAIL;
+    }
 
     uart8_rx_fifo.rx_fifo = ring_fifo_init(
         uart8_rx_fifo.rx_fifo_buf, uart8_rx_fifo.fifo_size, RF_TYPE_STREAM);
-#ifdef DEBUG
-    assert(uart8_rx_fifo.rx_fifo != NULL);
-#endif /* DEBUG */
+    if (uart8_rx_fifo.rx_fifo == NULL) {
+        return UART_INIT_MEM_FAIL;
+    }
 
     CSP_DMA_CLK_ENABLE(UART8_RX_DMA_NUMBER);
-    res = HAL_DMA_Init(&uart8_dmarx_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
+    if (HAL_DMA_Init(&uart8_dmarx_handle) != HAL_OK) {
+        return UART_INIT_DMA_FAIL;
+    }
 
     __HAL_LINKDMA(&uart8_handle, hdmarx, uart8_dmarx_handle);
 
@@ -2193,16 +2228,14 @@ void uart8_init(uint32_t baud_rate) {
 
 #if UART8_TX_DMA
     uart8_tx_buf.send_buf = CSP_MALLOC(uart8_tx_buf.buf_size);
-
-#ifdef DEBUG
-    assert(uart8_tx_buf.send_buf != NULL);
-#endif /* DEBUG */
+    if (uart8_tx_buf.send_buf == NULL) {
+        return UART_INIT_MEM_FAIL;
+    }
 
     CSP_DMA_CLK_ENABLE(UART8_TX_DMA_NUMBER);
-    res = HAL_DMA_Init(&uart8_dmatx_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
+    if (HAL_DMA_Init(&uart8_dmatx_handle) != HAL_OK) {
+        return UART_INIT_DMA_FAIL;
+    }
 
     __HAL_LINKDMA(&uart8_handle, hdmatx, uart8_dmatx_handle);
 
@@ -2212,6 +2245,12 @@ void uart8_init(uint32_t baud_rate) {
     HAL_NVIC_EnableIRQ(
         CSP_DMA_STREAM_IRQn(UART8_TX_DMA_NUMBER, UART8_TX_DMA_STREAM));
 #endif /* UART8_TX_DMA */
+
+    if (HAL_UART_Init(&uart8_handle) != HAL_OK) {
+        return UART_INIT_FAIL;
+    }
+
+    return UART_INIT_OK;
 }
 
 /**
@@ -2254,10 +2293,14 @@ void UART8_TX_DMA_IRQHandler(void) {
 /**
  * @brief UART8 deinitialization.
  *
- */
-void uart8_deinit(void) {
+ * @return UART deinit status.
+ * @retval 0-`UART_DEINIT_OK`:       Success.
+ * @retval 1-`UART_DEINIT_FAIL`:     UART deinit failed.
+ * @retval 2-`UART_DEINIT_DMA_FAIL`: UART DMA deinit failed.
+ * @retval 3-`UART_NO_INIT`:         UART is not init.
+uint8_t uart8_deinit(void) {
     if (__HAL_RCC_UART8_IS_CLK_DISABLED()) {
-        return;
+        return UART_NO_INIT;
     }
 
     HAL_StatusTypeDef res = HAL_OK;
@@ -2269,53 +2312,50 @@ void uart8_deinit(void) {
 #endif /* UART8_TX */
 
 #if UART8_RX
-    HAL_GPIO_DeInit(CSP_GPIO_PORT(UART8_RX_PORT), UART8_RX_PIN);
+HAL_GPIO_DeInit(CSP_GPIO_PORT(UART8_RX_PORT), UART8_RX_PIN);
 #endif /* UART8_RX */
-
-    res = HAL_UART_DeInit(&uart8_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
-
-    HAL_NVIC_DisableIRQ(UART8_IRQn);
 
 #if UART8_RX_DMA
 
-    HAL_DMA_Abort(&uart8_dmarx_handle);
-    CSP_FREE(uart8_rx_fifo.recv_buf);
-    CSP_FREE(uart8_rx_fifo.rx_fifo_buf);
-    ring_fifo_destroy(uart8_rx_fifo.rx_fifo);
+HAL_DMA_Abort(&uart8_dmarx_handle);
+CSP_FREE(uart8_rx_fifo.recv_buf);
+CSP_FREE(uart8_rx_fifo.rx_fifo_buf);
+ring_fifo_destroy(uart8_rx_fifo.rx_fifo);
 
-    res = HAL_DMA_DeInit(&uart8_dmarx_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
+if (HAL_DMA_DeInit(&uart8_dmarx_handle) != HAL_OK) {
+    return UART_DEINIT_DMA_FAIL;
+}
 
-    HAL_NVIC_DisableIRQ(
-        CSP_DMA_STREAM_IRQn(UART8_RX_DMA_NUMBER, UART8_RX_DMA_STREAM));
+HAL_NVIC_DisableIRQ(CSP_DMA_STREAM_IRQn(UART8_RX_DMA_NUMBER,
+                                        UART8_RX_DMA_STREAM));
 
 #if USE_HAL_UART_REGISTER_CALLBACKS
-    HAL_UART_UnRegisterCallback(&uart8_handle, HAL_UART_RX_HALFCOMPLETE_CB_ID);
-    HAL_UART_UnRegisterCallback(&uart8_handle, HAL_UART_RX_COMPLETE_CB_ID);
+HAL_UART_UnRegisterCallback(&uart8_handle, HAL_UART_RX_HALFCOMPLETE_CB_ID);
+HAL_UART_UnRegisterCallback(&uart8_handle, HAL_UART_RX_COMPLETE_CB_ID);
 #endif /* USE_HAL_UART_REGISTER_CALLBACKS */
-    uart8_handle.hdmarx = NULL;
+uart8_handle.hdmarx = NULL;
 
 #endif /* UART8_RX_DMA */
 
 #if UART8_TX_DMA
-    HAL_DMA_Abort(&uart8_dmatx_handle);
-    CSP_FREE(uart8_tx_buf.send_buf);
+HAL_DMA_Abort(&uart8_dmatx_handle);
+CSP_FREE(uart8_tx_buf.send_buf);
 
-    res = HAL_DMA_DeInit(&uart8_dmatx_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
+if (HAL_DMA_DeInit(&uart8_dmatx_handle) != HAL_OK) {
+    return UART_DEINIT_DMA_FAIL;
+}
 
-    HAL_NVIC_DisableIRQ(
-        CSP_DMA_STREAM_IRQn(UART8_TX_DMA_NUMBER, UART8_TX_DMA_STREAM));
+HAL_NVIC_DisableIRQ(CSP_DMA_STREAM_IRQn(UART8_TX_DMA_NUMBER,
+                                        UART8_TX_DMA_STREAM));
 
-    uart8_handle.hdmatx = NULL;
+uart8_handle.hdmatx = NULL;
 #endif /* UART8_TX_DMA */
+
+if (HAL_UART_DeInit(&uart8_handle) != HAL_OK) {
+    return UART_DEINIT_FAIL;
+}
+
+return UART_DEINIT_OK;
 }
 
 #endif /* UART8_ENABLE */
@@ -2375,18 +2415,23 @@ static uart_tx_buf_t uart9_tx_buf = {.buf_size = UART9_TX_DMA_BUF_SIZE};
  * @brief UART9 initialization
  *
  * @param baud_rate Baud rate.
+ * @return UART9 init status.
+ * @retval 0-`UART_INIT_OK`:       Success.
+ * @retval 1-`UART_INIT_FAIL`:     UART init failed.
+ * @retval 2-`UART_INIT_DMA_FAIL`: UART DMA init failed.
+ * @retval 3-`UART_INIT_MEM_FAIL`: UART buffer memory init failed (It will
+ *                                 dynamic allocate memroy when using DMA).
+ * @retval 4-`UART_INITED`:        This uart is inited.
  */
-void uart9_init(uint32_t baud_rate) {
+uint8_t uart9_init(uint32_t baud_rate) {
     if (__HAL_RCC_UART9_IS_CLK_ENABLED()) {
-        return;
+        return UART_INITED;
     }
 
     GPIO_InitTypeDef gpio_init_struct = {.Pull = GPIO_PULLUP,
                                          .Speed = GPIO_SPEED_FREQ_HIGH,
-                                         .Alternate = GPIO_AF11_UART9,
+                                         .Alternate = GPIO_AF7_UART9,
                                          .Mode = GPIO_MODE_AF_PP};
-    HAL_StatusTypeDef res = HAL_OK;
-
     uart9_handle.Init.BaudRate = baud_rate;
 #if UART9_TX
     uart9_handle.Init.Mode |= UART_MODE_TX;
@@ -2406,12 +2451,6 @@ void uart9_init(uint32_t baud_rate) {
 
     __HAL_RCC_UART9_CLK_ENABLE();
 
-    res = HAL_UART_Init(&uart9_handle);
-
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
-
     HAL_NVIC_EnableIRQ(UART9_IRQn);
     HAL_NVIC_SetPriority(UART9_IRQn, UART9_IT_PRIORITY, UART9_IT_SUB);
 
@@ -2419,26 +2458,25 @@ void uart9_init(uint32_t baud_rate) {
     uart9_rx_fifo.head_ptr = 0;
 
     uart9_rx_fifo.recv_buf = CSP_MALLOC(uart9_rx_fifo.buf_size);
-#ifdef DEBUG
-    assert(uart9_rx_fifo.recv_buf != NULL);
-#endif /* DEBUG */
+    if (uart9_rx_fifo.recv_buf == NULL) {
+        return UART_INIT_MEM_FAIL;
+    }
 
     uart9_rx_fifo.rx_fifo_buf = CSP_MALLOC(uart9_rx_fifo.fifo_size);
-#ifdef DEBUG
-    assert(uart9_rx_fifo.rx_fifo_buf != NULL);
-#endif /* DEBUG */
+    if (uart9_rx_fifo.rx_fifo_buf == NULL) {
+        return UART_INIT_MEM_FAIL;
+    }
 
     uart9_rx_fifo.rx_fifo = ring_fifo_init(
         uart9_rx_fifo.rx_fifo_buf, uart9_rx_fifo.fifo_size, RF_TYPE_STREAM);
-#ifdef DEBUG
-    assert(uart9_rx_fifo.rx_fifo != NULL);
-#endif /* DEBUG */
+    if (uart9_rx_fifo.rx_fifo == NULL) {
+        return UART_INIT_MEM_FAIL;
+    }
 
     CSP_DMA_CLK_ENABLE(UART9_RX_DMA_NUMBER);
-    res = HAL_DMA_Init(&uart9_dmarx_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
+    if (HAL_DMA_Init(&uart9_dmarx_handle) != HAL_OK) {
+        return UART_INIT_DMA_FAIL;
+    }
 
     __HAL_LINKDMA(&uart9_handle, hdmarx, uart9_dmarx_handle);
 
@@ -2464,16 +2502,14 @@ void uart9_init(uint32_t baud_rate) {
 
 #if UART9_TX_DMA
     uart9_tx_buf.send_buf = CSP_MALLOC(uart9_tx_buf.buf_size);
-
-#ifdef DEBUG
-    assert(uart9_tx_buf.send_buf != NULL);
-#endif /* DEBUG */
+    if (uart9_tx_buf.send_buf == NULL) {
+        return UART_INIT_MEM_FAIL;
+    }
 
     CSP_DMA_CLK_ENABLE(UART9_TX_DMA_NUMBER);
-    res = HAL_DMA_Init(&uart9_dmatx_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
+    if (HAL_DMA_Init(&uart9_dmatx_handle) != HAL_OK) {
+        return UART_INIT_DMA_FAIL;
+    }
 
     __HAL_LINKDMA(&uart9_handle, hdmatx, uart9_dmatx_handle);
 
@@ -2483,6 +2519,12 @@ void uart9_init(uint32_t baud_rate) {
     HAL_NVIC_EnableIRQ(
         CSP_DMA_STREAM_IRQn(UART9_TX_DMA_NUMBER, UART9_TX_DMA_STREAM));
 #endif /* UART9_TX_DMA */
+
+    if (HAL_UART_Init(&uart9_handle) != HAL_OK) {
+        return UART_INIT_FAIL;
+    }
+
+    return UART_INIT_OK;
 }
 
 /**
@@ -2525,10 +2567,14 @@ void UART9_TX_DMA_IRQHandler(void) {
 /**
  * @brief UART9 deinitialization.
  *
- */
-void uart9_deinit(void) {
+ * @return UART deinit status.
+ * @retval 0-`UART_DEINIT_OK`:       Success.
+ * @retval 1-`UART_DEINIT_FAIL`:     UART deinit failed.
+ * @retval 2-`UART_DEINIT_DMA_FAIL`: UART DMA deinit failed.
+ * @retval 3-`UART_NO_INIT`:         UART is not init.
+uint8_t uart9_deinit(void) {
     if (__HAL_RCC_UART9_IS_CLK_DISABLED()) {
-        return;
+        return UART_NO_INIT;
     }
 
     HAL_StatusTypeDef res = HAL_OK;
@@ -2540,53 +2586,50 @@ void uart9_deinit(void) {
 #endif /* UART9_TX */
 
 #if UART9_RX
-    HAL_GPIO_DeInit(CSP_GPIO_PORT(UART9_RX_PORT), UART9_RX_PIN);
+HAL_GPIO_DeInit(CSP_GPIO_PORT(UART9_RX_PORT), UART9_RX_PIN);
 #endif /* UART9_RX */
-
-    res = HAL_UART_DeInit(&uart9_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
-
-    HAL_NVIC_DisableIRQ(UART9_IRQn);
 
 #if UART9_RX_DMA
 
-    HAL_DMA_Abort(&uart9_dmarx_handle);
-    CSP_FREE(uart9_rx_fifo.recv_buf);
-    CSP_FREE(uart9_rx_fifo.rx_fifo_buf);
-    ring_fifo_destroy(uart9_rx_fifo.rx_fifo);
+HAL_DMA_Abort(&uart9_dmarx_handle);
+CSP_FREE(uart9_rx_fifo.recv_buf);
+CSP_FREE(uart9_rx_fifo.rx_fifo_buf);
+ring_fifo_destroy(uart9_rx_fifo.rx_fifo);
 
-    res = HAL_DMA_DeInit(&uart9_dmarx_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
+if (HAL_DMA_DeInit(&uart9_dmarx_handle) != HAL_OK) {
+    return UART_DEINIT_DMA_FAIL;
+}
 
-    HAL_NVIC_DisableIRQ(
-        CSP_DMA_STREAM_IRQn(UART9_RX_DMA_NUMBER, UART9_RX_DMA_STREAM));
+HAL_NVIC_DisableIRQ(CSP_DMA_STREAM_IRQn(UART9_RX_DMA_NUMBER,
+                                        UART9_RX_DMA_STREAM));
 
 #if USE_HAL_UART_REGISTER_CALLBACKS
-    HAL_UART_UnRegisterCallback(&uart9_handle, HAL_UART_RX_HALFCOMPLETE_CB_ID);
-    HAL_UART_UnRegisterCallback(&uart9_handle, HAL_UART_RX_COMPLETE_CB_ID);
+HAL_UART_UnRegisterCallback(&uart9_handle, HAL_UART_RX_HALFCOMPLETE_CB_ID);
+HAL_UART_UnRegisterCallback(&uart9_handle, HAL_UART_RX_COMPLETE_CB_ID);
 #endif /* USE_HAL_UART_REGISTER_CALLBACKS */
-    uart9_handle.hdmarx = NULL;
+uart9_handle.hdmarx = NULL;
 
 #endif /* UART9_RX_DMA */
 
 #if UART9_TX_DMA
-    HAL_DMA_Abort(&uart9_dmatx_handle);
-    CSP_FREE(uart9_tx_buf.send_buf);
+HAL_DMA_Abort(&uart9_dmatx_handle);
+CSP_FREE(uart9_tx_buf.send_buf);
 
-    res = HAL_DMA_DeInit(&uart9_dmatx_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
+if (HAL_DMA_DeInit(&uart9_dmatx_handle) != HAL_OK) {
+    return UART_DEINIT_DMA_FAIL;
+}
 
-    HAL_NVIC_DisableIRQ(
-        CSP_DMA_STREAM_IRQn(UART9_TX_DMA_NUMBER, UART9_TX_DMA_STREAM));
+HAL_NVIC_DisableIRQ(CSP_DMA_STREAM_IRQn(UART9_TX_DMA_NUMBER,
+                                        UART9_TX_DMA_STREAM));
 
-    uart9_handle.hdmatx = NULL;
+uart9_handle.hdmatx = NULL;
 #endif /* UART9_TX_DMA */
+
+if (HAL_UART_DeInit(&uart9_handle) != HAL_OK) {
+    return UART_DEINIT_FAIL;
+}
+
+return UART_DEINIT_OK;
 }
 
 #endif /* UART9_ENABLE */
@@ -2646,18 +2689,23 @@ static uart_tx_buf_t uart10_tx_buf = {.buf_size = UART10_TX_DMA_BUF_SIZE};
  * @brief UART10 initialization
  *
  * @param baud_rate Baud rate.
+ * @return UART10 init status.
+ * @retval 0-`UART_INIT_OK`:       Success.
+ * @retval 1-`UART_INIT_FAIL`:     UART init failed.
+ * @retval 2-`UART_INIT_DMA_FAIL`: UART DMA init failed.
+ * @retval 3-`UART_INIT_MEM_FAIL`: UART buffer memory init failed (It will
+ *                                 dynamic allocate memroy when using DMA).
+ * @retval 4-`UART_INITED`:        This uart is inited.
  */
-void uart10_init(uint32_t baud_rate) {
+uint8_t uart10_init(uint32_t baud_rate) {
     if (__HAL_RCC_UART10_IS_CLK_ENABLED()) {
-        return;
+        return UART_INITED;
     }
 
     GPIO_InitTypeDef gpio_init_struct = {.Pull = GPIO_PULLUP,
                                          .Speed = GPIO_SPEED_FREQ_HIGH,
-                                         .Alternate = GPIO_AF11_UART10,
+                                         .Alternate = GPIO_AF7_UART10,
                                          .Mode = GPIO_MODE_AF_PP};
-    HAL_StatusTypeDef res = HAL_OK;
-
     uart10_handle.Init.BaudRate = baud_rate;
 #if UART10_TX
     uart10_handle.Init.Mode |= UART_MODE_TX;
@@ -2677,12 +2725,6 @@ void uart10_init(uint32_t baud_rate) {
 
     __HAL_RCC_UART10_CLK_ENABLE();
 
-    res = HAL_UART_Init(&uart10_handle);
-
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
-
     HAL_NVIC_EnableIRQ(UART10_IRQn);
     HAL_NVIC_SetPriority(UART10_IRQn, UART10_IT_PRIORITY, UART10_IT_SUB);
 
@@ -2690,26 +2732,25 @@ void uart10_init(uint32_t baud_rate) {
     uart10_rx_fifo.head_ptr = 0;
 
     uart10_rx_fifo.recv_buf = CSP_MALLOC(uart10_rx_fifo.buf_size);
-#ifdef DEBUG
-    assert(uart10_rx_fifo.recv_buf != NULL);
-#endif /* DEBUG */
+    if (uart10_rx_fifo.recv_buf == NULL) {
+        return UART_INIT_MEM_FAIL;
+    }
 
     uart10_rx_fifo.rx_fifo_buf = CSP_MALLOC(uart10_rx_fifo.fifo_size);
-#ifdef DEBUG
-    assert(uart10_rx_fifo.rx_fifo_buf != NULL);
-#endif /* DEBUG */
+    if (uart10_rx_fifo.rx_fifo_buf == NULL) {
+        return UART_INIT_MEM_FAIL;
+    }
 
     uart10_rx_fifo.rx_fifo = ring_fifo_init(
         uart10_rx_fifo.rx_fifo_buf, uart10_rx_fifo.fifo_size, RF_TYPE_STREAM);
-#ifdef DEBUG
-    assert(uart10_rx_fifo.rx_fifo != NULL);
-#endif /* DEBUG */
+    if (uart10_rx_fifo.rx_fifo == NULL) {
+        return UART_INIT_MEM_FAIL;
+    }
 
     CSP_DMA_CLK_ENABLE(UART10_RX_DMA_NUMBER);
-    res = HAL_DMA_Init(&uart10_dmarx_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
+    if (HAL_DMA_Init(&uart10_dmarx_handle) != HAL_OK) {
+        return UART_INIT_DMA_FAIL;
+    }
 
     __HAL_LINKDMA(&uart10_handle, hdmarx, uart10_dmarx_handle);
 
@@ -2735,16 +2776,14 @@ void uart10_init(uint32_t baud_rate) {
 
 #if UART10_TX_DMA
     uart10_tx_buf.send_buf = CSP_MALLOC(uart10_tx_buf.buf_size);
-
-#ifdef DEBUG
-    assert(uart10_tx_buf.send_buf != NULL);
-#endif /* DEBUG */
+    if (uart10_tx_buf.send_buf == NULL) {
+        return UART_INIT_MEM_FAIL;
+    }
 
     CSP_DMA_CLK_ENABLE(UART10_TX_DMA_NUMBER);
-    res = HAL_DMA_Init(&uart10_dmatx_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
+    if (HAL_DMA_Init(&uart10_dmatx_handle) != HAL_OK) {
+        return UART_INIT_DMA_FAIL;
+    }
 
     __HAL_LINKDMA(&uart10_handle, hdmatx, uart10_dmatx_handle);
 
@@ -2754,6 +2793,12 @@ void uart10_init(uint32_t baud_rate) {
     HAL_NVIC_EnableIRQ(
         CSP_DMA_STREAM_IRQn(UART10_TX_DMA_NUMBER, UART10_TX_DMA_STREAM));
 #endif /* UART10_TX_DMA */
+
+    if (HAL_UART_Init(&uart10_handle) != HAL_OK) {
+        return UART_INIT_FAIL;
+    }
+
+    return UART_INIT_OK;
 }
 
 /**
@@ -2796,10 +2841,14 @@ void UART10_TX_DMA_IRQHandler(void) {
 /**
  * @brief UART10 deinitialization.
  *
- */
-void uart10_deinit(void) {
+ * @return UART deinit status.
+ * @retval 0-`UART_DEINIT_OK`:       Success.
+ * @retval 1-`UART_DEINIT_FAIL`:     UART deinit failed.
+ * @retval 2-`UART_DEINIT_DMA_FAIL`: UART DMA deinit failed.
+ * @retval 3-`UART_NO_INIT`:         UART is not init.
+uint8_t uart10_deinit(void) {
     if (__HAL_RCC_UART10_IS_CLK_DISABLED()) {
-        return;
+        return UART_NO_INIT;
     }
 
     HAL_StatusTypeDef res = HAL_OK;
@@ -2811,53 +2860,50 @@ void uart10_deinit(void) {
 #endif /* UART10_TX */
 
 #if UART10_RX
-    HAL_GPIO_DeInit(CSP_GPIO_PORT(UART10_RX_PORT), UART10_RX_PIN);
+HAL_GPIO_DeInit(CSP_GPIO_PORT(UART10_RX_PORT), UART10_RX_PIN);
 #endif /* UART10_RX */
-
-    res = HAL_UART_DeInit(&uart10_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
-
-    HAL_NVIC_DisableIRQ(UART10_IRQn);
 
 #if UART10_RX_DMA
 
-    HAL_DMA_Abort(&uart10_dmarx_handle);
-    CSP_FREE(uart10_rx_fifo.recv_buf);
-    CSP_FREE(uart10_rx_fifo.rx_fifo_buf);
-    ring_fifo_destroy(uart10_rx_fifo.rx_fifo);
+HAL_DMA_Abort(&uart10_dmarx_handle);
+CSP_FREE(uart10_rx_fifo.recv_buf);
+CSP_FREE(uart10_rx_fifo.rx_fifo_buf);
+ring_fifo_destroy(uart10_rx_fifo.rx_fifo);
 
-    res = HAL_DMA_DeInit(&uart10_dmarx_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
+if (HAL_DMA_DeInit(&uart10_dmarx_handle) != HAL_OK) {
+    return UART_DEINIT_DMA_FAIL;
+}
 
-    HAL_NVIC_DisableIRQ(
-        CSP_DMA_STREAM_IRQn(UART10_RX_DMA_NUMBER, UART10_RX_DMA_STREAM));
+HAL_NVIC_DisableIRQ(CSP_DMA_STREAM_IRQn(UART10_RX_DMA_NUMBER,
+                                        UART10_RX_DMA_STREAM));
 
 #if USE_HAL_UART_REGISTER_CALLBACKS
-    HAL_UART_UnRegisterCallback(&uart10_handle, HAL_UART_RX_HALFCOMPLETE_CB_ID);
-    HAL_UART_UnRegisterCallback(&uart10_handle, HAL_UART_RX_COMPLETE_CB_ID);
+HAL_UART_UnRegisterCallback(&uart10_handle, HAL_UART_RX_HALFCOMPLETE_CB_ID);
+HAL_UART_UnRegisterCallback(&uart10_handle, HAL_UART_RX_COMPLETE_CB_ID);
 #endif /* USE_HAL_UART_REGISTER_CALLBACKS */
-    uart10_handle.hdmarx = NULL;
+uart10_handle.hdmarx = NULL;
 
 #endif /* UART10_RX_DMA */
 
 #if UART10_TX_DMA
-    HAL_DMA_Abort(&uart10_dmatx_handle);
-    CSP_FREE(uart10_tx_buf.send_buf);
+HAL_DMA_Abort(&uart10_dmatx_handle);
+CSP_FREE(uart10_tx_buf.send_buf);
 
-    res = HAL_DMA_DeInit(&uart10_dmatx_handle);
-#ifdef DEBUG
-    assert(res == HAL_OK);
-#endif /* DEBUG */
+if (HAL_DMA_DeInit(&uart10_dmatx_handle) != HAL_OK) {
+    return UART_DEINIT_DMA_FAIL;
+}
 
-    HAL_NVIC_DisableIRQ(
-        CSP_DMA_STREAM_IRQn(UART10_TX_DMA_NUMBER, UART10_TX_DMA_STREAM));
+HAL_NVIC_DisableIRQ(CSP_DMA_STREAM_IRQn(UART10_TX_DMA_NUMBER,
+                                        UART10_TX_DMA_STREAM));
 
-    uart10_handle.hdmatx = NULL;
+uart10_handle.hdmatx = NULL;
 #endif /* UART10_TX_DMA */
+
+if (HAL_UART_DeInit(&uart10_handle) != HAL_OK) {
+    return UART_DEINIT_FAIL;
+}
+
+return UART_DEINIT_OK;
 }
 
 #endif /* UART10_ENABLE */
