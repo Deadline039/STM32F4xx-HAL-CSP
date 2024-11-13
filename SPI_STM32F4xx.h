@@ -71,7 +71,7 @@ typedef enum {
 #    endif
 #  endif
 
-#  if (SPI1_NSS_PIN == 1)
+#  if (SPI1_NSS == 1)
 #    if defined(STM32F410Tx)
 // SPI1 NSS available on pin: PA15
 #      if ((SPI1_NSS_PORT_ID != 0) && (SPI1_NSS_PORT_ID != 2)
@@ -201,7 +201,7 @@ uint8_t spi1_deinit(void);
 #    endif
 #  endif
 
-#  if (SPI2_NSS_PIN == 1)
+#  if (SPI2_NSS == 1)
 #    if defined(STM32F401xC) || defined(STM32F401xE) ||                        \
         defined(STM32F411xE) || defined(STM32F446xx)
 // PI0 as SPI2 NSS not available on STM32F401xx, STM32F411xx and STM32F446xx
@@ -351,7 +351,7 @@ uint8_t spi3_deinit(void);
 #    define SPI4_SCK_GPIO_AF GPIO_AF5_SPI4
 #  endif
 
-#  if (SPI4_NSS_PIN == 1)
+#  if (SPI4_NSS == 1)
 #    ifndef STM32F411xE
 // PB12 as SPI4 NSS only available on STM32F411xx
 #      if (SPI4_NSS_PORT_ID == 1)
@@ -529,7 +529,7 @@ uint8_t spi4_deinit(void);
 #    define SPI5_SCK_GPIO_AF GPIO_AF5_SPI5
 #  endif
 
-#  if (SPI5_NSS_PIN == 1)
+#  if (SPI5_NSS == 1)
 #    if defined(STM32F410Cx) || defined(STM32F410Rx)
 // SPI5 NSS available on pin: PB1
 #      if ((SPI5_NSS_PORT_ID != 0) && (SPI5_NSS_PORT_ID != 1))

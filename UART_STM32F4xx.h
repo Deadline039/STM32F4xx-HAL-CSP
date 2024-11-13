@@ -180,7 +180,7 @@ uint8_t usart2_deinit(void);
 #if USART3_ENABLE
 
 #  if (USART3_CTS == 1)
-#    if (USART3_CTS_ID == 1) &&                                            \
+#    if (USART3_CTS_ID == 1) &&                                                \
         (defined(STM32F413xx) || defined(STM32F423xx) ||                       \
          defined(STM32F412Zx) || defined(STM32F412Vx) ||                       \
          defined(STM32F412Rx) || defined(STM32F412Cx))

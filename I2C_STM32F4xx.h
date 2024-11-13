@@ -394,6 +394,10 @@ uint8_t i2c3_deinit(void);
 
 #endif /* I2C3_ENABLE */
 
+/**
+ * @}
+ */
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

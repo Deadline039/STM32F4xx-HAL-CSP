@@ -2385,6 +2385,16 @@
 #error "Invalid CAN2_TX Pin Configuration!"
 #endif
 
+//   <e> Enable CAN Transmit Interrupt
+#define CAN2_ENABLE_TX_IT    0
+//     <o> CAN Transmit Interrupt Priority <0-15>
+//     <i> The Interrupt Priority of CAN Transmit
+#define CAN2_TX_IT_PRIORITY  2
+//     <o> CAN Transmit Interrupt SubPriority <0-15>
+//     <i> The Interrupt SubPriority of CAN Transmit
+#define CAN2_TX_IT_SUB       3
+//   </e>
+
 //   <e> Enable CAN Receive FIFO0 Interrupt
 #define CAN2_ENABLE_RX0_IT   0
 //     <o> CAN Receive FIFO0 Interrupt Priority <0-15>
@@ -2444,6 +2454,16 @@
 #else
 #error "Invalid CAN3_TX Pin Configuration!"
 #endif
+
+//   <e> Enable CAN Transmit Interrupt
+#define CAN3_ENABLE_TX_IT    0
+//     <o> CAN Transmit Interrupt Priority <0-15>
+//     <i> The Interrupt Priority of CAN Transmit
+#define CAN3_TX_IT_PRIORITY  2
+//     <o> CAN Transmit Interrupt SubPriority <0-15>
+//     <i> The Interrupt SubPriority of CAN Transmit
+#define CAN3_TX_IT_SUB       3
+//   </e>
 
 //   <e> Enable CAN Receive FIFO0 Interrupt
 #define CAN3_ENABLE_RX0_IT   0

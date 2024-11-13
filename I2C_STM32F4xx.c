@@ -15,13 +15,12 @@
 
 #if I2C1_ENABLE
 
-I2C_HandleTypeDef i2c1_handle = {.Instance = I2C1,
-                                 .Init = {
-                                     .DutyCycle = I2C_DUTYCYCLE_2,
-                                     .DualAddressMode = I2C_DUALADDRESS_DISABLE,
-                                     .GeneralCallMode = I2C_GENERALCALL_DISABLE,
-                                     .NoStretchMode = I2C_NOSTRETCH_DISABLE,
-                                 }};
+I2C_HandleTypeDef i2c1_handle = {
+    .Instance = I2C1,
+    .Init = {.DutyCycle = I2C_DUTYCYCLE_2,
+             .DualAddressMode = I2C_DUALADDRESS_DISABLE,
+             .GeneralCallMode = I2C_GENERALCALL_DISABLE,
+             .NoStretchMode = I2C_NOSTRETCH_DISABLE}};
 
 #if I2C1_RX_DMA
 static DMA_HandleTypeDef i2c1_dmarx_handle = {
@@ -234,13 +233,12 @@ uint8_t i2c1_deinit(void) {
 
 #if I2C2_ENABLE
 
-I2C_HandleTypeDef i2c2_handle = {.Instance = I2C2,
-                                 .Init = {
-                                     .DutyCycle = I2C_DUTYCYCLE_2,
-                                     .DualAddressMode = I2C_DUALADDRESS_DISABLE,
-                                     .GeneralCallMode = I2C_GENERALCALL_DISABLE,
-                                     .NoStretchMode = I2C_NOSTRETCH_DISABLE,
-                                 }};
+I2C_HandleTypeDef i2c2_handle = {
+    .Instance = I2C2,
+    .Init = {.DutyCycle = I2C_DUTYCYCLE_2,
+             .DualAddressMode = I2C_DUALADDRESS_DISABLE,
+             .GeneralCallMode = I2C_GENERALCALL_DISABLE,
+             .NoStretchMode = I2C_NOSTRETCH_DISABLE}};
 
 #if I2C2_RX_DMA
 static DMA_HandleTypeDef i2c2_dmarx_handle = {
@@ -454,13 +452,12 @@ uint8_t i2c2_deinit(void) {
 
 #if I2C3_ENABLE
 
-I2C_HandleTypeDef i2c3_handle = {.Instance = I2C3,
-                                 .Init = {
-                                     .DutyCycle = I2C_DUTYCYCLE_2,
-                                     .DualAddressMode = I2C_DUALADDRESS_DISABLE,
-                                     .GeneralCallMode = I2C_GENERALCALL_DISABLE,
-                                     .NoStretchMode = I2C_NOSTRETCH_DISABLE,
-                                 }};
+I2C_HandleTypeDef i2c3_handle = {
+    .Instance = I2C3,
+    .Init = {.DutyCycle = I2C_DUTYCYCLE_2,
+             .DualAddressMode = I2C_DUALADDRESS_DISABLE,
+             .GeneralCallMode = I2C_GENERALCALL_DISABLE,
+             .NoStretchMode = I2C_NOSTRETCH_DISABLE}};
 
 #if I2C3_RX_DMA
 static DMA_HandleTypeDef i2c3_dmarx_handle = {

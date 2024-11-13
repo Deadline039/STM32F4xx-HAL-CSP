@@ -846,6 +846,7 @@ uint8_t can_rate_calc(uint32_t baud_rate, uint32_t prop_delay,
  * @retval 1: Send error.
  * @retval 2: Timeout.
  * @retval 3: Parameter invalid.
+ * @retval 4: This CAN is not initialized.
  */
 uint8_t can_send_mesage(can_selected_t can_selected, uint32_t can_ide,
                         uint32_t id, uint8_t len, uint8_t *msg) {
@@ -872,6 +873,10 @@ uint8_t can_send_mesage(can_selected_t can_selected, uint32_t can_ide,
 
         default:
             return 3;
+    }
+
+    if (HAL_CAN_GetState(can_handle) == HAL_CAN_STATE_RESET) {
+        return 4;
     }
 
     uint16_t wait_time = 0;
