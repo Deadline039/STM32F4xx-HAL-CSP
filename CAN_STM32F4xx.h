@@ -12,8 +12,6 @@
 #ifndef __CAN_STM32F4XX_H
 #define __CAN_STM32F4XX_H
 
-#include "CSP_Config.h"
-
 /* clang-format off */
 
 #ifdef __cplusplus

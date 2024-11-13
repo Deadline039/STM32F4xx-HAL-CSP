@@ -9,8 +9,6 @@
 #ifndef __UART_STM32F4XX_H
 #define __UART_STM32F4XX_H
 
-#include "CSP_Config.h"
-
 #include <stdarg.h>
 
 /* clang-format off */

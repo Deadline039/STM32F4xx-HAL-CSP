@@ -6,6 +6,8 @@
  * @date    2024-10-22
  */
 
+#include "CSP_Config.h"
+
 #include "CAN_STM32F4xx.h"
 
 #include <math.h>
