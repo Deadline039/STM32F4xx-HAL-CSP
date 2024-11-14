@@ -292,8 +292,6 @@ uint8_t usart1_deinit(void) {
         return UART_NO_INIT;
     }
 
-    HAL_StatusTypeDef res = HAL_OK;
-
     __HAL_RCC_USART1_CLK_DISABLE();
 
 #if USART1_TX
@@ -586,12 +584,11 @@ void USART2_TX_DMA_IRQHandler(void) {
  * @retval 1-`UART_DEINIT_FAIL`:     UART deinit failed.
  * @retval 2-`UART_DEINIT_DMA_FAIL`: UART DMA deinit failed.
  * @retval 3-`UART_NO_INIT`:         UART is not init.
+ */
 uint8_t usart2_deinit(void) {
     if (__HAL_RCC_USART2_IS_CLK_DISABLED()) {
         return UART_NO_INIT;
     }
-
-    HAL_StatusTypeDef res = HAL_OK;
 
     __HAL_RCC_USART2_CLK_DISABLE();
 
@@ -889,12 +886,11 @@ void USART3_TX_DMA_IRQHandler(void) {
  * @retval 1-`UART_DEINIT_FAIL`:     UART deinit failed.
  * @retval 2-`UART_DEINIT_DMA_FAIL`: UART DMA deinit failed.
  * @retval 3-`UART_NO_INIT`:         UART is not init.
+ */
 uint8_t usart3_deinit(void) {
     if (__HAL_RCC_USART3_IS_CLK_DISABLED()) {
         return UART_NO_INIT;
     }
-
-    HAL_StatusTypeDef res = HAL_OK;
 
     __HAL_RCC_USART3_CLK_DISABLE();
 
@@ -1173,12 +1169,11 @@ void UART4_TX_DMA_IRQHandler(void) {
  * @retval 1-`UART_DEINIT_FAIL`:     UART deinit failed.
  * @retval 2-`UART_DEINIT_DMA_FAIL`: UART DMA deinit failed.
  * @retval 3-`UART_NO_INIT`:         UART is not init.
+ */
 uint8_t uart4_deinit(void) {
     if (__HAL_RCC_UART4_IS_CLK_DISABLED()) {
         return UART_NO_INIT;
     }
-
-    HAL_StatusTypeDef res = HAL_OK;
 
     __HAL_RCC_UART4_CLK_DISABLE();
 
@@ -1448,12 +1443,11 @@ void UART5_TX_DMA_IRQHandler(void) {
  * @retval 1-`UART_DEINIT_FAIL`:     UART deinit failed.
  * @retval 2-`UART_DEINIT_DMA_FAIL`: UART DMA deinit failed.
  * @retval 3-`UART_NO_INIT`:         UART is not init.
+ */
 uint8_t uart5_deinit(void) {
     if (__HAL_RCC_UART5_IS_CLK_DISABLED()) {
         return UART_NO_INIT;
     }
-
-    HAL_StatusTypeDef res = HAL_OK;
 
     __HAL_RCC_UART5_CLK_DISABLE();
 
@@ -1738,12 +1732,11 @@ void USART6_TX_DMA_IRQHandler(void) {
  * @retval 1-`UART_DEINIT_FAIL`:     UART deinit failed.
  * @retval 2-`UART_DEINIT_DMA_FAIL`: UART DMA deinit failed.
  * @retval 3-`UART_NO_INIT`:         UART is not init.
+ */
 uint8_t usart6_deinit(void) {
     if (__HAL_RCC_USART6_IS_CLK_DISABLED()) {
         return UART_NO_INIT;
     }
-
-    HAL_StatusTypeDef res = HAL_OK;
 
     __HAL_RCC_USART6_CLK_DISABLE();
 
@@ -2026,12 +2019,11 @@ void UART7_TX_DMA_IRQHandler(void) {
  * @retval 1-`UART_DEINIT_FAIL`:     UART deinit failed.
  * @retval 2-`UART_DEINIT_DMA_FAIL`: UART DMA deinit failed.
  * @retval 3-`UART_NO_INIT`:         UART is not init.
+ */
 uint8_t uart7_deinit(void) {
     if (__HAL_RCC_UART7_IS_CLK_DISABLED()) {
         return UART_NO_INIT;
     }
-
-    HAL_StatusTypeDef res = HAL_OK;
 
     __HAL_RCC_UART7_CLK_DISABLE();
 
@@ -2300,12 +2292,11 @@ void UART8_TX_DMA_IRQHandler(void) {
  * @retval 1-`UART_DEINIT_FAIL`:     UART deinit failed.
  * @retval 2-`UART_DEINIT_DMA_FAIL`: UART DMA deinit failed.
  * @retval 3-`UART_NO_INIT`:         UART is not init.
+ */
 uint8_t uart8_deinit(void) {
     if (__HAL_RCC_UART8_IS_CLK_DISABLED()) {
         return UART_NO_INIT;
     }
-
-    HAL_StatusTypeDef res = HAL_OK;
 
     __HAL_RCC_UART8_CLK_DISABLE();
 
@@ -2574,12 +2565,11 @@ void UART9_TX_DMA_IRQHandler(void) {
  * @retval 1-`UART_DEINIT_FAIL`:     UART deinit failed.
  * @retval 2-`UART_DEINIT_DMA_FAIL`: UART DMA deinit failed.
  * @retval 3-`UART_NO_INIT`:         UART is not init.
+ */
 uint8_t uart9_deinit(void) {
     if (__HAL_RCC_UART9_IS_CLK_DISABLED()) {
         return UART_NO_INIT;
     }
-
-    HAL_StatusTypeDef res = HAL_OK;
 
     __HAL_RCC_UART9_CLK_DISABLE();
 
@@ -2848,12 +2838,11 @@ void UART10_TX_DMA_IRQHandler(void) {
  * @retval 1-`UART_DEINIT_FAIL`:     UART deinit failed.
  * @retval 2-`UART_DEINIT_DMA_FAIL`: UART DMA deinit failed.
  * @retval 3-`UART_NO_INIT`:         UART is not init.
+ */
 uint8_t uart10_deinit(void) {
     if (__HAL_RCC_UART10_IS_CLK_DISABLED()) {
         return UART_NO_INIT;
     }
-
-    HAL_StatusTypeDef res = HAL_OK;
 
     __HAL_RCC_UART10_CLK_DISABLE();
 
