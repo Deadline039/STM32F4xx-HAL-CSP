@@ -7,6 +7,7 @@
  */
 
 #include "CSP_Config.h"
+#include <string.h>
 
 #include "ETH_STM32F4xx.h"
 
@@ -21,7 +22,7 @@ static ETH_DMADescTypeDef dma_tx_dscr_tab[ETH_TX_DESC_CNT];
 
 /**
  * @brief     eth init
- * 
+ *
  * @param[in] mac points to a mac buffer
  * @return    status code
  *            - 0 success
@@ -57,7 +58,7 @@ uint8_t eth_init(uint8_t mac[6]) {
  * @brief Ethernet ISR.
  */
 void ETH_IRQHandler(void) {
-    HAL_ETH_IRQHandler(eth_get_handle());
+    HAL_ETH_IRQHandler(&eth_handle);
 }
 
 /**
@@ -180,7 +181,7 @@ void HAL_ETH_MspInit(ETH_HandleTypeDef *heth) {
     HAL_NVIC_SetPriority(ETH_IRQn, ETH_IT_PRIORITY, ETH_IT_SUB);
     HAL_NVIC_EnableIRQ(ETH_IRQn);
 
-    HAL_ETH_SetMDIOClockRange(eth_get_handle());
+    HAL_ETH_SetMDIOClockRange(&eth_handle);
 }
 
 /**
@@ -229,7 +230,7 @@ void HAL_ETH_MspDeInit(ETH_HandleTypeDef *heth) {
 
 /**
  * @brief  eth deinit
- * 
+ *
  * @return status code
  *         - 0 success
  *         - 1 deinit failed
@@ -245,7 +246,7 @@ uint8_t eth_deinit(void) {
 
 /**
  * @brief      eth phy read
- * 
+ *
  * @param[in]  addr is the device address
  * @param[in]  reg is the register address
  * @param[out] data points to a data buffer
@@ -267,7 +268,7 @@ uint8_t eth_read_phy(uint8_t addr, uint8_t reg, uint16_t *data) {
 
 /**
  * @brief     eth phy write
- * 
+ *
  * @param[in] addr is the device waddress
  * @param[in] reg is the register address
  * @param[in] data is the set data
@@ -286,7 +287,7 @@ uint8_t eth_write_phy(uint8_t addr, uint8_t reg, uint16_t data) {
 
 /**
  * @brief     eth write
- * 
+ *
  * @param[in] tx_buffer points to ETH_BufferTypeDef structure
  * @param[in] data points to a data buffer
  * @param[in] len is the set length
