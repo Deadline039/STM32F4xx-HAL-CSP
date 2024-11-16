@@ -31,9 +31,9 @@ static ETH_DMADescTypeDef dma_tx_dscr_tab[ETH_TX_DESC_CNT];
 uint8_t eth_init(uint8_t mac[6]) {
     eth_handle.Instance = ETH;
     eth_handle.Init.MACAddr = mac;
-#if ETH_MMI
+#if ETH_MII
     eth_handle.Init.MediaInterface = HAL_ETH_MII_MODE;
-#elif ETH_RMMI
+#elif ETH_RMII
     eth_handle.Init.MediaInterface = HAL_ETH_RMII_MODE;
 #endif /* ETH_MODE */
 
