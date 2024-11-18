@@ -2456,44 +2456,299 @@
 #endif
 
 //   <e> Enable CAN Transmit Interrupt
-#define CAN3_ENABLE_TX_IT    0
+#define CAN3_ENABLE_TX_IT      0
 //     <o> CAN Transmit Interrupt Priority <0-15>
 //     <i> The Interrupt Priority of CAN Transmit
-#define CAN3_TX_IT_PRIORITY  2
+#define CAN3_TX_IT_PRIORITY    2
 //     <o> CAN Transmit Interrupt SubPriority <0-15>
 //     <i> The Interrupt SubPriority of CAN Transmit
-#define CAN3_TX_IT_SUB       3
+#define CAN3_TX_IT_SUB         3
 //   </e>
 
 //   <e> Enable CAN Receive FIFO0 Interrupt
-#define CAN3_ENABLE_RX0_IT   0
+#define CAN3_ENABLE_RX0_IT     0
 //     <o> CAN Receive FIFO0 Interrupt Priority <0-15>
 //     <i> The Interrupt Priority of CAN Receive FIFO0
-#define CAN3_RX0_IT_PRIORITY 2
+#define CAN3_RX0_IT_PRIORITY   2
 //     <o> CAN Receive FIFO0 Interrupt SubPriority <0-15>
 //     <i> The Interrupt SubPriority of CAN Receive FIFO0
-#define CAN3_RX0_IT_SUB      3
+#define CAN3_RX0_IT_SUB        3
 //   </e>
 
 //   <e> Enable CAN Receive FIFO1 Interrupt
-#define CAN3_ENABLE_RX1_IT   0
+#define CAN3_ENABLE_RX1_IT     0
 //     <o> CAN Receive FIFO1 Interrupt Priority <0-15>
 //     <i> The Interrupt Priority of CAN Receive FIFO1
-#define CAN3_RX1_IT_PRIORITY 2
+#define CAN3_RX1_IT_PRIORITY   2
 //     <o> CAN Receive FIFO1 Interrupt SubPriority <0-15>
 //     <i> The Interrupt SubPriority of CAN Receive FIFO1
-#define CAN3_RX1_IT_SUB      3
+#define CAN3_RX1_IT_SUB        3
 //   </e>
 
 //   <e> Enable CAN Stauts Change or Error (SCE) Interrupt
-#define CAN3_ENABLE_SCE_IT   0
+#define CAN3_ENABLE_SCE_IT     0
 //     <o> CAN SCE Interrupt Priority <0-15>
 //     <i> The Interrupt Priority of CAN Receive FIFO0
-#define CAN3_SCE_IT_PRIORITY 2
+#define CAN3_SCE_IT_PRIORITY   2
 //     <o> CAN SCE Interrupt SubPriority <0-15>
 //     <i> The Interrupt SubPriority of CAN Receive FIFO0
-#define CAN3_SCE_IT_SUB      3
+#define CAN3_SCE_IT_SUB        3
 //   </e>
+
+// </e>
+
+// <e> ETH (Ethernet Interface)
+#define ETH_ENABLE             0
+
+//   <e> MII (Media Independent Interface)
+#define ETH_MII                0
+
+//     <o> ETH_MII_TX_CLK Pin <0=>PC3
+#define ETH_MII_TX_CLK_PORT_ID 0
+#if (ETH_MII_TX_CLK_PORT_ID == 0)
+#define ETH_MII_TX_CLK_PORT C
+#define ETH_MII_TX_CLK_PIN  GPIO_PIN_3
+#else
+#error "Invalid ETH_MII_TX_CLK Pin Configuration!"
+#endif
+//     <o> ETH_MII_TXD0 Pin <0=>PB12 <1=>PG13
+#define ETH_MII_TXD0_PORT_ID 0
+#if (ETH_MII_TXD0_PORT_ID == 0)
+#define ETH_MII_TXD0_PORT B
+#define ETH_MII_TXD0_PIN  GPIO_PIN_12
+#elif (ETH_MII_TXD0_PORT_ID == 1)
+#define ETH_MII_TXD0_PORT G
+#define ETH_MII_TXD0_PIN  GPIO_PIN_13
+#else
+#error "Invalid ETH_MII_TXD0 Pin Configuration!"
+#endif
+//     <o> ETH_MII_TXD1 Pin <0=>PB13 <1=>PG14
+#define ETH_MII_TXD1_PORT_ID 0
+#if (ETH_MII_TXD1_PORT_ID == 0)
+#define ETH_MII_TXD1_PORT B
+#define ETH_MII_TXD1_PIN  GPIO_PIN_13
+#elif (ETH_MII_TXD1_PORT_ID == 1)
+#define ETH_MII_TXD1_PORT G
+#define ETH_MII_TXD1_PIN  GPIO_PIN_14
+#else
+#error "Invalid ETH_MII_TXD1 Pin Configuration!"
+#endif
+//     <o> ETH_MII_TXD2 Pin <0=>PC2
+#define ETH_MII_TXD2_PORT_ID 0
+#if (ETH_MII_TXD2_PORT_ID == 0)
+#define ETH_MII_TXD2_PORT C
+#define ETH_MII_TXD2_PIN  GPIO_PIN_2
+#else
+#error "Invalid ETH_MII_TXD2 Pin Configuration!"
+#endif
+//     <o> ETH_MII_TXD3 Pin <0=>PB8 <1=>PE2
+#define ETH_MII_TXD3_PORT_ID 0
+#if (ETH_MII_TXD3_PORT_ID == 0)
+#define ETH_MII_TXD3_PORT B
+#define ETH_MII_TXD3_PIN  GPIO_PIN_8
+#elif (ETH_MII_TXD3_PORT_ID == 1)
+#define ETH_MII_TXD3_PORT E
+#define ETH_MII_TXD3_PIN  GPIO_PIN_2
+#else
+#error "Invalid ETH_MII_TXD3 Pin Configuration!"
+#endif
+//     <o> ETH_MII_TX_EN Pin <0=>PB11 <1=>PG11
+#define ETH_MII_TX_EN_PORT_ID 0
+#if (ETH_MII_TX_EN_PORT_ID == 0)
+#define ETH_MII_TX_EN_PORT B
+#define ETH_MII_TX_EN_PIN  GPIO_PIN_11
+#elif (ETH_MII_TX_EN_PORT_ID == 1)
+#define ETH_MII_TX_EN_PORT G
+#define ETH_MII_TX_EN_PIN  GPIO_PIN_11
+#else
+#error "Invalid ETH_MII_TX_EN Pin Configuration!"
+#endif
+//     <o> ETH_MII_RX_CLK Pin <0=>PA1
+#define ETH_MII_RX_CLK_PORT_ID 0
+#if (ETH_MII_RX_CLK_PORT_ID == 0)
+#define ETH_MII_RX_CLK_PORT A
+#define ETH_MII_RX_CLK_PIN  GPIO_PIN_1
+#else
+#error "Invalid ETH_MII_RX_CLK Pin Configuration!"
+#endif
+//     <o> ETH_MII_RXD0 Pin <0=>PC4
+#define ETH_MII_RXD0_PORT_ID 0
+#if (ETH_MII_RXD0_PORT_ID == 0)
+#define ETH_MII_RXD0_PORT C
+#define ETH_MII_RXD0_PIN  GPIO_PIN_4
+#else
+#error "Invalid ETH_MII_RXD0 Pin Configuration!"
+#endif
+//     <o> ETH_MII_RXD1 Pin <0=>PC5
+#define ETH_MII_RXD1_PORT_ID 0
+#if (ETH_MII_RXD1_PORT_ID == 0)
+#define ETH_MII_RXD1_PORT C
+#define ETH_MII_RXD1_PIN  GPIO_PIN_5
+#else
+#error "Invalid ETH_MII_RXD1 Pin Configuration!"
+#endif
+//     <o> ETH_MII_RXD2 Pin <0=>PB0 <1=>PH6
+#define ETH_MII_RXD2_PORT_ID 0
+#if (ETH_MII_RXD2_PORT_ID == 0)
+#define ETH_MII_RXD2_PORT B
+#define ETH_MII_RXD2_PIN  GPIO_PIN_0
+#elif (ETH_MII_RXD2_PORT_ID == 1)
+#define ETH_MII_RXD2_PORT H
+#define ETH_MII_RXD2_PIN  GPIO_PIN_6
+#else
+#error "Invalid ETH_MII_RXD2 Pin Configuration!"
+#endif
+//     <o> ETH_MII_RXD3 Pin <0=>PB1 <1=>PH7
+#define ETH_MII_RXD3_PORT_ID 0
+#if (ETH_MII_RXD3_PORT_ID == 0)
+#define ETH_MII_RXD3_PORT B
+#define ETH_MII_RXD3_PIN  GPIO_PIN_1
+#elif (ETH_MII_RXD3_PORT_ID == 1)
+#define ETH_MII_RXD3_PORT H
+#define ETH_MII_RXD3_PIN  GPIO_PIN_7
+#else
+#error "Invalid ETH_MII_RXD3 Pin Configuration!"
+#endif
+//     <o> ETH_MII_RX_DV Pin <0=>PA7
+#define ETH_MII_RX_DV_PORT_ID 0
+#if (ETH_MII_RX_DV_PORT_ID == 0)
+#define ETH_MII_RX_DV_PORT A
+#define ETH_MII_RX_DV_PIN  GPIO_PIN_7
+#else
+#error "Invalid ETH_MII_RX_DV Pin Configuration!"
+#endif
+//     <o> ETH_MII_RX_ER Pin <0=>PB10 <1=>PI10
+#define ETH_MII_RX_ER_PORT_ID 0
+#if (ETH_MII_RX_ER_PORT_ID == 0)
+#define ETH_MII_RX_ER_PORT B
+#define ETH_MII_RX_ER_PIN  GPIO_PIN_10
+#elif (ETH_MII_RX_ER_PORT_ID == 1)
+#define ETH_MII_RX_ER_PORT I
+#define ETH_MII_RX_ER_PIN  GPIO_PIN_10
+#else
+#error "Invalid ETH_MII_RX_ER Pin Configuration!"
+#endif
+//     <o> ETH_MII_CRS Pin <0=>PA0 <1=>PH2
+#define ETH_MII_CRS_PORT_ID 0
+#if (ETH_MII_CRS_PORT_ID == 0)
+#define ETH_MII_CRS_PORT A
+#define ETH_MII_CRS_PIN  GPIO_PIN_0
+#elif (ETH_MII_CRS_PORT_ID == 1)
+#define ETH_MII_CRS_PORT H
+#define ETH_MII_CRS_PIN  GPIO_PIN_2
+#else
+#error "Invalid ETH_MII_CRS Pin Configuration!"
+#endif
+//     <o> ETH_MII_COL Pin <0=>PA3 <1=>PH3
+#define ETH_MII_COL_PORT_ID 0
+#if (ETH_MII_COL_PORT_ID == 0)
+#define ETH_MII_COL_PORT A
+#define ETH_MII_COL_PIN  GPIO_PIN_3
+#elif (ETH_MII_COL_PORT_ID == 1)
+#define ETH_MII_COL_PORT H
+#define ETH_MII_COL_PIN  GPIO_PIN_3
+#else
+#error "Invalid ETH_MII_COL Pin Configuration!"
+#endif
+
+//   </e>
+
+//   <e> RMII (Reduced Media Independent Interface)
+#define ETH_RMII              0
+
+//     <o> ETH_RMII_TXD0 Pin <0=>PB12 <1=>PG13
+#define ETH_RMII_TXD0_PORT_ID 1
+#if (ETH_RMII_TXD0_PORT_ID == 0)
+#define ETH_RMII_TXD0_PORT B
+#define ETH_RMII_TXD0_PIN  GPIO_PIN_12
+#elif (ETH_RMII_TXD0_PORT_ID == 1)
+#define ETH_RMII_TXD0_PORT G
+#define ETH_RMII_TXD0_PIN  GPIO_PIN_13
+#else
+#error "Invalid ETH_RMII_TXD0 Pin Configuration!"
+#endif
+//     <o> ETH_RMII_TXD1 Pin <0=>PB13 <1=>PG14
+#define ETH_RMII_TXD1_PORT_ID 1
+#if (ETH_RMII_TXD1_PORT_ID == 0)
+#define ETH_RMII_TXD1_PORT B
+#define ETH_RMII_TXD1_PIN  GPIO_PIN_13
+#elif (ETH_RMII_TXD1_PORT_ID == 1)
+#define ETH_RMII_TXD1_PORT G
+#define ETH_RMII_TXD1_PIN  GPIO_PIN_14
+#else
+#error "Invalid ETH_RMII_TXD1 Pin Configuration!"
+#endif
+//     <o> ETH_RMII_TX_EN Pin <0=>PB11 <1=>PG11
+#define ETH_RMII_TX_EN_PORT_ID 0
+#if (ETH_RMII_TX_EN_PORT_ID == 0)
+#define ETH_RMII_TX_EN_PORT B
+#define ETH_RMII_TX_EN_PIN  GPIO_PIN_11
+#elif (ETH_RMII_TX_EN_PORT_ID == 1)
+#define ETH_RMII_TX_EN_PORT G
+#define ETH_RMII_TX_EN_PIN  GPIO_PIN_11
+#else
+#error "Invalid ETH_RMII_TX_EN Pin Configuration!"
+#endif
+//     <o> ETH_RMII_RXD0 Pin <0=>PC4
+#define ETH_RMII_RXD0_PORT_ID 0
+#if (ETH_RMII_RXD0_PORT_ID == 0)
+#define ETH_RMII_RXD0_PORT C
+#define ETH_RMII_RXD0_PIN  GPIO_PIN_4
+#else
+#error "Invalid ETH_RMII_RXD0 Pin Configuration!"
+#endif
+//     <o> ETH_RMII_RXD1 Pin <0=>PC5
+#define ETH_RMII_RXD1_PORT_ID 0
+#if (ETH_RMII_RXD1_PORT_ID == 0)
+#define ETH_RMII_RXD1_PORT C
+#define ETH_RMII_RXD1_PIN  GPIO_PIN_5
+#else
+#error "Invalid ETH_RMII_RXD1 Pin Configuration!"
+#endif
+//     <o> ETH_RMII_REF_CLK Pin <0=>PA1
+#define ETH_RMII_REF_CLK_PORT_ID 0
+#if (ETH_RMII_REF_CLK_PORT_ID == 0)
+#define ETH_RMII_REF_CLK_PORT A
+#define ETH_RMII_REF_CLK_PIN  GPIO_PIN_1
+#else
+#error "Invalid ETH_RMII_REF_CLK Pin Configuration!"
+#endif
+//     <o> ETH_RMII_CRS_DV Pin <0=>PA7
+#define ETH_RMII_CRS_DV_PORT_ID 0
+#if (ETH_RMII_CRS_DV_PORT_ID == 0)
+#define ETH_RMII_CRS_DV_PORT A
+#define ETH_RMII_CRS_DV_PIN  GPIO_PIN_7
+#else
+#error "Invalid ETH_RMII_CRS_DV Pin Configuration!"
+#endif
+
+//   </e>
+
+//   <o> ETH Interrupt Priority <0-15>
+//   <i> The Interrupt Priority of ETH
+#define ETH_IT_PRIORITY     2
+//   <o> ETH Interrupt SubPriority <0-15>
+//   <i> The Interrupt SubPriority of ETH
+#define ETH_IT_SUB          3
+
+//   <h> Management Data Interface
+//     <o> ETH_MDC Pin <0=>PC1
+#define ETH_MDI_MDC_PORT_ID 0
+#if (ETH_MDI_MDC_PORT_ID == 0)
+#define ETH_MDI_MDC_PORT C
+#define ETH_MDI_MDC_PIN  GPIO_PIN_1
+#else
+#error "Invalid ETH_MDC Pin Configuration!"
+#endif
+//     <o> ETH_MDIO Pin <0=>PA2
+#define ETH_MDI_MDIO_PORT_ID 0
+#if (ETH_MDI_MDIO_PORT_ID == 0)
+#define ETH_MDI_MDIO_PORT A
+#define ETH_MDI_MDIO_PIN  GPIO_PIN_2
+#else
+#error "Invalid ETH_MDIO Pin Configuration!"
+#endif
+//   </h>
 
 // </e>
 
@@ -2564,6 +2819,10 @@ extern "C" {
 #if (CAN1_ENABLE || CAN2_ENABLE || CAN3_ENABLE)
 #include "../CAN_STM32F4xx.h"
 #endif /* (CAN1_ENABLE || CAN2_ENABLE || CAN3_ENABLE) */
+
+#if (ETH_ENABLE)
+#include "../ETH_STM32F4xx.h"
+#endif /* ETH_ENABLE */
 
 #ifdef __cplusplus
 }
