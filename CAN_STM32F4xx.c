@@ -37,7 +37,7 @@ CAN_HandleTypeDef can1_handle = {.Instance = CAN1,
  * @return CAN init status.
  * @retval - 0: `CAN_INIT_OK`:           Success.
  * @retval - 1: `CAN_INIT_RATE_ERR`:     Can not satisfied this baudrate in this
- *                                    condition.
+ *                                       condition.
  * @retval - 2: `CAN_INIT_FILTER_FAIL`:  CAN Filter init failed.
  * @retval - 3: `CAN_INIT_MEM_FAIL`:     CAN receive table memory allocate failed.
  * @retval - 4: `CAN_INIT_FAIL`:         CAN hardware init failed.
@@ -208,7 +208,7 @@ CAN_HandleTypeDef can2_handle = {.Instance = CAN2,
  * @return CAN init status.
  * @retval - 0: `CAN_INIT_OK`:           Success.
  * @retval - 1: `CAN_INIT_RATE_ERR`:     Can not satisfied this baudrate in this
- *                                    condition.
+ *                                       condition.
  * @retval - 2: `CAN_INIT_FILTER_FAIL`:  CAN Filter init failed.
  * @retval - 3: `CAN_INIT_MEM_FAIL`:     CAN receive table memory allocate failed.
  * @retval - 4: `CAN_INIT_FAIL`:         CAN hardware init failed.
@@ -380,7 +380,7 @@ CAN_HandleTypeDef can3_handle = {.Instance = CAN3,
  * @return CAN init status.
  * @retval - 0: `CAN_INIT_OK`:           Success.
  * @retval - 1: `CAN_INIT_RATE_ERR`:     Can not satisfied this baudrate in this
- *                                    condition.
+ *                                       condition.
  * @retval - 2: `CAN_INIT_FILTER_FAIL`:  CAN Filter init failed.
  * @retval - 3: `CAN_INIT_MEM_FAIL`:     CAN receive table memory allocate failed.
  * @retval - 4: `CAN_INIT_FAIL`:         CAN hardware init failed.

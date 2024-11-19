@@ -29,7 +29,7 @@ typedef struct {
     uint8_t *send_buf; /*!< Send data buf.                                  */
     uint32_t head_ptr; /*!< Pointer of send buf to control the length of DMA
                             transfer.                                       */
-    size_t buf_size;   /*!< The size of buffer. Prevent overflow.          */
+    size_t buf_size;   /*!< The size of buffer. Prevent overflow.           */
 } uart_tx_buf_t;
 
 /**
