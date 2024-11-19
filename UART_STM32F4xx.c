@@ -2937,11 +2937,6 @@ int uart_printf(UART_HandleTypeDef *huart, const char *__format, ...) {
         return 0;
     }
 
-    if ((huart->gState) & (HAL_UART_STATE_BUSY_TX | HAL_UART_STATE_BUSY)) {
-        /* The UART is busy. */
-        return 0;
-    }
-
     /* Waiting last transfer end. */
     while (__HAL_UART_GET_FLAG(huart, UART_FLAG_TC) == RESET)
         ;
@@ -2978,12 +2973,6 @@ int uart_scanf(UART_HandleTypeDef *huart, const char *__format, ...) {
 
     if (((huart->gState) & HAL_UART_STATE_READY) == 0) {
         /* The UART is not inited. */
-        return 0;
-    }
-
-    if ((HAL_UART_GetState(huart)) &
-        (HAL_UART_STATE_BUSY_RX | HAL_UART_STATE_BUSY)) {
-        /* The UART is busy. */
         return 0;
     }
 
