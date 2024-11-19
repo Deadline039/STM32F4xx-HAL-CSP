@@ -2937,7 +2937,7 @@ int uart_printf(UART_HandleTypeDef *huart, const char *__format, ...) {
         return 0;
     }
 
-    /* Waiting last transfer end. */
+    /* Wait for last transfer end. */
     while (__HAL_UART_GET_FLAG(huart, UART_FLAG_TC) == RESET)
         ;
 
@@ -3216,7 +3216,7 @@ uint32_t uart_dmarx_read(UART_HandleTypeDef *huart, void *buf,
  *         2: This UART is enabled.
  *         3: Parameter Error, size can't be 0.
  * @warning Must be disabled the UART before resize!
- *          You should call `u(:)artx_deinit()` before call this function,
+ *          You should call `u(s)artx_deinit()` before call this function,
  *          than call `u(s)artx_init()` to using new size.
  *          It may allocated fail when reinitialize uart.
  */
@@ -3442,8 +3442,8 @@ uint8_t uart_dmatx_resize_buf(UART_HandleTypeDef *huart, uint32_t size) {
         return 1;
     }
 
-    if ((huart->gState) & (HAL_UART_STATE_BUSY_TX | HAL_UART_STATE_BUSY) !=
-                              HAL_UART_STATE_READY) {
+    if ((huart->gState) & (HAL_UART_STATE_BUSY_TX | HAL_UART_STATE_BUSY) &
+        ~HAL_UART_STATE_READY) {
         /* The UART is busy. */
         return 3;
     }
