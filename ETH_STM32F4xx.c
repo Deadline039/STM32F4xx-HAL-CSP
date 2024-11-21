@@ -13,20 +13,18 @@
 
 #if ETH_ENABLE
 
-static ETH_HandleTypeDef eth_handle; /**< eth handle */
-static ETH_TxPacketConfig tx_config; /**< eth tx config */
+ETH_HandleTypeDef eth_handle; /**< eth handle */
 /**< ethernet rx dma descriptors */
 static ETH_DMADescTypeDef dma_rx_dscr_tab[ETH_RX_DESC_CNT];
 /**< ethernet tx dma descriptors */
 static ETH_DMADescTypeDef dma_tx_dscr_tab[ETH_TX_DESC_CNT];
 
 /**
- * @brief     eth init
+ * @brief Ethernet initialization.
  *
- * @param[in] mac points to a mac buffer
- * @return    status code
- *            - 0 success
- *            - 1 init failed
+ * @return status code
+ * @retval - 0: success
+ * @retval - 1: init failed
  */
 uint8_t eth_init(uint8_t mac[6]) {
     eth_handle.Instance = ETH;
@@ -39,23 +37,17 @@ uint8_t eth_init(uint8_t mac[6]) {
 
     eth_handle.Init.TxDesc = dma_tx_dscr_tab;
     eth_handle.Init.RxDesc = dma_rx_dscr_tab;
-    eth_handle.Init.RxBuffLen = ETH_RX_BUF_SIZE;
+    eth_handle.Init.RxBuffLen = 1000;
     if (HAL_ETH_Init(&eth_handle) != HAL_OK) {
         return 1;
     }
-
-    /* set tx packet config common parameters */
-    memset(&tx_config, 0, sizeof(ETH_TxPacketConfig));
-    tx_config.Attributes =
-        ETH_TX_PACKETS_FEATURES_CSUM | ETH_TX_PACKETS_FEATURES_CRCPAD;
-    tx_config.ChecksumCtrl = ETH_CHECKSUM_IPHDR_PAYLOAD_INSERT_PHDR_CALC;
-    tx_config.CRCPadCtrl = ETH_CRC_PAD_INSERT;
 
     return 0;
 }
 
 /**
  * @brief Ethernet ISR.
+ *
  */
 void ETH_IRQHandler(void) {
     HAL_ETH_IRQHandler(&eth_handle);
@@ -180,8 +172,6 @@ void HAL_ETH_MspInit(ETH_HandleTypeDef *heth) {
 
     HAL_NVIC_SetPriority(ETH_IRQn, ETH_IT_PRIORITY, ETH_IT_SUB);
     HAL_NVIC_EnableIRQ(ETH_IRQn);
-
-    HAL_ETH_SetMDIOClockRange(&eth_handle);
 }
 
 /**
@@ -229,12 +219,11 @@ void HAL_ETH_MspDeInit(ETH_HandleTypeDef *heth) {
 }
 
 /**
- * @brief  eth deinit
+ * @brief Ethernet deinit.
  *
  * @return status code
- *         - 0 success
- *         - 1 deinit failed
- * @note   none
+ * @retval - 0: success
+ * @retval - 1: init failed
  */
 uint8_t eth_deinit(void) {
     if (HAL_ETH_DeInit(&eth_handle) != HAL_OK) {
@@ -245,68 +234,30 @@ uint8_t eth_deinit(void) {
 }
 
 /**
- * @brief      eth phy read
+ * @brief Ethernet phy read.
  *
- * @param[in]  addr is the device address
- * @param[in]  reg is the register address
- * @param[out] data points to a data buffer
- * @return     status code
- *             - 0 success
- *             - 1 read failed
- * @note
+ * @param reg The register address
+ * @return status code
+ * @retval - 0: success
+ * @retval - 1: init failed
  */
-uint8_t eth_read_phy(uint8_t addr, uint8_t reg, uint16_t *data) {
-    uint32_t out;
+uint32_t eth_read_phy(uint16_t reg) {
+    uint32_t regval;
 
-    if (HAL_ETH_ReadPHYRegister(&eth_handle, addr, reg, &out) != HAL_OK) {
-        return 1;
-    }
-    *data = out & 0xFFFF;
-
-    return 0;
+    HAL_ETH_ReadPHYRegister(&eth_handle, ETH_CHIP_ADDR, reg, &regval);
+    return regval;
 }
 
 /**
- * @brief     eth phy write
+ * @brief Ethernet phy write.
  *
- * @param[in] addr is the device waddress
- * @param[in] reg is the register address
- * @param[in] data is the set data
- * @return    status code
- *            - 0 success
- *            - 1 write failed
- * @note      none
+ * @param reg The register address
+ * @param value The data will be write
  */
-uint8_t eth_write_phy(uint8_t addr, uint8_t reg, uint16_t data) {
-    if (HAL_ETH_WritePHYRegister(&eth_handle, addr, reg, data) != HAL_OK) {
-        return 1;
-    }
+void eth_write_phy(uint16_t reg, uint16_t value) {
+    uint32_t temp = value;
 
-    return 0;
-}
-
-/**
- * @brief     eth write
- *
- * @param[in] tx_buffer points to ETH_BufferTypeDef structure
- * @param[in] data points to a data buffer
- * @param[in] len is the set length
- * @return    status code
- *            - 0 success
- *            - 1 write failed
- * @note      none
- */
-uint8_t eth_write(ETH_BufferTypeDef *tx_buffer, void *data, uint32_t len) {
-    uint32_t timeout = 1000;
-
-    tx_config.Length = len;
-    tx_config.TxBuffer = tx_buffer;
-    tx_config.pData = data;
-    if (HAL_ETH_Transmit(&eth_handle, &tx_config, timeout) != HAL_OK) {
-        return 1;
-    }
-
-    return 0;
+    HAL_ETH_WritePHYRegister(&eth_handle, ETH_CHIP_ADDR, reg, temp);
 }
 
 #endif /* ETH_ENABLE */

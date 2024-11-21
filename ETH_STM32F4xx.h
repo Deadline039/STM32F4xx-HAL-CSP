@@ -21,12 +21,15 @@ extern "C" {
 
 #if ETH_ENABLE
 
+#define ETH_CHIP_ADDR ((uint16_t)0x0000U)
+
+extern ETH_HandleTypeDef eth_handle;
+
 uint8_t eth_init(uint8_t mac[6]);
 uint8_t eth_deinit(void);
 
-uint8_t eth_write(ETH_BufferTypeDef *tx_buffer, void *data, uint32_t len);
-uint8_t eth_read_phy(uint8_t addr, uint8_t reg, uint16_t *data);
-uint8_t eth_write_phy(uint8_t addr, uint8_t reg, uint16_t data);
+uint32_t eth_read_phy(uint16_t reg);
+void eth_write_phy(uint16_t reg, uint16_t value);
 
 #endif /* ETH_ENABLE */
 
