@@ -165,36 +165,36 @@ uint8_t spi1_deinit(void);
 
 #  if defined(STM32F410Cx)
 // SPI2 SCK available on pins: PB10, PB13
-#    if (SPI2_SCL_PORT_ID > 1)
+#    if (SPI2_SCK_PORT_ID > 1)
 #      error                                                                   \
           "Only PB10 and PB13 can be configured as SPI2 SCK on selected device!"
 #    endif
 #  elif defined(STM32F410Rx)
 // SPI2 SCK available on pins: PB10, PB13, PC7
-#    if (SPI2_SCL_PORT_ID > 2)
+#    if (SPI2_SCK_PORT_ID > 2)
 #      error                                                                   \
           "Only PB10, PB13 and PC7 can be configured as SPI2 SCK on selected device!"
 #    endif
 #  elif !defined(STM32F411xE) && !defined(STM32F446xx)
 // PC7 as SPI2 SCK only available on STM32F411xx and STM32F446xx
-#    if (SPI2_SCL_PORT_ID == 2)
+#    if (SPI2_SCK_PORT_ID == 2)
 #      error "PC7 can not be configured as SPI2 SCK on selected device!"
 #    endif
 #  elif defined(STM32F405xx) || defined(STM32F407xx) ||                        \
       defined(STM32F415xx) || defined(STM32F417xx)
 // PD3 as SPI2 SCK not available on STM32F405xx, STM32F407xx, STM32F415xx and
 // STM32F417xx
-#    if (SPI2_SCL_PORT_ID == 3)
+#    if (SPI2_SCK_PORT_ID == 3)
 #      error "PD3 can not be configured as SPI2 SCK on selected device!"
 #    endif
 #  elif defined(STM32F446xx)
 // PI1 as SPI2 SCK not available on STM32F446xx
-#    if (SPI2_SCL_PORT_ID == 1)
+#    if (SPI2_SCK_PORT_ID == 1)
 #      error "PI1 can not be configured as SPI2 SCK on selected device!"
 #    endif
 #  elif defined(STM32F413xx) || defined(STM32F423xx)
 // PI1 as SPI2 SCK not available on STM32F413xx, STM32F423xx
-#    if (SPI2_SCL_PORT_ID == 4)
+#    if (SPI2_SCK_PORT_ID == 4)
 #      error "PI1 can not be configured as SPI2 SCK on selected device!"
 #    endif
 #  endif
@@ -272,12 +272,12 @@ uint8_t spi2_deinit(void);
       !defined(STM32F412Zx) && !defined(STM32F413xx) && !defined(STM32F423xx)
 // PB12 as SPI3 SCK not available on STM32F411xx, STM32F412xx, STM32F413xx and
 // STM32F423xx
-#    if (SPI3_SCL_PORT_ID == 1)
+#    if (SPI3_SCK_PORT_ID == 1)
 #      error "PB12 can not be configured as SPI3 SCK on selected device!"
 #    endif
 #  endif
 
-#  if (defined(STM32F413xx) || defined(STM32F423xx)) && (SPI3_SCL_PORT_ID == 1)
+#  if (defined(STM32F413xx) || defined(STM32F423xx)) && (SPI3_SCK_PORT_ID == 1)
 #    define SPI3_SCK_GPIO_AF GPIO_AF7_SPI3
 #  else
 #    define SPI3_SCK_GPIO_AF GPIO_AF6_SPI3
@@ -339,11 +339,11 @@ uint8_t spi3_deinit(void);
 
 #  ifndef STM32F411xE
 // PB13 as SPI4 SCK only available on STM32F411xx
-#    if (SPI4_SCL_PORT_ID == 0)
+#    if (SPI4_SCK_PORT_ID == 0)
 #      error "PB13 can not be configured as SPI4 SCK on selected device!"
 #    endif
 #  endif
-#  if (defined(STM32F413xx) || defined(STM32F423xx)) && (SPI4_SCL_PORT_ID == 0)
+#  if (defined(STM32F413xx) || defined(STM32F423xx)) && (SPI4_SCK_PORT_ID == 0)
 #    define SPI4_SCK_GPIO_AF GPIO_AF6_SPI4
 #  else
 #    define SPI4_SCK_GPIO_AF GPIO_AF5_SPI4
@@ -488,34 +488,34 @@ uint8_t spi4_deinit(void);
 
 #  if defined(STM32F410Cx) || defined(STM32F410Rx)
 // SPI5 SCK available on pin: PB0
-#    if (SPI5_SCL_PORT_ID != 0)
+#    if (SPI5_SCK_PORT_ID != 0)
 #      error "Only PB0 can be configured as SPI5 SCK on selected device!"
 #    endif
 #  elif !defined(STM32F411xE)
 // PB0 as SPI5 SCK only available on STM32F411xx
-#    if (SPI5_SCL_PORT_ID == 0)
+#    if (SPI5_SCK_PORT_ID == 0)
 #      error "PB0 can not be configured as SPI5 SCK on selected device!"
 #    endif
 
 // PE2 as SPI5 SCK only available on STM32F411xx
-#    if (SPI5_SCL_PORT_ID == 1)
+#    if (SPI5_SCK_PORT_ID == 1)
 #      error "PE2 can not be configured as SPI5 SCK on selected device!"
 #    endif
 
 // PE12 as SPI5 SCK only available on STM32F411xx
-#    if (SPI5_SCL_PORT_ID == 2)
+#    if (SPI5_SCK_PORT_ID == 2)
 #      error "PE12 can not be configured as SPI5 SCK on selected device!"
 #    endif
 #  else
 // PF7 as SPI5 SCK only available on STM32F427xx, STM32F429xx, STM32F437xx and
 // STM32F439xx
-#    if (SPI5_SCL_PORT_ID == 3)
+#    if (SPI5_SCK_PORT_ID == 3)
 #      error "PF7 can not be configured as SPI5 SCK on selected device!"
 #    endif
 
 // PH6 as SPI5 SCK only available on STM32F427xx, STM32F429xx, STM32F437xx and
 // STM32F439xx
-#    if (SPI5_SCL_PORT_ID == 4)
+#    if (SPI5_SCK_PORT_ID == 4)
 #      error "PH6 can not be configured as SPI5 SCK on selected device!"
 #    endif
 #  endif
@@ -535,29 +535,29 @@ uint8_t spi4_deinit(void);
 #      endif
 #    elif !defined(STM32F411xE)
 // PB1 as SPI5 NSS only available on STM32F411xx
-#      if (SPI5_NSS_PORT_ID == 0)
+#      if (SPI5_NSS_PORT_ID == 1)
 #        error "PB1 can not be configured as SPI5 NSS on selected device!"
 #      endif
 
 // PE4 as SPI5 NSS only available on STM32F411xx
-#      if (SPI5_NSS_PORT_ID == 1)
+#      if (SPI5_NSS_PORT_ID == 2)
 #        error "PE4 can not be configured as SPI5 NSS on selected device!"
 #      endif
 
 // PE11 as SPI5 NSS only available on STM32F411xx
-#      if (SPI5_NSS_PORT_ID == 2)
+#      if (SPI5_NSS_PORT_ID == 3)
 #        error "PE11 can not be configured as SPI5 NSS on selected device!"
 #      endif
 #    else
 // PF6 as SPI5 NSS only available on STM32F427xx, STM32F429xx, STM32F437xx and
 // STM32F439xx
-#      if (SPI5_NSS_PORT_ID == 3)
+#      if (SPI5_NSS_PORT_ID == 4)
 #        error "PF6 can not be configured as SPI5 NSS on selected device!"
 #      endif
 
 // PH5 as SPI5 NSS only available on STM32F427xx, STM32F429xx, STM32F437xx and
 // STM32F439xx
-#      if (SPI5_NSS_PORT_ID == 4)
+#      if (SPI5_NSS_PORT_ID == 5)
 #        error "PH5 can not be configured as SPI5 NSS on selected device!"
 #      endif
 #    endif
