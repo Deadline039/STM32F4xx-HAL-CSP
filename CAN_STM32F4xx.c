@@ -847,8 +847,8 @@ uint8_t can_rate_calc(uint32_t baud_rate, uint32_t prop_delay,
  * @retval - 3: Parameter invalid.
  * @retval - 4: This CAN is not initialized.
  */
-uint8_t can_send_mesage(can_selected_t can_selected, uint32_t can_ide,
-                        uint32_t id, uint8_t len, const uint8_t *msg) {
+uint8_t can_send_message(can_selected_t can_selected, uint32_t can_ide,
+                         uint32_t id, uint8_t len, const uint8_t *msg) {
     CAN_HandleTypeDef *can_handle;
     switch (can_selected) {
 
