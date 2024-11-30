@@ -1,5 +1,5 @@
 /**
- * @file    rtc.h
+ * @file    RTC_STM32F4xx.h
  * @author  Deadline039
  * @brief   Chip Support Package of RTC on STM32F4xx
  * @version 1.0
@@ -9,8 +9,8 @@
  *          You should attention the time zone if you want to set time by NTP.
  */
 
-#ifndef __RTC_H
-#define __RTC_H
+#ifndef __RTC_STM32F4XX_H
+#define __RTC_STM32F4XX_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -43,7 +43,7 @@ time_t rtc_get_time_t(void);
 struct tm *rtc_get_time(void);
 
 void rtc_set_time_t(const time_t *_time);
-void rtc_set_time(const struct tm *_tm);
+void rtc_set_time(struct tm *_tm);
 
 #endif /* RTC_ENABLE */
 
@@ -51,4 +51,4 @@ void rtc_set_time(const struct tm *_tm);
 }
 #endif /* __cplusplus */
 
-#endif /* __RTC_H */
+#endif /* __RTC_STM32F4XX_H */

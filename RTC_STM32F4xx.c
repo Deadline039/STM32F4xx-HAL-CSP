@@ -1,5 +1,5 @@
 /**
- * @file    rtc.c
+ * @file    RTC_STM32F4xx.c
  * @author  Deadline039
  * @brief   Chip Support Package of RTC on STM32F4xx
  * @version 1.0
@@ -205,6 +205,7 @@ uint8_t rtc_get_week(uint16_t year, uint8_t month, uint8_t day) {
            7;
     return week;
 }
+
 /**
  * @brief Get now timestamp (Unix timestamp).
  *
@@ -266,7 +267,7 @@ void rtc_set_time_t(const time_t *_time) {
  *
  * @param _tm Now time structure.
  */
-void rtc_set_time(const struct tm *_tm) {
+void rtc_set_time(struct tm *_tm) {
     RTC_DateTypeDef rtc_date = {0};
     RTC_TimeTypeDef rtc_time = {0};
 
