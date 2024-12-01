@@ -37,7 +37,7 @@ uint8_t eth_init(uint8_t mac[6]) {
 
     eth_handle.Init.TxDesc = dma_tx_dscr_tab;
     eth_handle.Init.RxDesc = dma_rx_dscr_tab;
-    eth_handle.Init.RxBuffLen = 1000;
+    eth_handle.Init.RxBuffLen = ETH_RX_BUF_SIZE;
     if (HAL_ETH_Init(&eth_handle) != HAL_OK) {
         return 1;
     }
