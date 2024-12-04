@@ -35,14 +35,15 @@ CAN_HandleTypeDef can1_handle = {.Instance = CAN1,
  * @param prop_delay The propagation delay of bus, include cable and can
  *                   transceiver. Unit: ns.
  * @return CAN init status.
- * @retval - 0: `CAN_INIT_OK`:           Success.
- * @retval - 1: `CAN_INIT_RATE_ERR`:     Can not satisfied this baudrate in this
- *                                       condition.
- * @retval - 2: `CAN_INIT_FILTER_FAIL`:  CAN Filter init failed.
- * @retval - 3: `CAN_INIT_FAIL`:         CAN hardware init failed.
- * @retval - 4: `CAN_INIT_START_FAIL`:   CAN start failed.
- * @retval - 5: `CAN_INIT_NOTIFY_FAIL`:  Enable CAN receive notify failed.
- * @retval - 6: `CAN_INITED`:            This can is inited.
+ * @retval 0-`CAN_INIT_OK`:           Success.
+ * @retval 1-`CAN_INIT_RATE_ERR`:     Can not satisfied this baudrate in this
+ *                                    condition.
+ * @retval 2-`CAN_INIT_FILTER_FAIL`:  CAN Filter init failed.
+ * @retval 3-`CAN_INIT_MEM_FAIL`:     CAN receive table memory allocate failed.
+ * @retval 4-`CAN_INIT_FAIL`:         CAN hardware init failed.
+ * @retval 5-`CAN_INIT_START_FAIL`:   CAN start failed.
+ * @retval 6-`CAN_INIT_NOTIFY_FAIL`:  Enable CAN receive notify failed.
+ * @retval 7-`CAN_INITED`:            This can is inited.
  */
 uint8_t can1_init(uint32_t baud_rate, uint32_t prop_delay) {
     if (__HAL_RCC_CAN1_IS_CLK_ENABLED()) {
@@ -205,17 +206,18 @@ CAN_HandleTypeDef can2_handle = {.Instance = CAN2,
  * @param prop_delay The propagation delay of bus, include cable and can
  *                   transceiver. Unit: ns.
  * @return CAN init status.
- * @retval - 0: `CAN_INIT_OK`:           Success.
- * @retval - 1: `CAN_INIT_RATE_ERR`:     Can not satisfied this baudrate in this
- *                                       condition.
- * @retval - 2: `CAN_INIT_FILTER_FAIL`:  CAN Filter init failed.
- * @retval - 3: `CAN_INIT_FAIL`:         CAN hardware init failed.
- * @retval - 4: `CAN_INIT_START_FAIL`:   CAN start failed.
- * @retval - 5: `CAN_INIT_NOTIFY_FAIL`:  Enable CAN receive notify failed.
- * @retval - 6: `CAN_INITED`:            This can is inited.
+ * @retval 0-`CAN_INIT_OK`:           Success.
+ * @retval 1-`CAN_INIT_RATE_ERR`:     Can not satisfied this baudrate in this
+ *                                    condition.
+ * @retval 2-`CAN_INIT_FILTER_FAIL`:  CAN Filter init failed.
+ * @retval 3-`CAN_INIT_MEM_FAIL`:     CAN receive table memory allocate failed.
+ * @retval 4-`CAN_INIT_FAIL`:         CAN hardware init failed.
+ * @retval 5-`CAN_INIT_START_FAIL`:   CAN start failed.
+ * @retval 6-`CAN_INIT_NOTIFY_FAIL`:  Enable CAN receive notify failed.
+ * @retval 7-`CAN_INITED`:            This can is inited.
  */
 uint8_t can2_init(uint32_t baud_rate, uint32_t prop_delay) {
-    if (HAL_CAN_GetState(&can2_handle) != HAL_CAN_STATE_RESET) {
+    if (__HAL_RCC_CAN2_IS_CLK_ENABLED()) {
         return CAN_INITED;
     }
 
@@ -376,14 +378,15 @@ CAN_HandleTypeDef can3_handle = {.Instance = CAN3,
  * @param prop_delay The propagation delay of bus, include cable and can
  *                   transceiver. Unit: ns.
  * @return CAN init status.
- * @retval - 0: `CAN_INIT_OK`:           Success.
- * @retval - 1: `CAN_INIT_RATE_ERR`:     Can not satisfied this baudrate in this
- *                                       condition.
- * @retval - 2: `CAN_INIT_FILTER_FAIL`:  CAN Filter init failed.
- * @retval - 3: `CAN_INIT_FAIL`:         CAN hardware init failed.
- * @retval - 4: `CAN_INIT_START_FAIL`:   CAN start failed.
- * @retval - 5: `CAN_INIT_NOTIFY_FAIL`:  Enable CAN receive notify failed.
- * @retval - 6: `CAN_INITED`:            This can is inited.
+ * @retval 0-`CAN_INIT_OK`:           Success.
+ * @retval 1-`CAN_INIT_RATE_ERR`:     Can not satisfied this baudrate in this
+ *                                    condition.
+ * @retval 2-`CAN_INIT_FILTER_FAIL`:  CAN Filter init failed.
+ * @retval 3-`CAN_INIT_MEM_FAIL`:     CAN receive table memory allocate failed.
+ * @retval 4-`CAN_INIT_FAIL`:         CAN hardware init failed.
+ * @retval 5-`CAN_INIT_START_FAIL`:   CAN start failed.
+ * @retval 6-`CAN_INIT_NOTIFY_FAIL`:  Enable CAN receive notify failed.
+ * @retval 7-`CAN_INITED`:            This can is inited.
  */
 uint8_t can3_init(uint32_t baud_rate, uint32_t prop_delay) {
     if (__HAL_RCC_CAN3_IS_CLK_ENABLED()) {
@@ -848,7 +851,7 @@ uint8_t can_rate_calc(uint32_t baud_rate, uint32_t prop_delay,
  * @retval 4: This CAN is not initialized.
  */
 uint8_t can_send_mesage(can_selected_t can_selected, uint32_t can_ide,
-                        uint32_t id, uint8_t len, const uint8_t *msg) {
+                        uint32_t id, uint8_t len, uint8_t *msg) {
     CAN_HandleTypeDef *can_handle;
     switch (can_selected) {
 

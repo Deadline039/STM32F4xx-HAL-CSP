@@ -26,10 +26,11 @@ extern "C" {
 #define CAN_INIT_OK             0
 #define CAN_INIT_RATE_ERR       1
 #define CAN_INIT_FILTER_FAIL    2
-#define CAN_INIT_FAIL           3
-#define CAN_INIT_START_FAIL     4
-#define CAN_INIT_NOTIFY_FAIL    5
-#define CAN_INITED              6
+#define CAN_INIT_MEM_FAIL       3
+#define CAN_INIT_FAIL           4
+#define CAN_INIT_START_FAIL     5
+#define CAN_INIT_NOTIFY_FAIL    6
+#define CAN_INITED              7
 
 #define CAN_DEINIT_OK           0
 #define CAN_DEINIT_FAIL         1
@@ -157,7 +158,7 @@ uint8_t can_rate_calc(uint32_t baud_rate, uint32_t prop_delay,
                       uint32_t *tseg1, uint32_t *tseg2);
 
 uint8_t can_send_mesage(can_selected_t can_selected, uint32_t can_ide,
-                        uint32_t id, uint8_t len, const uint8_t *msg);
+                        uint32_t id, uint8_t len, uint8_t *msg);
 
 /**
  * @}
