@@ -400,4 +400,4 @@ uint8_t i2c3_deinit(void);
 }
 #endif /* __cplusplus */
 
-#endif /* __I2C_STM32F7XX_H */
+#endif /* __I2C_STM32F4XX_H */
