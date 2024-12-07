@@ -104,7 +104,7 @@
 //     <o8> The size of Receive FIFO [byte] (Must be power of 2)
 //     <i>  Using FIFO and Buf to implement high reliable USART Receive
 //   </e>
-#define USART1_RX_DMA             0
+#define USART1_RX_DMA             1
 #define USART1_RX_DMA_NUMBER      2
 #define USART1_RX_DMA_STREAM      2
 #define USART1_RX_DMA_CHANNEL     4
@@ -130,7 +130,7 @@
 //     <o7> The size of Send buf [byte]
 //     <i>  Write data to Send buf, and sending with thread safety
 //   </e>
-#define USART1_TX_DMA             0
+#define USART1_TX_DMA             1
 #define USART1_TX_DMA_NUMBER      2
 #define USART1_TX_DMA_STREAM      7
 #define USART1_TX_DMA_CHANNEL     4
@@ -145,7 +145,7 @@
 #define USART2_ENABLE             0
 
 //   <o> USART2_TX Pin <0=>Not Used <1=>PA2 <2=>PD5
-#define USART2_TX_ID              0
+#define USART2_TX_ID              1
 #if (USART2_TX_ID == 0)
 #define USART2_TX 0
 #elif (USART2_TX_ID == 1)
@@ -161,7 +161,7 @@
 #endif
 
 //   <o> USART2_RX Pin <0=>Not Used <1=>PA3 <2=>PD6
-#define USART2_RX_ID 0
+#define USART2_RX_ID 1
 #if (USART2_RX_ID == 0)
 #define USART2_RX 0
 #elif (USART2_RX_ID == 1)
@@ -274,7 +274,7 @@
 #define USART3_ENABLE             0
 
 //   <o> USART3_TX Pin <0=>Not Used <1=>PB10 <2=>PC10 <3=>PD8
-#define USART3_TX_ID              0
+#define USART3_TX_ID              1
 #if (USART3_TX_ID == 0)
 #define USART3_TX 0
 #elif (USART3_TX_ID == 1)
@@ -294,7 +294,7 @@
 #endif
 
 //   <o> USART3_RX Pin <0=>Not Used <1=>PB11 <2=>PC11 <3=>PD9 <4=>PC5
-#define USART3_RX_ID 0
+#define USART3_RX_ID 1
 #if (USART3_RX_ID == 0)
 #define USART3_RX 0
 #elif (USART3_RX_ID == 1)
@@ -415,7 +415,7 @@
 #define UART4_ENABLE              0
 
 //   <o> UART4_TX Pin <0=>Not Used <1=>PA0 <2=>PC10 <3=>PD10 <4=>PA12 <5=>PD1
-#define UART4_TX_ID               0
+#define UART4_TX_ID               2
 #if (UART4_TX_ID == 0)
 #define UART4_TX 0
 #elif (UART4_TX_ID == 1)
@@ -443,7 +443,7 @@
 #endif
 
 //   <o> UART4_RX Pin <0=>Not Used <1=>PA1 <2=>PC11 <3=>PA11 <4=>PD0
-#define UART4_RX_ID 0
+#define UART4_RX_ID 2
 #if (UART4_RX_ID == 0)
 #define UART4_RX 0
 #elif (UART4_RX_ID == 1)
@@ -532,7 +532,7 @@
 #define UART5_ENABLE             0
 
 //   <o> UART5_TX Pin <0=>Not Used <1=>PC12 <2=>PB6 <3=>PB9 <4=>PB13
-#define UART5_TX_ID              0
+#define UART5_TX_ID              1
 #if (UART5_TX_ID == 0)
 #define UART5_TX 0
 #elif (UART5_TX_ID == 1)
@@ -556,7 +556,7 @@
 #endif
 
 //   <o> UART5_RX Pin <0=>Not Used <1=>PD2 <2=>PB5 <3=>PB8 <4=>PB12
-#define UART5_RX_ID 0
+#define UART5_RX_ID 1
 #if (UART5_RX_ID == 0)
 #define UART5_RX 0
 #elif (UART5_RX_ID == 1)
@@ -645,7 +645,7 @@
 #define USART6_ENABLE            0
 
 //   <o> USART6_TX Pin <0=>Not Used <1=>PA11 <2=>PC6 <3=>PG14
-#define USART6_TX_ID             0
+#define USART6_TX_ID             2
 #if (USART6_TX_ID == 0)
 #define USART6_TX 0
 #elif (USART6_TX_ID == 1)
@@ -665,7 +665,7 @@
 #endif
 
 //   <o> USART6_RX Pin <0=>Not Used <1=>PA12 <2=>PC7 <3=>PG9
-#define USART6_RX_ID 0
+#define USART6_RX_ID 2
 #if (USART6_RX_ID == 0)
 #define USART6_RX 0
 #elif (USART6_RX_ID == 1)
@@ -782,7 +782,7 @@
 #define UART7_ENABLE              0
 
 //   <o> UART7_TX Pin <0=>Not Used <1=>PF7 <2=>PE8 <3=>PA15 <4=>PB4
-#define UART7_TX_ID               0
+#define UART7_TX_ID               1
 #if (UART7_TX_ID == 0)
 #define UART7_TX 0
 #elif (UART7_TX_ID == 1)
@@ -806,7 +806,7 @@
 #endif
 
 //   <o> UART7_RX Pin <0=>Not Used <1=>PF6 <2=>PE7 <3=>PA8 <4=>PB3
-#define UART7_RX_ID 0
+#define UART7_RX_ID 1
 #if (UART7_RX_ID == 0)
 #define UART7_RX 0
 #elif (UART7_RX_ID == 1)
@@ -895,7 +895,7 @@
 #define UART8_ENABLE             0
 
 //   <o> UART8_TX Pin <0=>Not Used <1=>PE1 <2=>PF9
-#define UART8_TX_ID              0
+#define UART8_TX_ID              1
 #if (UART8_TX_ID == 0)
 #define UART8_TX 0
 #elif (UART8_TX_ID == 1)
@@ -911,7 +911,7 @@
 #endif
 
 //   <o> UART8_RX Pin <0=>Not Used <1=>PE0 <2=>PF8
-#define UART8_RX_ID 0
+#define UART8_RX_ID 1
 #if (UART8_RX_ID == 0)
 #define UART8_RX 0
 #elif (UART8_RX_ID == 1)
@@ -1183,7 +1183,7 @@
 // </e>
 
 // <e> I2C1 (Inter-integrated Circuit Interface 1)
-#define I2C1_ENABLE               0
+#define I2C1_ENABLE               1
 
 //   <o> I2C1_SCL Pin <0=>PB6 <1=>PB8
 #define I2C1_SCL_PORT_ID          0
@@ -1363,7 +1363,7 @@
 // </e>
 
 // <e> I2C3 (Inter-integrated Circuit Interface 3)
-#define I2C3_ENABLE             0
+#define I2C3_ENABLE             1
 
 //   <o> I2C3_SCL Pin <0=>PH7 <1=>PA8
 #define I2C3_SCL_PORT_ID        0
@@ -1397,7 +1397,7 @@
 
 //   <e> I2C3 Interrupt
 //   <i> Must be enabled when using DMA.
-#define I2C3_IT_ENABLE          0
+#define I2C3_IT_ENABLE          1
 //      <o> I2C3 Interrupt Priority <0-15>
 //      <i> The Interrupt Priority of I2C3
 #define I2C3_IT_PRIORITY        2
@@ -1420,7 +1420,7 @@
 //     <o6> DMA Rx Interrupt SubPriority <0-15>
 //     <i>  The Interrupt SubPriority of DMA Rx
 //   </e>
-#define I2C3_RX_DMA             0
+#define I2C3_RX_DMA             1
 #define I2C3_RX_DMA_NUMBER      1
 #define I2C3_RX_DMA_STREAM      2
 #define I2C3_RX_DMA_CHANNEL     3
@@ -1442,7 +1442,7 @@
 //     <o6> DMA Tx Interrupt SubPriority <0-15>
 //     <i>  The Interrupt SubPriority of DMA Tx
 //   </e>
-#define I2C3_TX_DMA             0
+#define I2C3_TX_DMA             1
 #define I2C3_TX_DMA_NUMBER      1
 #define I2C3_TX_DMA_STREAM      4
 #define I2C3_TX_DMA_CHANNEL     3
@@ -1456,7 +1456,7 @@
 #define SPI1_ENABLE             0
 
 //   <o> SPI1_MISO Pin <0=>Not Used <1=>PA6 <2=>PB4
-#define SPI1_MISO_PORT_ID       0
+#define SPI1_MISO_PORT_ID       1
 #if (SPI1_MISO_PORT_ID == 0)
 #define SPI1_MISO 0
 #elif (SPI1_MISO_PORT_ID == 1)
@@ -1472,7 +1472,7 @@
 #endif
 
 //   <o> SPI1_MOSI Pin <0=>Not Used <1=>PA7 <2=>PB5
-#define SPI1_MOSI_PORT_ID 0
+#define SPI1_MOSI_PORT_ID 1
 #if (SPI1_MOSI_PORT_ID == 0)
 #define SPI1_MOSI 0
 #elif (SPI1_MOSI_PORT_ID == 1)
@@ -1500,7 +1500,7 @@
 #endif
 
 //   <o> SPI1_NSS Pin <0=>Not Used <1=>PA4 <2=>PA15
-#define SPI1_NSS_PORT_ID 0
+#define SPI1_NSS_PORT_ID 1
 #if (SPI1_NSS_PORT_ID == 0)
 #define SPI1_NSS 0
 #elif (SPI1_NSS_PORT_ID == 1)
@@ -1576,7 +1576,7 @@
 #define SPI2_ENABLE             0
 
 //   <o> SPI2_MISO Pin <0=>Not Used <1=>PB14 <2=>PC2 <3=>PI2 <4=>PA12
-#define SPI2_MISO_PORT_ID       0
+#define SPI2_MISO_PORT_ID       1
 #if (SPI2_MISO_PORT_ID == 0)
 #define SPI2_MISO 0
 #elif (SPI2_MISO_PORT_ID == 1)
@@ -1600,7 +1600,7 @@
 #endif
 
 //   <o> SPI2_MOSI Pin <0=>Not Used <1=>PB15 <2=>PC3 <3=>PI3 <4=>PA10
-#define SPI2_MOSI_PORT_ID 0
+#define SPI2_MOSI_PORT_ID 1
 #if (SPI2_MOSI_PORT_ID == 0)
 #define SPI2_MOSI 0
 #elif (SPI2_MOSI_PORT_ID == 1)
@@ -1648,7 +1648,7 @@
 #endif
 
 //   <o> SPI2_NSS Pin <0=>Not Used <1=>PB9 <2=>PB12 <3=>PI0 <4=>PA11
-#define SPI2_NSS_PORT_ID 0
+#define SPI2_NSS_PORT_ID 1
 #if (SPI2_NSS_PORT_ID == 0)
 #define SPI2_NSS 0
 #elif (SPI2_NSS_PORT_ID == 1)
@@ -1673,7 +1673,7 @@
 
 //   <e> SPI2 Interrupt
 //   <i> Must be enabled when using DMA.
-#define SPI2_IT_ENABLE          0
+#define SPI2_IT_ENABLE          1
 //     <o> SPI2 Interrupt Priority <0-15>
 //     <i> The Interrupt Priority of SPI2
 #define SPI2_IT_PRIORITY        2
@@ -1696,7 +1696,7 @@
 //     <o6> DMA Rx Interrupt SubPriority <0-15>
 //     <i>  The Interrupt SubPriority of DMA Rx
 //   </e>
-#define SPI2_RX_DMA             0
+#define SPI2_RX_DMA             1
 #define SPI2_RX_DMA_NUMBER      1
 #define SPI2_RX_DMA_STREAM      3
 #define SPI2_RX_DMA_CHANNEL     0
@@ -1718,7 +1718,7 @@
 //     <o6> DMA Tx Interrupt SubPriority <0-15>
 //     <i>  The Interrupt SubPriority of DMA Tx
 //   </e>
-#define SPI2_TX_DMA             0
+#define SPI2_TX_DMA             1
 #define SPI2_TX_DMA_NUMBER      1
 #define SPI2_TX_DMA_STREAM      4
 #define SPI2_TX_DMA_CHANNEL     0
@@ -1732,7 +1732,7 @@
 #define SPI3_ENABLE             0
 
 //   <o> SPI3_MISO Pin <0=>Not Used <1=>PB4 <2=>PC11
-#define SPI3_MISO_PORT_ID       0
+#define SPI3_MISO_PORT_ID       1
 #if (SPI3_MISO_PORT_ID == 0)
 #define SPI3_MISO 0
 #elif (SPI3_MISO_PORT_ID == 1)
@@ -1748,7 +1748,7 @@
 #endif
 
 //   <o> SPI3_MOSI Pin <0=>Not Used <1=>PB5 <2=>PC12 <3=>PD6
-#define SPI3_MOSI_PORT_ID 0
+#define SPI3_MOSI_PORT_ID 1
 #if (SPI3_MOSI_PORT_ID == 0)
 #define SPI3_MOSI 0
 #elif (SPI3_MOSI_PORT_ID == 1)
@@ -1783,7 +1783,7 @@
 #endif
 
 //   <o> SPI3_NSS Pin <0=>Not Used <1=>PA4 <2=>PA15
-#define SPI3_NSS_PORT_ID 0
+#define SPI3_NSS_PORT_ID 1
 #if (SPI3_NSS_PORT_ID == 0)
 #define SPI3_NSS 0
 #elif (SPI3_NSS_PORT_ID == 1)
@@ -1800,7 +1800,7 @@
 
 //   <e> SPI3 Interrupt
 //   <i> Must be enabled when using DMA.
-#define SPI3_IT_ENABLE          0
+#define SPI3_IT_ENABLE          1
 //     <o> SPI3 Interrupt Priority <0-15>
 //     <i> The Interrupt Priority of SPI3
 #define SPI3_IT_PRIORITY        2
@@ -1823,7 +1823,7 @@
 //     <o6> DMA Rx Interrupt SubPriority <0-15>
 //     <i>  The Interrupt SubPriority of DMA Rx
 //   </e>
-#define SPI3_RX_DMA             0
+#define SPI3_RX_DMA             1
 #define SPI3_RX_DMA_NUMBER      1
 #define SPI3_RX_DMA_STREAM      0
 #define SPI3_RX_DMA_CHANNEL     0
@@ -1845,7 +1845,7 @@
 //     <o6> DMA Tx Interrupt SubPriority <0-15>
 //     <i>  The Interrupt SubPriority of DMA Tx
 //   </e>
-#define SPI3_TX_DMA             0
+#define SPI3_TX_DMA             1
 #define SPI3_TX_DMA_NUMBER      1
 #define SPI3_TX_DMA_STREAM      5
 #define SPI3_TX_DMA_CHANNEL     0
@@ -1859,7 +1859,7 @@
 #define SPI4_ENABLE             0
 
 //   <o> SPI4_MISO Pin <0=>Not Used <1=>PA11 <2=>PE5 <3=>PE13
-#define SPI4_MISO_PORT_ID       0
+#define SPI4_MISO_PORT_ID       2
 #if (SPI4_MISO_PORT_ID == 0)
 #define SPI4_MISO 0
 #elif (SPI4_MISO_PORT_ID == 1)
@@ -1879,7 +1879,7 @@
 #endif
 
 //   <o> SPI4_MOSI Pin <0=>Not Used <1=>PA1 <2=>PE6 <3=>PE14
-#define SPI4_MOSI_PORT_ID 0
+#define SPI4_MOSI_PORT_ID 2
 #if (SPI4_MOSI_PORT_ID == 0)
 #define SPI4_MOSI 0
 #elif (SPI4_MOSI_PORT_ID == 1)
@@ -1899,7 +1899,7 @@
 #endif
 
 //   <o> SPI4_SCK Pin <0=>PB13 <1=>PE2 <2=>PE12
-#define SPI4_SCK_PORT_ID 0
+#define SPI4_SCK_PORT_ID 1
 #if (SPI4_SCK_PORT_ID == 0)
 #define SPI4_SCK_PORT B
 #define SPI4_SCK_PIN  GPIO_PIN_13
@@ -1914,7 +1914,7 @@
 #endif
 
 //   <o> SPI4_NSS Pin <0=>Not Used <1=>PB12 <2=>PE4 <3=>PE11
-#define SPI4_NSS_PORT_ID 0
+#define SPI4_NSS_PORT_ID 2
 #if (SPI4_NSS_PORT_ID == 0)
 #define SPI4_NSS 0
 #elif (SPI4_NSS_PORT_ID == 1)
@@ -1935,7 +1935,7 @@
 
 //   <e> SPI4 Interrupt
 //   <i> Must be enabled when using DMA.
-#define SPI4_IT_ENABLE          0
+#define SPI4_IT_ENABLE          1
 //     <o> SPI4 Interrupt Priority <0-15>
 //     <i> The Interrupt Priority of SPI4
 #define SPI4_IT_PRIORITY        2
@@ -1958,7 +1958,7 @@
 //     <o6> DMA Rx Interrupt SubPriority <0-15>
 //     <i>  The Interrupt SubPriority of DMA Rx
 //   </e>
-#define SPI4_RX_DMA             0
+#define SPI4_RX_DMA             1
 #define SPI4_RX_DMA_NUMBER      1
 #define SPI4_RX_DMA_STREAM      0
 #define SPI4_RX_DMA_CHANNEL     0
@@ -1980,7 +1980,7 @@
 //     <o6> DMA Tx Interrupt SubPriority <0-15>
 //     <i>  The Interrupt SubPriority of DMA Tx
 //   </e>
-#define SPI4_TX_DMA             0
+#define SPI4_TX_DMA             1
 #define SPI4_TX_DMA_NUMBER      1
 #define SPI4_TX_DMA_STREAM      5
 #define SPI4_TX_DMA_CHANNEL     0
@@ -1994,7 +1994,7 @@
 #define SPI5_ENABLE             0
 
 //   <o> SPI5_MISO Pin <0=>Not Used <1=>PA12 <2=>PE5 <3=>PE13 <4=>PF8 <5=>PH7
-#define SPI5_MISO_PORT_ID       0
+#define SPI5_MISO_PORT_ID       4
 #if (SPI5_MISO_PORT_ID == 0)
 #define SPI5_MISO 0
 #elif (SPI5_MISO_PORT_ID == 1)
@@ -2023,7 +2023,7 @@
 
 //   <o> SPI5_MOSI Pin <0=>Not Used <1=>PA10 <2=>PB8 <3=>PE6 <4=>PE14 <5=>PF9
 //   <6=>PF11
-#define SPI5_MOSI_PORT_ID 0
+#define SPI5_MOSI_PORT_ID 5
 #if (SPI5_MOSI_PORT_ID == 0)
 #define SPI5_MOSI 0
 #elif (SPI5_MOSI_PORT_ID == 1)
@@ -2076,7 +2076,7 @@
 #endif
 
 //   <o> SPI5_NSS Pin <0=>Not Used <1=>PB1 <2=>PE4 <3=>PE11 <4=>PF6 <5=>PH5
-#define SPI5_NSS_PORT_ID 0
+#define SPI5_NSS_PORT_ID 4
 #if (SPI5_NSS_PORT_ID == 0)
 #define SPI5_NSS 0
 #elif (SPI5_NSS_PORT_ID == 1)
@@ -2164,7 +2164,7 @@
 #define SPI6_ENABLE             0
 
 //   <o> SPI6_MISO Pin <0=>Not Used <1=>PG12
-#define SPI6_MISO_PORT_ID       0
+#define SPI6_MISO_PORT_ID       1
 #if (SPI6_MISO_PORT_ID == 0)
 #define SPI6_MISO 0
 #elif (SPI6_MISO_PORT_ID == 1)
@@ -2176,7 +2176,7 @@
 #endif
 
 //   <o> SPI6_MOSI Pin <0=>Not Used <1=>PG14
-#define SPI6_MOSI_PORT_ID 0
+#define SPI6_MOSI_PORT_ID 1
 #if (SPI6_MOSI_PORT_ID == 0)
 #define SPI6_MOSI 0
 #elif (SPI6_MOSI_PORT_ID == 1)
@@ -2210,7 +2210,7 @@
 
 //   <e> SPI6 Interrupt
 //   <i> Must be enabled when using DMA.
-#define SPI6_IT_ENABLE          0
+#define SPI6_IT_ENABLE          1
 //     <o> SPI6 Interrupt Priority <0-15>
 //     <i> The Interrupt Priority of SPI6
 #define SPI6_IT_PRIORITY        2
@@ -2233,7 +2233,7 @@
 //     <o6> DMA Rx Interrupt SubPriority <0-15>
 //     <i>  The Interrupt SubPriority of DMA Rx
 //   </e>
-#define SPI6_RX_DMA             0
+#define SPI6_RX_DMA             1
 #define SPI6_RX_DMA_NUMBER      2
 #define SPI6_RX_DMA_STREAM      6
 #define SPI6_RX_DMA_CHANNEL     1
@@ -2255,7 +2255,7 @@
 //     <o6> DMA Tx Interrupt SubPriority <0-15>
 //     <i>  The Interrupt SubPriority of DMA Tx
 //   </e>
-#define SPI6_TX_DMA             0
+#define SPI6_TX_DMA             1
 #define SPI6_TX_DMA_NUMBER      2
 #define SPI6_TX_DMA_STREAM      5
 #define SPI6_TX_DMA_CHANNEL     1
@@ -2385,16 +2385,6 @@
 #error "Invalid CAN2_TX Pin Configuration!"
 #endif
 
-//   <e> Enable CAN Transmit Interrupt
-#define CAN2_ENABLE_TX_IT    0
-//     <o> CAN Transmit Interrupt Priority <0-15>
-//     <i> The Interrupt Priority of CAN Transmit
-#define CAN2_TX_IT_PRIORITY  2
-//     <o> CAN Transmit Interrupt SubPriority <0-15>
-//     <i> The Interrupt SubPriority of CAN Transmit
-#define CAN2_TX_IT_SUB       3
-//   </e>
-
 //   <e> Enable CAN Receive FIFO0 Interrupt
 #define CAN2_ENABLE_RX0_IT   0
 //     <o> CAN Receive FIFO0 Interrupt Priority <0-15>
@@ -2454,16 +2444,6 @@
 #else
 #error "Invalid CAN3_TX Pin Configuration!"
 #endif
-
-//   <e> Enable CAN Transmit Interrupt
-#define CAN3_ENABLE_TX_IT      0
-//     <o> CAN Transmit Interrupt Priority <0-15>
-//     <i> The Interrupt Priority of CAN Transmit
-#define CAN3_TX_IT_PRIORITY    2
-//     <o> CAN Transmit Interrupt SubPriority <0-15>
-//     <i> The Interrupt SubPriority of CAN Transmit
-#define CAN3_TX_IT_SUB         3
-//   </e>
 
 //   <e> Enable CAN Receive FIFO0 Interrupt
 #define CAN3_ENABLE_RX0_IT     0
@@ -2845,6 +2825,7 @@ extern "C" {
 #include "../CAN_STM32F4xx.h"
 #endif /* (CAN1_ENABLE || CAN2_ENABLE || CAN3_ENABLE) */
 
+<<<<<<< HEAD == == == =
 #if (ETH_ENABLE)
 #include "../ETH_STM32F4xx.h"
 #endif /* ETH_ENABLE */
@@ -2853,6 +2834,7 @@ extern "C" {
 #include "../RTC_STM32F4xx.h"
 #endif /* RTC_ENABLE */
 
+               >>>>>>> a2afc7ce3b0fc69bedf8a191e80d9b6502d286ef
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

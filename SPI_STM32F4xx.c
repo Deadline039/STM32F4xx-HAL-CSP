@@ -58,10 +58,10 @@ static DMA_HandleTypeDef spi1_dmatx_handle = {
  * @param data_size Data size. `SPI_DATASIZE_8BIT` or `SPI_DATASIZE_16BIT`
  * @param first_bit `SPI_FIRSTBIT_MSB` or `SPI_FIRSTBIT_LSB`
  * @return SPI init status.
- * @retval - 0: `SPI_INIT_OK`:       Success.
- * @retval - 1: `SPI_INIT_FAIL`:     SPI init failed.
- * @retval - 2: `SPI_INIT_DMA_FAIL`: SPI DMA init failed.
- * @retval - 3: `SPI_INITED`:        SPI is inited.
+ * @retval 0-`SPI_INIT_OK`:       Success.
+ * @retval 1-`SPI_INIT_FAIL`:     SPI init failed.
+ * @retval 2-`SPI_INIT_DMA_FAIL`: SPI DMA init failed.
+ * @retval 3-`SPI_INITED`:        SPI is inited.
  */
 uint8_t spi1_init(uint32_t mode, spi_clk_mode_t clk_mode, uint32_t data_size,
                   uint32_t first_bit) {
@@ -211,10 +211,10 @@ void SPI1_TX_DMA_IRQHandler(void) {
  * @brief SPI1 deinitialization.
  *
  * @return SPI deinit status.
- * @retval - 0: `SPI_DEINIT_OK`:       Success.
- * @retval - 1: `SPI_DEINIT_FAIL`:     SPI deinit failed.
- * @retval - 2: `SPI_DEINIT_DMA_FAIL`: SPI DMA deinit failed.
- * @retval - 3: `SPI_NO_INIT`:         SPI is not init.
+ * @retval 0-`SPI_DEINIT_OK`:       Success.
+ * @retval 1-`SPI_DEINIT_FAIL`:     SPI deinit failed.
+ * @retval 2-`SPI_DEINIT_DMA_FAIL`: SPI DMA deinit failed.
+ * @retval 3-`SPI_NO_INIT`:         SPI is not init.
  */
 uint8_t spi1_deinit(void) {
     if (__HAL_RCC_SPI1_IS_CLK_DISABLED()) {
@@ -324,10 +324,10 @@ static DMA_HandleTypeDef spi2_dmatx_handle = {
  * @param data_size Data size. `SPI_DATASIZE_8BIT` or `SPI_DATASIZE_16BIT`
  * @param first_bit `SPI_FIRSTBIT_MSB` or `SPI_FIRSTBIT_LSB`
  * @return SPI init status.
- * @retval - 0: `SPI_INIT_OK`:       Success.
- * @retval - 1: `SPI_INIT_FAIL`:     SPI init failed.
- * @retval - 2: `SPI_INIT_DMA_FAIL`: SPI DMA init failed.
- * @retval - 3: `SPI_INITED`:        SPI is inited.
+ * @retval 0-`SPI_INIT_OK`:       Success.
+ * @retval 1-`SPI_INIT_FAIL`:     SPI init failed.
+ * @retval 2-`SPI_INIT_DMA_FAIL`: SPI DMA init failed.
+ * @retval 3-`SPI_INITED`:        SPI is inited.
  */
 uint8_t spi2_init(uint32_t mode, spi_clk_mode_t clk_mode, uint32_t data_size,
                   uint32_t first_bit) {
@@ -477,10 +477,10 @@ void SPI2_TX_DMA_IRQHandler(void) {
  * @brief SPI2 deinitialization.
  *
  * @return SPI deinit status.
- * @retval - 0: `SPI_DEINIT_OK`:       Success.
- * @retval - 1: `SPI_DEINIT_FAIL`:     SPI deinit failed.
- * @retval - 2: `SPI_DEINIT_DMA_FAIL`: SPI DMA deinit failed.
- * @retval - 3: `SPI_NO_INIT`:         SPI is not init.
+ * @retval 0-`SPI_DEINIT_OK`:       Success.
+ * @retval 1-`SPI_DEINIT_FAIL`:     SPI deinit failed.
+ * @retval 2-`SPI_DEINIT_DMA_FAIL`: SPI DMA deinit failed.
+ * @retval 3-`SPI_NO_INIT`:         SPI is not init.
  */
 uint8_t spi2_deinit(void) {
     if (__HAL_RCC_SPI2_IS_CLK_DISABLED()) {
@@ -590,10 +590,10 @@ static DMA_HandleTypeDef spi3_dmatx_handle = {
  * @param data_size Data size. `SPI_DATASIZE_8BIT` or `SPI_DATASIZE_16BIT`
  * @param first_bit `SPI_FIRSTBIT_MSB` or `SPI_FIRSTBIT_LSB`
  * @return SPI init status.
- * @retval - 0: `SPI_INIT_OK`:       Success.
- * @retval - 1: `SPI_INIT_FAIL`:     SPI init failed.
- * @retval - 2: `SPI_INIT_DMA_FAIL`: SPI DMA init failed.
- * @retval - 3: `SPI_INITED`:        SPI is inited.
+ * @retval 0-`SPI_INIT_OK`:       Success.
+ * @retval 1-`SPI_INIT_FAIL`:     SPI init failed.
+ * @retval 2-`SPI_INIT_DMA_FAIL`: SPI DMA init failed.
+ * @retval 3-`SPI_INITED`:        SPI is inited.
  */
 uint8_t spi3_init(uint32_t mode, spi_clk_mode_t clk_mode, uint32_t data_size,
                   uint32_t first_bit) {
@@ -746,10 +746,10 @@ void SPI3_TX_DMA_IRQHandler(void) {
  * @brief SPI3 deinitialization.
  *
  * @return SPI deinit status.
- * @retval - 0: `SPI_DEINIT_OK`:       Success.
- * @retval - 1: `SPI_DEINIT_FAIL`:     SPI deinit failed.
- * @retval - 2: `SPI_DEINIT_DMA_FAIL`: SPI DMA deinit failed.
- * @retval - 3: `SPI_NO_INIT`:         SPI is not init.
+ * @retval 0-`SPI_DEINIT_OK`:       Success.
+ * @retval 1-`SPI_DEINIT_FAIL`:     SPI deinit failed.
+ * @retval 2-`SPI_DEINIT_DMA_FAIL`: SPI DMA deinit failed.
+ * @retval 3-`SPI_NO_INIT`:         SPI is not init.
  */
 uint8_t spi3_deinit(void) {
     if (__HAL_RCC_SPI3_IS_CLK_DISABLED()) {
@@ -859,10 +859,10 @@ static DMA_HandleTypeDef spi4_dmatx_handle = {
  * @param data_size Data size. `SPI_DATASIZE_8BIT` or `SPI_DATASIZE_16BIT`
  * @param first_bit `SPI_FIRSTBIT_MSB` or `SPI_FIRSTBIT_LSB`
  * @return SPI init status.
- * @retval - 0: `SPI_INIT_OK`:       Success.
- * @retval - 1: `SPI_INIT_FAIL`:     SPI init failed.
- * @retval - 2: `SPI_INIT_DMA_FAIL`: SPI DMA init failed.
- * @retval - 3: `SPI_INITED`:        SPI is inited.
+ * @retval 0-`SPI_INIT_OK`:       Success.
+ * @retval 1-`SPI_INIT_FAIL`:     SPI init failed.
+ * @retval 2-`SPI_INIT_DMA_FAIL`: SPI DMA init failed.
+ * @retval 3-`SPI_INITED`:        SPI is inited.
  */
 uint8_t spi4_init(uint32_t mode, spi_clk_mode_t clk_mode, uint32_t data_size,
                   uint32_t first_bit) {
@@ -1015,10 +1015,10 @@ void SPI4_TX_DMA_IRQHandler(void) {
  * @brief SPI4 deinitialization.
  *
  * @return SPI deinit status.
- * @retval - 0: `SPI_DEINIT_OK`:       Success.
- * @retval - 1: `SPI_DEINIT_FAIL`:     SPI deinit failed.
- * @retval - 2: `SPI_DEINIT_DMA_FAIL`: SPI DMA deinit failed.
- * @retval - 3: `SPI_NO_INIT`:         SPI is not init.
+ * @retval 0-`SPI_DEINIT_OK`:       Success.
+ * @retval 1-`SPI_DEINIT_FAIL`:     SPI deinit failed.
+ * @retval 2-`SPI_DEINIT_DMA_FAIL`: SPI DMA deinit failed.
+ * @retval 3-`SPI_NO_INIT`:         SPI is not init.
  */
 uint8_t spi4_deinit(void) {
     if (__HAL_RCC_SPI4_IS_CLK_DISABLED()) {
@@ -1128,10 +1128,10 @@ static DMA_HandleTypeDef spi5_dmatx_handle = {
  * @param data_size Data size. `SPI_DATASIZE_8BIT` or `SPI_DATASIZE_16BIT`
  * @param first_bit `SPI_FIRSTBIT_MSB` or `SPI_FIRSTBIT_LSB`
  * @return SPI init status.
- * @retval - 0: `SPI_INIT_OK`:       Success.
- * @retval - 1: `SPI_INIT_FAIL`:     SPI init failed.
- * @retval - 2: `SPI_INIT_DMA_FAIL`: SPI DMA init failed.
- * @retval - 3: `SPI_INITED`:        SPI is inited.
+ * @retval 0-`SPI_INIT_OK`:       Success.
+ * @retval 1-`SPI_INIT_FAIL`:     SPI init failed.
+ * @retval 2-`SPI_INIT_DMA_FAIL`: SPI DMA init failed.
+ * @retval 3-`SPI_INITED`:        SPI is inited.
  */
 uint8_t spi5_init(uint32_t mode, spi_clk_mode_t clk_mode, uint32_t data_size,
                   uint32_t first_bit) {
@@ -1284,10 +1284,10 @@ void SPI5_TX_DMA_IRQHandler(void) {
  * @brief SPI5 deinitialization.
  *
  * @return SPI deinit status.
- * @retval - 0: `SPI_DEINIT_OK`:       Success.
- * @retval - 1: `SPI_DEINIT_FAIL`:     SPI deinit failed.
- * @retval - 2: `SPI_DEINIT_DMA_FAIL`: SPI DMA deinit failed.
- * @retval - 3: `SPI_NO_INIT`:         SPI is not init.
+ * @retval 0-`SPI_DEINIT_OK`:       Success.
+ * @retval 1-`SPI_DEINIT_FAIL`:     SPI deinit failed.
+ * @retval 2-`SPI_DEINIT_DMA_FAIL`: SPI DMA deinit failed.
+ * @retval 3-`SPI_NO_INIT`:         SPI is not init.
  */
 uint8_t spi5_deinit(void) {
     if (__HAL_RCC_SPI5_IS_CLK_DISABLED()) {
@@ -1397,10 +1397,10 @@ static DMA_HandleTypeDef spi6_dmatx_handle = {
  * @param data_size Data size. `SPI_DATASIZE_8BIT` or `SPI_DATASIZE_16BIT`
  * @param first_bit `SPI_FIRSTBIT_MSB` or `SPI_FIRSTBIT_LSB`
  * @return SPI init status.
- * @retval - 0: `SPI_INIT_OK`:       Success.
- * @retval - 1: `SPI_INIT_FAIL`:     SPI init failed.
- * @retval - 2: `SPI_INIT_DMA_FAIL`: SPI DMA init failed.
- * @retval - 3: `SPI_INITED`:        SPI is inited.
+ * @retval 0-`SPI_INIT_OK`:       Success.
+ * @retval 1-`SPI_INIT_FAIL`:     SPI init failed.
+ * @retval 2-`SPI_INIT_DMA_FAIL`: SPI DMA init failed.
+ * @retval 3-`SPI_INITED`:        SPI is inited.
  */
 uint8_t spi6_init(uint32_t mode, spi_clk_mode_t clk_mode, uint32_t data_size,
                   uint32_t first_bit) {
@@ -1550,10 +1550,10 @@ void SPI6_TX_DMA_IRQHandler(void) {
  * @brief SPI6 deinitialization.
  *
  * @return SPI deinit status.
- * @retval - 0: `SPI_DEINIT_OK`:       Success.
- * @retval - 1: `SPI_DEINIT_FAIL`:     SPI deinit failed.
- * @retval - 2: `SPI_DEINIT_DMA_FAIL`: SPI DMA deinit failed.
- * @retval - 3: `SPI_NO_INIT`:         SPI is not init.
+ * @retval 0-`SPI_DEINIT_OK`:       Success.
+ * @retval 1-`SPI_DEINIT_FAIL`:     SPI deinit failed.
+ * @retval 2-`SPI_DEINIT_DMA_FAIL`: SPI DMA deinit failed.
+ * @retval 3-`SPI_NO_INIT`:         SPI is not init.
  */
 uint8_t spi6_deinit(void) {
     if (__HAL_RCC_SPI6_IS_CLK_DISABLED()) {
@@ -1662,7 +1662,7 @@ uint16_t spi_rw_two_byte(SPI_HandleTypeDef *hspi, uint16_t tx_data) {
  *
  * @param hspi The handle of SPI
  * @param speed This parameter can ref `SPI_BaudRate_Prescaler`
- * @retval - 0: Success.
+ * @retval 0: Success.
  *         1: SPI is busy now.
  *         2: Parameter invalid.
  * @note Default speed is `SPI_BAUDRATEPRESCALER_8`. Only valid in master mode.

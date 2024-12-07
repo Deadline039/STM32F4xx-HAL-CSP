@@ -26,10 +26,11 @@ extern "C" {
 #define CAN_INIT_OK             0
 #define CAN_INIT_RATE_ERR       1
 #define CAN_INIT_FILTER_FAIL    2
-#define CAN_INIT_FAIL           3
-#define CAN_INIT_START_FAIL     4
-#define CAN_INIT_NOTIFY_FAIL    5
-#define CAN_INITED              6
+#define CAN_INIT_MEM_FAIL       3
+#define CAN_INIT_FAIL           4
+#define CAN_INIT_START_FAIL     5
+#define CAN_INIT_NOTIFY_FAIL    6
+#define CAN_INITED              7
 
 #define CAN_DEINIT_OK           0
 #define CAN_DEINIT_FAIL         1
