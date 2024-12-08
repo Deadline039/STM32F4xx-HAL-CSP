@@ -104,7 +104,7 @@
 //     <o8> The size of Receive FIFO [byte] (Must be power of 2)
 //     <i>  Using FIFO and Buf to implement high reliable USART Receive
 //   </e>
-#define USART1_RX_DMA             1
+#define USART1_RX_DMA             0
 #define USART1_RX_DMA_NUMBER      2
 #define USART1_RX_DMA_STREAM      2
 #define USART1_RX_DMA_CHANNEL     4
@@ -130,7 +130,7 @@
 //     <o7> The size of Send buf [byte]
 //     <i>  Write data to Send buf, and sending with thread safety
 //   </e>
-#define USART1_TX_DMA             1
+#define USART1_TX_DMA             0
 #define USART1_TX_DMA_NUMBER      2
 #define USART1_TX_DMA_STREAM      7
 #define USART1_TX_DMA_CHANNEL     4
@@ -1183,7 +1183,7 @@
 // </e>
 
 // <e> I2C1 (Inter-integrated Circuit Interface 1)
-#define I2C1_ENABLE               1
+#define I2C1_ENABLE               0
 
 //   <o> I2C1_SCL Pin <0=>PB6 <1=>PB8
 #define I2C1_SCL_PORT_ID          0
@@ -1363,7 +1363,7 @@
 // </e>
 
 // <e> I2C3 (Inter-integrated Circuit Interface 3)
-#define I2C3_ENABLE             1
+#define I2C3_ENABLE             0
 
 //   <o> I2C3_SCL Pin <0=>PH7 <1=>PA8
 #define I2C3_SCL_PORT_ID        0
@@ -1994,7 +1994,7 @@
 #define SPI5_ENABLE             0
 
 //   <o> SPI5_MISO Pin <0=>Not Used <1=>PA12 <2=>PE5 <3=>PE13 <4=>PF8 <5=>PH7
-#define SPI5_MISO_PORT_ID       4
+#define SPI5_MISO_PORT_ID       0
 #if (SPI5_MISO_PORT_ID == 0)
 #define SPI5_MISO 0
 #elif (SPI5_MISO_PORT_ID == 1)
@@ -2023,7 +2023,7 @@
 
 //   <o> SPI5_MOSI Pin <0=>Not Used <1=>PA10 <2=>PB8 <3=>PE6 <4=>PE14 <5=>PF9
 //   <6=>PF11
-#define SPI5_MOSI_PORT_ID 5
+#define SPI5_MOSI_PORT_ID 0
 #if (SPI5_MOSI_PORT_ID == 0)
 #define SPI5_MOSI 0
 #elif (SPI5_MOSI_PORT_ID == 1)
@@ -2055,7 +2055,7 @@
 #endif
 
 //   <o> SPI5_SCK Pin <0=>PB0 <1=>PE2 <2=>PE12 <3=>PF7 <4=>PH6
-#define SPI5_SCK_PORT_ID 3
+#define SPI5_SCK_PORT_ID 0
 #if (SPI5_SCK_PORT_ID == 0)
 #define SPI5_SCK_PORT B
 #define SPI5_SCK_PIN  GPIO_PIN_0
@@ -2076,7 +2076,7 @@
 #endif
 
 //   <o> SPI5_NSS Pin <0=>Not Used <1=>PB1 <2=>PE4 <3=>PE11 <4=>PF6 <5=>PH5
-#define SPI5_NSS_PORT_ID 4
+#define SPI5_NSS_PORT_ID 0
 #if (SPI5_NSS_PORT_ID == 0)
 #define SPI5_NSS 0
 #elif (SPI5_NSS_PORT_ID == 1)
@@ -2825,7 +2825,6 @@ extern "C" {
 #include "../CAN_STM32F4xx.h"
 #endif /* (CAN1_ENABLE || CAN2_ENABLE || CAN3_ENABLE) */
 
-<<<<<<< HEAD == == == =
 #if (ETH_ENABLE)
 #include "../ETH_STM32F4xx.h"
 #endif /* ETH_ENABLE */
@@ -2834,7 +2833,6 @@ extern "C" {
 #include "../RTC_STM32F4xx.h"
 #endif /* RTC_ENABLE */
 
-               >>>>>>> a2afc7ce3b0fc69bedf8a191e80d9b6502d286ef
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
