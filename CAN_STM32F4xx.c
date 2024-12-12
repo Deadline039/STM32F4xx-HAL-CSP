@@ -836,6 +836,35 @@ uint8_t can_rate_calc(uint32_t baud_rate, uint32_t prop_delay,
 }
 
 /**
+ * @brief Get the CAN handle with specificd CAN.
+ *
+ * @param can_selected Specific which can will to get.
+ * @return The handle of CAN. return NULL which the CAN doesn't exist.
+ */
+CAN_HandleTypeDef *can_get_handle(can_selected_t can_select) {
+    switch (can_selected) {
+
+#if CAN1_ENABLE
+        case can1_selected:
+            return &can1_handle;
+#endif /* CAN1_ENABLE */
+
+#if CAN2_ENABLE
+        case can2_selected:
+            return &can2_handle;
+#endif /* CAN2_ENABLE */
+
+#if CAN3_ENABLE
+        case can3_selected:
+            return &can3_handle;
+#endif /* CAN3_ENABLE */
+
+        default:
+            return NULL;
+    }
+}
+
+/**
  * @brief CAN Send message.
  *
  * @param can_selected Specific which CAN to send message.
@@ -852,29 +881,13 @@ uint8_t can_rate_calc(uint32_t baud_rate, uint32_t prop_delay,
  */
 uint8_t can_send_message(can_selected_t can_selected, uint32_t can_ide,
                          uint32_t id, uint8_t len, const uint8_t *msg) {
-    CAN_HandleTypeDef *can_handle;
-    switch (can_selected) {
+    CAN_HandleTypeDef *can_handle = can_get_handle(can_selected);
+    if (can_handle == NULL) {
+        return 3;
+    }
 
-#if CAN1_ENABLE
-        case can1_selected: {
-            can_handle = &can1_handle;
-        } break;
-#endif /* CAN1_ENABLE */
-
-#if CAN2_ENABLE
-        case can2_selected: {
-            can_handle = &can2_handle;
-        } break;
-#endif /* CAN2_ENABLE */
-
-#if CAN3_ENABLE
-        case can3_selected: {
-            can_handle = &can3_handle;
-        } break;
-#endif /* CAN3_ENABLE */
-
-        default:
-            return 3;
+    if (len > 8) {
+        return 3;
     }
 
     if (HAL_CAN_GetState(can_handle) == HAL_CAN_STATE_RESET) {
@@ -906,6 +919,65 @@ uint8_t can_send_message(can_selected_t can_selected, uint32_t can_ide,
         HAL_OK) {
         return 1;
     }
+    return 0;
+}
+
+/**
+ * @brief CAN Send Remote message.
+ *
+ * @param can_selected Specific which CAN to send message.
+ * @param can_ide Specific standard ID or Extend ID.
+ * @param id Specific message id.
+ * @param len Specific message length.
+ * @param msg Specific message content.
+ * @return Send status.
+ * @retval 0: Success.
+ * @retval 1: Send error.
+ * @retval 2: Timeout.
+ * @retval 3: Parameter invalid.
+ * @retval 4: This CAN is not initialized.
+ */
+uint8_t can_send_remote(can_selected_t can_selected, uint32_t can_ide,
+                        uint32_t id, uint8_t len, const uint8_t *msg) {
+    CAN_HandleTypeDef *can_handle = can_get_handle(can_selected);
+    if (can_handle == NULL) {
+        return 3;
+    }
+
+    if (len > 8) {
+        return 3;
+    }
+
+    if (HAL_CAN_GetState(can_handle) == HAL_CAN_STATE_RESET) {
+        return 4;
+    }
+
+    uint16_t wait_time = 0;
+    uint32_t tx_mail_box = CAN_TX_MAILBOX0;
+
+    static CAN_TxHeaderTypeDef tx_header;
+    tx_header.IDE = can_ide;
+    tx_header.RTR = CAN_RTR_REMOTE;
+    tx_header.DLC = len;
+    if (can_ide == CAN_ID_STD) {
+        tx_header.StdId = id;
+    } else {
+        tx_header.ExtId = id;
+    }
+
+    while (HAL_CAN_GetTxMailboxesFreeLevel(can_handle) == 0) {
+        /* Wait to all mailbox is empty. */
+        ++wait_time;
+        if (wait_time > CAN_SEND_TIMEOUT) {
+            return 2;
+        }
+    }
+
+    if (HAL_CAN_AddTxMessage(can_handle, &tx_header, msg, &tx_mail_box) !=
+        HAL_OK) {
+        return 1;
+    }
+
     return 0;
 }
 
