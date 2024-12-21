@@ -3444,7 +3444,8 @@ uint8_t uart_dmatx_resize_buf(UART_HandleTypeDef *huart, uint32_t size) {
         return 1;
     }
 
-    if (__HAL_UART_GET_FLAG(huart, UART_FLAG_TC) == RESET) {
+    if ((huart->gState) & (HAL_UART_STATE_BUSY_TX | HAL_UART_STATE_BUSY) &
+        ~HAL_UART_STATE_READY) {
         /* The UART is busy. */
         return 3;
     }
