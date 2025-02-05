@@ -107,7 +107,7 @@
 #endif /* USART1_IT_ENABLE */
 
 //   <e> Enable USART1 DMA RX
-#define USART1_RX_DMA             1
+#define USART1_RX_DMA             0
 
 #if USART1_RX_DMA
 
@@ -152,7 +152,7 @@
 #endif  /* USART1_RX_DMA */
 
 //   <e> Enable USART1 DMA TX
-#define USART1_TX_DMA             1
+#define USART1_TX_DMA             0
 
 #if USART1_TX_DMA
 
