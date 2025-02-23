@@ -633,13 +633,13 @@ void HAL_CAN_MspInit(CAN_HandleTypeDef *hcan) {
 
     CSP_GPIO_CLK_ENABLE(CAN2_TX_PORT);
     gpio_init_struct.Pin = CAN2_TX_PIN;
-    gpio_init_struct.Alternate = CAN2_TX_GPIO_AF;
+    gpio_init_struct.Alternate = CAN2_TX_AF;
 
     HAL_GPIO_Init(CSP_GPIO_PORT(CAN2_TX_PORT), &gpio_init_struct);
 
     CSP_GPIO_CLK_ENABLE(CAN2_RX_PORT);
     gpio_init_struct.Pin = CAN2_RX_PIN;
-    gpio_init_struct.Alternate = CAN2_RX_GPIO_AF;
+    gpio_init_struct.Alternate = CAN2_RX_AF;
     HAL_GPIO_Init(CSP_GPIO_PORT(CAN2_RX_PORT), &gpio_init_struct);
 
 #if CAN2_ENABLE_TX_IT
@@ -853,7 +853,7 @@ uint8_t can_rate_calc(uint32_t baud_rate, uint32_t prop_delay,
  * @param can_selected Specific which can will to get.
  * @return The handle of CAN. return NULL which the CAN doesn't exist.
  */
-CAN_HandleTypeDef *can_get_handle(can_selected_t can_select) {
+CAN_HandleTypeDef *can_get_handle(can_selected_t can_selected) {
     switch (can_selected) {
 
 #if CAN1_ENABLE
