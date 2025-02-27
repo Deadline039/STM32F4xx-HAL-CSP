@@ -1,10 +1,9 @@
-
 /**
  * @file    UART_STM32F4xx.h
  * @author  Deadline039
  * @brief   Chip Support Package of UART on STM32F4xx
  * @version 1.0
- * @date    2025-02-02
+ * @date    2025-02-27
  * @note    Generate Automatically.
  */
 
@@ -54,9 +53,9 @@ extern "C" {
 #  define USART1_TX_AF GPIO_AF7_USART1
 #elif (USART1_TX_ID == 3)
 #  define USART1_TX_AF GPIO_AF7_USART1
-#  if !(defined(STM32F412Vx) || defined(STM32F410Cx) || defined(STM32F411xE) || defined(STM32F423xx) || defined(STM32F410Tx) || defined(STM32F412Rx) || defined(STM32F412Zx) || defined(STM32F413xx) || defined(STM32F412Cx) || defined(STM32F410Rx))
-#    error "PA15 only can be configured as USART1 TX on STM32F412Vx, STM32F410Cx, STM32F411xE, STM32F423xx, STM32F410Tx, STM32F412Rx, STM32F412Zx, STM32F413xx, STM32F412Cx, STM32F410Rx! "
-#  endif  /* !(defined(STM32F412Vx) || defined(STM32F410Cx) || defined(STM32F411xE) || defined(STM32F423xx) || defined(STM32F410Tx) || defined(STM32F412Rx) || defined(STM32F412Zx) || defined(STM32F413xx) || defined(STM32F412Cx) || defined(STM32F410Rx)) */
+#  if !(defined(STM32F411xE) || defined(STM32F410Cx) || defined(STM32F412Vx) || defined(STM32F410Rx) || defined(STM32F410Tx) || defined(STM32F412Cx) || defined(STM32F413xx) || defined(STM32F423xx) || defined(STM32F412Rx) || defined(STM32F412Zx))
+#    error "PA15 only can be configured as USART1 TX on STM32F411xE, STM32F410Cx, STM32F412Vx, STM32F410Rx, STM32F410Tx, STM32F412Cx, STM32F413xx, STM32F423xx, STM32F412Rx, STM32F412Zx! "
+#  endif  /* !(defined(STM32F411xE) || defined(STM32F410Cx) || defined(STM32F412Vx) || defined(STM32F410Rx) || defined(STM32F410Tx) || defined(STM32F412Cx) || defined(STM32F413xx) || defined(STM32F423xx) || defined(STM32F412Rx) || defined(STM32F412Zx)) */
 #endif  /* USART1_TX_ID */
 
 #if (USART1_RX_ID == 0)
@@ -66,9 +65,9 @@ extern "C" {
 #  define USART1_RX_AF GPIO_AF7_USART1
 #elif (USART1_RX_ID == 3)
 #  define USART1_RX_AF GPIO_AF7_USART1
-#  if !(defined(STM32F412Vx) || defined(STM32F410Cx) || defined(STM32F411xE) || defined(STM32F423xx) || defined(STM32F410Tx) || defined(STM32F412Rx) || defined(STM32F412Zx) || defined(STM32F413xx) || defined(STM32F412Cx) || defined(STM32F410Rx))
-#    error "PB3 only can be configured as USART1 RX on STM32F412Vx, STM32F410Cx, STM32F411xE, STM32F423xx, STM32F410Tx, STM32F412Rx, STM32F412Zx, STM32F413xx, STM32F412Cx, STM32F410Rx! "
-#  endif  /* !(defined(STM32F412Vx) || defined(STM32F410Cx) || defined(STM32F411xE) || defined(STM32F423xx) || defined(STM32F410Tx) || defined(STM32F412Rx) || defined(STM32F412Zx) || defined(STM32F413xx) || defined(STM32F412Cx) || defined(STM32F410Rx)) */
+#  if !(defined(STM32F411xE) || defined(STM32F410Cx) || defined(STM32F412Vx) || defined(STM32F410Rx) || defined(STM32F410Tx) || defined(STM32F412Cx) || defined(STM32F413xx) || defined(STM32F423xx) || defined(STM32F412Rx) || defined(STM32F412Zx))
+#    error "PB3 only can be configured as USART1 RX on STM32F411xE, STM32F410Cx, STM32F412Vx, STM32F410Rx, STM32F410Tx, STM32F412Cx, STM32F413xx, STM32F423xx, STM32F412Rx, STM32F412Zx! "
+#  endif  /* !(defined(STM32F411xE) || defined(STM32F410Cx) || defined(STM32F412Vx) || defined(STM32F410Rx) || defined(STM32F410Tx) || defined(STM32F412Cx) || defined(STM32F413xx) || defined(STM32F423xx) || defined(STM32F412Rx) || defined(STM32F412Zx)) */
 #endif  /* USART1_RX_ID */
 
 #if (USART1_CTS_ID == 0)
@@ -118,9 +117,9 @@ uint8_t usart1_deinit(void);
 #  define USART2_TX_AF GPIO_AF7_USART2
 #elif (USART2_TX_ID == 2)
 #  define USART2_TX_AF GPIO_AF7_USART2
-#  if (defined(STM32F410Tx) || defined(STM32F410Rx) || defined(STM32F410Cx))
-#    error "PD5 can not be configured as USART2 TX on STM32F410Tx, STM32F410Rx, STM32F410Cx! "
-#  endif  /* (defined(STM32F410Tx) || defined(STM32F410Rx) || defined(STM32F410Cx)) */
+#  if (defined(STM32F410Cx) || defined(STM32F410Tx) || defined(STM32F410Rx))
+#    error "PD5 can not be configured as USART2 TX on STM32F410Cx, STM32F410Tx, STM32F410Rx! "
+#  endif  /* (defined(STM32F410Cx) || defined(STM32F410Tx) || defined(STM32F410Rx)) */
 #endif  /* USART2_TX_ID */
 
 #if (USART2_RX_ID == 0)
@@ -128,9 +127,9 @@ uint8_t usart1_deinit(void);
 #  define USART2_RX_AF GPIO_AF7_USART2
 #elif (USART2_RX_ID == 2)
 #  define USART2_RX_AF GPIO_AF7_USART2
-#  if (defined(STM32F410Tx) || defined(STM32F410Rx) || defined(STM32F410Cx))
-#    error "PD6 can not be configured as USART2 RX on STM32F410Tx, STM32F410Rx, STM32F410Cx! "
-#  endif  /* (defined(STM32F410Tx) || defined(STM32F410Rx) || defined(STM32F410Cx)) */
+#  if (defined(STM32F410Cx) || defined(STM32F410Tx) || defined(STM32F410Rx))
+#    error "PD6 can not be configured as USART2 RX on STM32F410Cx, STM32F410Tx, STM32F410Rx! "
+#  endif  /* (defined(STM32F410Cx) || defined(STM32F410Tx) || defined(STM32F410Rx)) */
 #endif  /* USART2_RX_ID */
 
 #if (USART2_CTS_ID == 0)
@@ -138,9 +137,9 @@ uint8_t usart1_deinit(void);
 #  define USART2_CTS_AF GPIO_AF7_USART2
 #elif (USART2_CTS_ID == 2)
 #  define USART2_CTS_AF GPIO_AF7_USART2
-#  if (defined(STM32F410Tx) || defined(STM32F410Rx) || defined(STM32F410Cx))
-#    error "PD3 can not be configured as USART2 CTS on STM32F410Tx, STM32F410Rx, STM32F410Cx! "
-#  endif  /* (defined(STM32F410Tx) || defined(STM32F410Rx) || defined(STM32F410Cx)) */
+#  if (defined(STM32F410Cx) || defined(STM32F410Tx) || defined(STM32F410Rx))
+#    error "PD3 can not be configured as USART2 CTS on STM32F410Cx, STM32F410Tx, STM32F410Rx! "
+#  endif  /* (defined(STM32F410Cx) || defined(STM32F410Tx) || defined(STM32F410Rx)) */
 #endif  /* USART2_CTS_ID */
 
 #if (USART2_RTS_ID == 0)
@@ -148,9 +147,9 @@ uint8_t usart1_deinit(void);
 #  define USART2_RTS_AF GPIO_AF7_USART2
 #elif (USART2_RTS_ID == 2)
 #  define USART2_RTS_AF GPIO_AF7_USART2
-#  if (defined(STM32F410Tx) || defined(STM32F410Rx) || defined(STM32F410Cx))
-#    error "PD4 can not be configured as USART2 RTS on STM32F410Tx, STM32F410Rx, STM32F410Cx! "
-#  endif  /* (defined(STM32F410Tx) || defined(STM32F410Rx) || defined(STM32F410Cx)) */
+#  if (defined(STM32F410Cx) || defined(STM32F410Tx) || defined(STM32F410Rx))
+#    error "PD4 can not be configured as USART2 RTS on STM32F410Cx, STM32F410Tx, STM32F410Rx! "
+#  endif  /* (defined(STM32F410Cx) || defined(STM32F410Tx) || defined(STM32F410Rx)) */
 #endif  /* USART2_RTS_ID */
 
 extern UART_HandleTypeDef usart2_handle;
@@ -161,9 +160,9 @@ uint8_t usart2_deinit(void);
 #  if USART2_RX_DMA
 #    if (USART2_RX_DMA_NUMBER == 1) && (USART2_RX_DMA_STREAM == 7) && (USART2_RX_DMA_CHANNEL == 6)
 
-#     if !(defined(STM32F412Vx) || defined(STM32F410Cx) || defined(STM32F411xE) || defined(STM32F423xx) || defined(STM32F410Tx) || defined(STM32F412Rx) || defined(STM32F412Zx) || defined(STM32F413xx) || defined(STM32F412Cx) || defined(STM32F410Rx))
-#       error "This USART2 DMA RX configuration only valid on STM32F412Vx, STM32F410Cx, STM32F411xE, STM32F423xx, STM32F410Tx, STM32F412Rx, STM32F412Zx, STM32F413xx, STM32F412Cx, STM32F410Rx! "
-#     endif  /* !(defined(STM32F412Vx) || defined(STM32F410Cx) || defined(STM32F411xE) || defined(STM32F423xx) || defined(STM32F410Tx) || defined(STM32F412Rx) || defined(STM32F412Zx) || defined(STM32F413xx) || defined(STM32F412Cx) || defined(STM32F410Rx)) */
+#     if !(defined(STM32F411xE) || defined(STM32F410Cx) || defined(STM32F412Vx) || defined(STM32F410Rx) || defined(STM32F410Tx) || defined(STM32F412Cx) || defined(STM32F413xx) || defined(STM32F423xx) || defined(STM32F412Rx) || defined(STM32F412Zx))
+#       error "This USART2 DMA RX configuration only valid on STM32F411xE, STM32F410Cx, STM32F412Vx, STM32F410Rx, STM32F410Tx, STM32F412Cx, STM32F413xx, STM32F423xx, STM32F412Rx, STM32F412Zx! "
+#     endif  /* !(defined(STM32F411xE) || defined(STM32F410Cx) || defined(STM32F412Vx) || defined(STM32F410Rx) || defined(STM32F410Tx) || defined(STM32F412Cx) || defined(STM32F413xx) || defined(STM32F423xx) || defined(STM32F412Rx) || defined(STM32F412Zx)) */
 #    endif /* (USART2_RX_DMA_NUMBER == 1) && (USART2_RX_DMA_STREAM == 7) && (USART2_RX_DMA_CHANNEL == 6) */
 
 #    define USART2_RX_DMA_IRQn                                                  \
@@ -206,9 +205,9 @@ uint8_t usart2_deinit(void);
 #  define USART3_RX_AF GPIO_AF7_USART3
 #elif (USART3_RX_ID == 2)
 #  define USART3_RX_AF GPIO_AF7_USART3
-#  if (defined(STM32F417xx) || defined(STM32F429xx) || defined(STM32F415xx) || defined(STM32F439xx) || defined(STM32F437xx) || defined(STM32F405xx) || defined(STM32F427xx) || defined(STM32F479xx) || defined(STM32F469xx) || defined(STM32F407xx))
-#    error "PC5 can not be configured as USART3 RX on STM32F417xx, STM32F429xx, STM32F415xx, STM32F439xx, STM32F437xx, STM32F405xx, STM32F427xx, STM32F479xx, STM32F469xx, STM32F407xx! "
-#  endif  /* (defined(STM32F417xx) || defined(STM32F429xx) || defined(STM32F415xx) || defined(STM32F439xx) || defined(STM32F437xx) || defined(STM32F405xx) || defined(STM32F427xx) || defined(STM32F479xx) || defined(STM32F469xx) || defined(STM32F407xx)) */
+#  if (defined(STM32F407xx) || defined(STM32F439xx) || defined(STM32F429xx) || defined(STM32F479xx) || defined(STM32F415xx) || defined(STM32F469xx) || defined(STM32F437xx) || defined(STM32F427xx) || defined(STM32F417xx) || defined(STM32F405xx))
+#    error "PC5 can not be configured as USART3 RX on STM32F407xx, STM32F439xx, STM32F429xx, STM32F479xx, STM32F415xx, STM32F469xx, STM32F437xx, STM32F427xx, STM32F417xx, STM32F405xx! "
+#  endif  /* (defined(STM32F407xx) || defined(STM32F439xx) || defined(STM32F429xx) || defined(STM32F479xx) || defined(STM32F415xx) || defined(STM32F469xx) || defined(STM32F437xx) || defined(STM32F427xx) || defined(STM32F417xx) || defined(STM32F405xx)) */
 #elif (USART3_RX_ID == 3)
 #  define USART3_RX_AF GPIO_AF7_USART3
 #elif (USART3_RX_ID == 4)
@@ -266,19 +265,19 @@ uint8_t usart3_deinit(void);
 #  define UART4_TX_AF GPIO_AF8_UART4
 #elif (UART4_TX_ID == 2)
 #  define UART4_TX_AF GPIO_AF11_UART4
-#  if (defined(STM32F446xx) || defined(STM32F417xx) || defined(STM32F429xx) || defined(STM32F415xx) || defined(STM32F439xx) || defined(STM32F437xx) || defined(STM32F405xx) || defined(STM32F427xx) || defined(STM32F479xx) || defined(STM32F469xx) || defined(STM32F407xx))
-#    error "PA12 can not be configured as UART4 TX on STM32F446xx, STM32F417xx, STM32F429xx, STM32F415xx, STM32F439xx, STM32F437xx, STM32F405xx, STM32F427xx, STM32F479xx, STM32F469xx, STM32F407xx! "
-#  endif  /* (defined(STM32F446xx) || defined(STM32F417xx) || defined(STM32F429xx) || defined(STM32F415xx) || defined(STM32F439xx) || defined(STM32F437xx) || defined(STM32F405xx) || defined(STM32F427xx) || defined(STM32F479xx) || defined(STM32F469xx) || defined(STM32F407xx)) */
+#  if (defined(STM32F407xx) || defined(STM32F439xx) || defined(STM32F429xx) || defined(STM32F479xx) || defined(STM32F415xx) || defined(STM32F469xx) || defined(STM32F437xx) || defined(STM32F446xx) || defined(STM32F427xx) || defined(STM32F417xx) || defined(STM32F405xx))
+#    error "PA12 can not be configured as UART4 TX on STM32F407xx, STM32F439xx, STM32F429xx, STM32F479xx, STM32F415xx, STM32F469xx, STM32F437xx, STM32F446xx, STM32F427xx, STM32F417xx, STM32F405xx! "
+#  endif  /* (defined(STM32F407xx) || defined(STM32F439xx) || defined(STM32F429xx) || defined(STM32F479xx) || defined(STM32F415xx) || defined(STM32F469xx) || defined(STM32F437xx) || defined(STM32F446xx) || defined(STM32F427xx) || defined(STM32F417xx) || defined(STM32F405xx)) */
 #elif (UART4_TX_ID == 3)
 #  define UART4_TX_AF GPIO_AF11_UART4
-#  if (defined(STM32F446xx) || defined(STM32F417xx) || defined(STM32F429xx) || defined(STM32F415xx) || defined(STM32F439xx) || defined(STM32F437xx) || defined(STM32F405xx) || defined(STM32F427xx) || defined(STM32F479xx) || defined(STM32F469xx) || defined(STM32F407xx))
-#    error "PD1 can not be configured as UART4 TX on STM32F446xx, STM32F417xx, STM32F429xx, STM32F415xx, STM32F439xx, STM32F437xx, STM32F405xx, STM32F427xx, STM32F479xx, STM32F469xx, STM32F407xx! "
-#  endif  /* (defined(STM32F446xx) || defined(STM32F417xx) || defined(STM32F429xx) || defined(STM32F415xx) || defined(STM32F439xx) || defined(STM32F437xx) || defined(STM32F405xx) || defined(STM32F427xx) || defined(STM32F479xx) || defined(STM32F469xx) || defined(STM32F407xx)) */
+#  if (defined(STM32F407xx) || defined(STM32F439xx) || defined(STM32F429xx) || defined(STM32F479xx) || defined(STM32F415xx) || defined(STM32F469xx) || defined(STM32F437xx) || defined(STM32F446xx) || defined(STM32F427xx) || defined(STM32F417xx) || defined(STM32F405xx))
+#    error "PD1 can not be configured as UART4 TX on STM32F407xx, STM32F439xx, STM32F429xx, STM32F479xx, STM32F415xx, STM32F469xx, STM32F437xx, STM32F446xx, STM32F427xx, STM32F417xx, STM32F405xx! "
+#  endif  /* (defined(STM32F407xx) || defined(STM32F439xx) || defined(STM32F429xx) || defined(STM32F479xx) || defined(STM32F415xx) || defined(STM32F469xx) || defined(STM32F437xx) || defined(STM32F446xx) || defined(STM32F427xx) || defined(STM32F417xx) || defined(STM32F405xx)) */
 #elif (UART4_TX_ID == 4)
 #  define UART4_TX_AF GPIO_AF8_UART4
-#  if (defined(STM32F446xx) || defined(STM32F417xx) || defined(STM32F429xx) || defined(STM32F415xx) || defined(STM32F439xx) || defined(STM32F437xx) || defined(STM32F405xx) || defined(STM32F427xx) || defined(STM32F479xx) || defined(STM32F469xx) || defined(STM32F407xx))
-#    error "PD10 can not be configured as UART4 TX on STM32F446xx, STM32F417xx, STM32F429xx, STM32F415xx, STM32F439xx, STM32F437xx, STM32F405xx, STM32F427xx, STM32F479xx, STM32F469xx, STM32F407xx! "
-#  endif  /* (defined(STM32F446xx) || defined(STM32F417xx) || defined(STM32F429xx) || defined(STM32F415xx) || defined(STM32F439xx) || defined(STM32F437xx) || defined(STM32F405xx) || defined(STM32F427xx) || defined(STM32F479xx) || defined(STM32F469xx) || defined(STM32F407xx)) */
+#  if (defined(STM32F407xx) || defined(STM32F439xx) || defined(STM32F429xx) || defined(STM32F479xx) || defined(STM32F415xx) || defined(STM32F469xx) || defined(STM32F437xx) || defined(STM32F446xx) || defined(STM32F427xx) || defined(STM32F417xx) || defined(STM32F405xx))
+#    error "PD10 can not be configured as UART4 TX on STM32F407xx, STM32F439xx, STM32F429xx, STM32F479xx, STM32F415xx, STM32F469xx, STM32F437xx, STM32F446xx, STM32F427xx, STM32F417xx, STM32F405xx! "
+#  endif  /* (defined(STM32F407xx) || defined(STM32F439xx) || defined(STM32F429xx) || defined(STM32F479xx) || defined(STM32F415xx) || defined(STM32F469xx) || defined(STM32F437xx) || defined(STM32F446xx) || defined(STM32F427xx) || defined(STM32F417xx) || defined(STM32F405xx)) */
 #elif (UART4_TX_ID == 5)
 #  define UART4_TX_AF GPIO_AF8_UART4
 #  if (defined(STM32F423xx) || defined(STM32F413xx))
@@ -291,32 +290,32 @@ uint8_t usart3_deinit(void);
 #  define UART4_RX_AF GPIO_AF8_UART4
 #elif (UART4_RX_ID == 2)
 #  define UART4_RX_AF GPIO_AF11_UART4
-#  if (defined(STM32F446xx) || defined(STM32F417xx) || defined(STM32F429xx) || defined(STM32F415xx) || defined(STM32F439xx) || defined(STM32F437xx) || defined(STM32F405xx) || defined(STM32F427xx) || defined(STM32F479xx) || defined(STM32F469xx) || defined(STM32F407xx))
-#    error "PA11 can not be configured as UART4 RX on STM32F446xx, STM32F417xx, STM32F429xx, STM32F415xx, STM32F439xx, STM32F437xx, STM32F405xx, STM32F427xx, STM32F479xx, STM32F469xx, STM32F407xx! "
-#  endif  /* (defined(STM32F446xx) || defined(STM32F417xx) || defined(STM32F429xx) || defined(STM32F415xx) || defined(STM32F439xx) || defined(STM32F437xx) || defined(STM32F405xx) || defined(STM32F427xx) || defined(STM32F479xx) || defined(STM32F469xx) || defined(STM32F407xx)) */
+#  if (defined(STM32F407xx) || defined(STM32F439xx) || defined(STM32F429xx) || defined(STM32F479xx) || defined(STM32F415xx) || defined(STM32F469xx) || defined(STM32F437xx) || defined(STM32F446xx) || defined(STM32F427xx) || defined(STM32F417xx) || defined(STM32F405xx))
+#    error "PA11 can not be configured as UART4 RX on STM32F407xx, STM32F439xx, STM32F429xx, STM32F479xx, STM32F415xx, STM32F469xx, STM32F437xx, STM32F446xx, STM32F427xx, STM32F417xx, STM32F405xx! "
+#  endif  /* (defined(STM32F407xx) || defined(STM32F439xx) || defined(STM32F429xx) || defined(STM32F479xx) || defined(STM32F415xx) || defined(STM32F469xx) || defined(STM32F437xx) || defined(STM32F446xx) || defined(STM32F427xx) || defined(STM32F417xx) || defined(STM32F405xx)) */
 #elif (UART4_RX_ID == 3)
 #  define UART4_RX_AF GPIO_AF8_UART4
 #elif (UART4_RX_ID == 4)
 #  define UART4_RX_AF GPIO_AF11_UART4
-#  if (defined(STM32F446xx) || defined(STM32F417xx) || defined(STM32F429xx) || defined(STM32F415xx) || defined(STM32F439xx) || defined(STM32F437xx) || defined(STM32F405xx) || defined(STM32F427xx) || defined(STM32F479xx) || defined(STM32F469xx) || defined(STM32F407xx))
-#    error "PD0 can not be configured as UART4 RX on STM32F446xx, STM32F417xx, STM32F429xx, STM32F415xx, STM32F439xx, STM32F437xx, STM32F405xx, STM32F427xx, STM32F479xx, STM32F469xx, STM32F407xx! "
-#  endif  /* (defined(STM32F446xx) || defined(STM32F417xx) || defined(STM32F429xx) || defined(STM32F415xx) || defined(STM32F439xx) || defined(STM32F437xx) || defined(STM32F405xx) || defined(STM32F427xx) || defined(STM32F479xx) || defined(STM32F469xx) || defined(STM32F407xx)) */
+#  if (defined(STM32F407xx) || defined(STM32F439xx) || defined(STM32F429xx) || defined(STM32F479xx) || defined(STM32F415xx) || defined(STM32F469xx) || defined(STM32F437xx) || defined(STM32F446xx) || defined(STM32F427xx) || defined(STM32F417xx) || defined(STM32F405xx))
+#    error "PD0 can not be configured as UART4 RX on STM32F407xx, STM32F439xx, STM32F429xx, STM32F479xx, STM32F415xx, STM32F469xx, STM32F437xx, STM32F446xx, STM32F427xx, STM32F417xx, STM32F405xx! "
+#  endif  /* (defined(STM32F407xx) || defined(STM32F439xx) || defined(STM32F429xx) || defined(STM32F479xx) || defined(STM32F415xx) || defined(STM32F469xx) || defined(STM32F437xx) || defined(STM32F446xx) || defined(STM32F427xx) || defined(STM32F417xx) || defined(STM32F405xx)) */
 #endif  /* UART4_RX_ID */
 
 #if (UART4_CTS_ID == 0)
 #elif (UART4_CTS_ID == 1)
 #  define UART4_CTS_AF GPIO_AF8_UART4
-#  if !(defined(STM32F412Vx) || defined(STM32F410Cx) || defined(STM32F401xC) || defined(STM32F411xE) || defined(STM32F410Tx) || defined(STM32F401xE) || defined(STM32F412Rx) || defined(STM32F412Zx) || defined(STM32F446xx) || defined(STM32F412Cx) || defined(STM32F410Rx))
-#    error "PB0 only can be configured as UART4 CTS on STM32F412Vx, STM32F410Cx, STM32F401xC, STM32F411xE, STM32F410Tx, STM32F401xE, STM32F412Rx, STM32F412Zx, STM32F446xx, STM32F412Cx, STM32F410Rx! "
-#  endif  /* !(defined(STM32F412Vx) || defined(STM32F410Cx) || defined(STM32F401xC) || defined(STM32F411xE) || defined(STM32F410Tx) || defined(STM32F401xE) || defined(STM32F412Rx) || defined(STM32F412Zx) || defined(STM32F446xx) || defined(STM32F412Cx) || defined(STM32F410Rx)) */
+#  if !(defined(STM32F401xE) || defined(STM32F411xE) || defined(STM32F410Cx) || defined(STM32F412Vx) || defined(STM32F410Rx) || defined(STM32F410Tx) || defined(STM32F401xC) || defined(STM32F412Cx) || defined(STM32F446xx) || defined(STM32F412Rx) || defined(STM32F412Zx))
+#    error "PB0 only can be configured as UART4 CTS on STM32F401xE, STM32F411xE, STM32F410Cx, STM32F412Vx, STM32F410Rx, STM32F410Tx, STM32F401xC, STM32F412Cx, STM32F446xx, STM32F412Rx, STM32F412Zx! "
+#  endif  /* !(defined(STM32F401xE) || defined(STM32F411xE) || defined(STM32F410Cx) || defined(STM32F412Vx) || defined(STM32F410Rx) || defined(STM32F410Tx) || defined(STM32F401xC) || defined(STM32F412Cx) || defined(STM32F446xx) || defined(STM32F412Rx) || defined(STM32F412Zx)) */
 #endif  /* UART4_CTS_ID */
 
 #if (UART4_RTS_ID == 0)
 #elif (UART4_RTS_ID == 1)
 #  define UART4_RTS_AF GPIO_AF8_UART4
-#  if !(defined(STM32F412Vx) || defined(STM32F410Cx) || defined(STM32F401xC) || defined(STM32F411xE) || defined(STM32F410Tx) || defined(STM32F401xE) || defined(STM32F412Rx) || defined(STM32F412Zx) || defined(STM32F446xx) || defined(STM32F412Cx) || defined(STM32F410Rx))
-#    error "PA15 only can be configured as UART4 RTS on STM32F412Vx, STM32F410Cx, STM32F401xC, STM32F411xE, STM32F410Tx, STM32F401xE, STM32F412Rx, STM32F412Zx, STM32F446xx, STM32F412Cx, STM32F410Rx! "
-#  endif  /* !(defined(STM32F412Vx) || defined(STM32F410Cx) || defined(STM32F401xC) || defined(STM32F411xE) || defined(STM32F410Tx) || defined(STM32F401xE) || defined(STM32F412Rx) || defined(STM32F412Zx) || defined(STM32F446xx) || defined(STM32F412Cx) || defined(STM32F410Rx)) */
+#  if !(defined(STM32F401xE) || defined(STM32F411xE) || defined(STM32F410Cx) || defined(STM32F412Vx) || defined(STM32F410Rx) || defined(STM32F410Tx) || defined(STM32F401xC) || defined(STM32F412Cx) || defined(STM32F446xx) || defined(STM32F412Rx) || defined(STM32F412Zx))
+#    error "PA15 only can be configured as UART4 RTS on STM32F401xE, STM32F411xE, STM32F410Cx, STM32F412Vx, STM32F410Rx, STM32F410Tx, STM32F401xC, STM32F412Cx, STM32F446xx, STM32F412Rx, STM32F412Zx! "
+#  endif  /* !(defined(STM32F401xE) || defined(STM32F411xE) || defined(STM32F410Cx) || defined(STM32F412Vx) || defined(STM32F410Rx) || defined(STM32F410Tx) || defined(STM32F401xC) || defined(STM32F412Cx) || defined(STM32F446xx) || defined(STM32F412Rx) || defined(STM32F412Zx)) */
 #endif  /* UART4_RTS_ID */
 
 extern UART_HandleTypeDef uart4_handle;
@@ -354,67 +353,67 @@ uint8_t uart4_deinit(void);
 #if (UART5_TX_ID == 0)
 #elif (UART5_TX_ID == 1)
 #  define UART5_TX_AF GPIO_AF11_UART5
-#  if (defined(STM32F446xx) || defined(STM32F417xx) || defined(STM32F429xx) || defined(STM32F415xx) || defined(STM32F439xx) || defined(STM32F437xx) || defined(STM32F405xx) || defined(STM32F427xx) || defined(STM32F479xx) || defined(STM32F469xx) || defined(STM32F407xx))
-#    error "PB6 can not be configured as UART5 TX on STM32F446xx, STM32F417xx, STM32F429xx, STM32F415xx, STM32F439xx, STM32F437xx, STM32F405xx, STM32F427xx, STM32F479xx, STM32F469xx, STM32F407xx! "
-#  endif  /* (defined(STM32F446xx) || defined(STM32F417xx) || defined(STM32F429xx) || defined(STM32F415xx) || defined(STM32F439xx) || defined(STM32F437xx) || defined(STM32F405xx) || defined(STM32F427xx) || defined(STM32F479xx) || defined(STM32F469xx) || defined(STM32F407xx)) */
+#  if (defined(STM32F407xx) || defined(STM32F439xx) || defined(STM32F429xx) || defined(STM32F479xx) || defined(STM32F415xx) || defined(STM32F469xx) || defined(STM32F437xx) || defined(STM32F446xx) || defined(STM32F427xx) || defined(STM32F417xx) || defined(STM32F405xx))
+#    error "PB6 can not be configured as UART5 TX on STM32F407xx, STM32F439xx, STM32F429xx, STM32F479xx, STM32F415xx, STM32F469xx, STM32F437xx, STM32F446xx, STM32F427xx, STM32F417xx, STM32F405xx! "
+#  endif  /* (defined(STM32F407xx) || defined(STM32F439xx) || defined(STM32F429xx) || defined(STM32F479xx) || defined(STM32F415xx) || defined(STM32F469xx) || defined(STM32F437xx) || defined(STM32F446xx) || defined(STM32F427xx) || defined(STM32F417xx) || defined(STM32F405xx)) */
 #elif (UART5_TX_ID == 2)
 #  define UART5_TX_AF GPIO_AF11_UART5
-#  if (defined(STM32F446xx) || defined(STM32F417xx) || defined(STM32F429xx) || defined(STM32F415xx) || defined(STM32F439xx) || defined(STM32F437xx) || defined(STM32F405xx) || defined(STM32F427xx) || defined(STM32F479xx) || defined(STM32F469xx) || defined(STM32F407xx))
-#    error "PB9 can not be configured as UART5 TX on STM32F446xx, STM32F417xx, STM32F429xx, STM32F415xx, STM32F439xx, STM32F437xx, STM32F405xx, STM32F427xx, STM32F479xx, STM32F469xx, STM32F407xx! "
-#  endif  /* (defined(STM32F446xx) || defined(STM32F417xx) || defined(STM32F429xx) || defined(STM32F415xx) || defined(STM32F439xx) || defined(STM32F437xx) || defined(STM32F405xx) || defined(STM32F427xx) || defined(STM32F479xx) || defined(STM32F469xx) || defined(STM32F407xx)) */
+#  if (defined(STM32F407xx) || defined(STM32F439xx) || defined(STM32F429xx) || defined(STM32F479xx) || defined(STM32F415xx) || defined(STM32F469xx) || defined(STM32F437xx) || defined(STM32F446xx) || defined(STM32F427xx) || defined(STM32F417xx) || defined(STM32F405xx))
+#    error "PB9 can not be configured as UART5 TX on STM32F407xx, STM32F439xx, STM32F429xx, STM32F479xx, STM32F415xx, STM32F469xx, STM32F437xx, STM32F446xx, STM32F427xx, STM32F417xx, STM32F405xx! "
+#  endif  /* (defined(STM32F407xx) || defined(STM32F439xx) || defined(STM32F429xx) || defined(STM32F479xx) || defined(STM32F415xx) || defined(STM32F469xx) || defined(STM32F437xx) || defined(STM32F446xx) || defined(STM32F427xx) || defined(STM32F417xx) || defined(STM32F405xx)) */
 #elif (UART5_TX_ID == 3)
 #  define UART5_TX_AF GPIO_AF11_UART5
-#  if (defined(STM32F446xx) || defined(STM32F417xx) || defined(STM32F429xx) || defined(STM32F415xx) || defined(STM32F439xx) || defined(STM32F437xx) || defined(STM32F405xx) || defined(STM32F427xx) || defined(STM32F479xx) || defined(STM32F469xx) || defined(STM32F407xx))
-#    error "PB13 can not be configured as UART5 TX on STM32F446xx, STM32F417xx, STM32F429xx, STM32F415xx, STM32F439xx, STM32F437xx, STM32F405xx, STM32F427xx, STM32F479xx, STM32F469xx, STM32F407xx! "
-#  endif  /* (defined(STM32F446xx) || defined(STM32F417xx) || defined(STM32F429xx) || defined(STM32F415xx) || defined(STM32F439xx) || defined(STM32F437xx) || defined(STM32F405xx) || defined(STM32F427xx) || defined(STM32F479xx) || defined(STM32F469xx) || defined(STM32F407xx)) */
+#  if (defined(STM32F407xx) || defined(STM32F439xx) || defined(STM32F429xx) || defined(STM32F479xx) || defined(STM32F415xx) || defined(STM32F469xx) || defined(STM32F437xx) || defined(STM32F446xx) || defined(STM32F427xx) || defined(STM32F417xx) || defined(STM32F405xx))
+#    error "PB13 can not be configured as UART5 TX on STM32F407xx, STM32F439xx, STM32F429xx, STM32F479xx, STM32F415xx, STM32F469xx, STM32F437xx, STM32F446xx, STM32F427xx, STM32F417xx, STM32F405xx! "
+#  endif  /* (defined(STM32F407xx) || defined(STM32F439xx) || defined(STM32F429xx) || defined(STM32F479xx) || defined(STM32F415xx) || defined(STM32F469xx) || defined(STM32F437xx) || defined(STM32F446xx) || defined(STM32F427xx) || defined(STM32F417xx) || defined(STM32F405xx)) */
 #elif (UART5_TX_ID == 4)
 #  define UART5_TX_AF GPIO_AF8_UART5
 #elif (UART5_TX_ID == 5)
 #  define UART5_TX_AF GPIO_AF8_UART5
-#  if !(defined(STM32F412Vx) || defined(STM32F410Cx) || defined(STM32F401xC) || defined(STM32F411xE) || defined(STM32F410Tx) || defined(STM32F401xE) || defined(STM32F412Rx) || defined(STM32F412Zx) || defined(STM32F446xx) || defined(STM32F412Cx) || defined(STM32F410Rx))
-#    error "PE8 only can be configured as UART5 TX on STM32F412Vx, STM32F410Cx, STM32F401xC, STM32F411xE, STM32F410Tx, STM32F401xE, STM32F412Rx, STM32F412Zx, STM32F446xx, STM32F412Cx, STM32F410Rx! "
-#  endif  /* !(defined(STM32F412Vx) || defined(STM32F410Cx) || defined(STM32F401xC) || defined(STM32F411xE) || defined(STM32F410Tx) || defined(STM32F401xE) || defined(STM32F412Rx) || defined(STM32F412Zx) || defined(STM32F446xx) || defined(STM32F412Cx) || defined(STM32F410Rx)) */
+#  if !(defined(STM32F401xE) || defined(STM32F411xE) || defined(STM32F410Cx) || defined(STM32F412Vx) || defined(STM32F410Rx) || defined(STM32F410Tx) || defined(STM32F401xC) || defined(STM32F412Cx) || defined(STM32F446xx) || defined(STM32F412Rx) || defined(STM32F412Zx))
+#    error "PE8 only can be configured as UART5 TX on STM32F401xE, STM32F411xE, STM32F410Cx, STM32F412Vx, STM32F410Rx, STM32F410Tx, STM32F401xC, STM32F412Cx, STM32F446xx, STM32F412Rx, STM32F412Zx! "
+#  endif  /* !(defined(STM32F401xE) || defined(STM32F411xE) || defined(STM32F410Cx) || defined(STM32F412Vx) || defined(STM32F410Rx) || defined(STM32F410Tx) || defined(STM32F401xC) || defined(STM32F412Cx) || defined(STM32F446xx) || defined(STM32F412Rx) || defined(STM32F412Zx)) */
 #endif  /* UART5_TX_ID */
 
 #if (UART5_RX_ID == 0)
 #elif (UART5_RX_ID == 1)
 #  define UART5_RX_AF GPIO_AF11_UART5
-#  if (defined(STM32F446xx) || defined(STM32F417xx) || defined(STM32F429xx) || defined(STM32F415xx) || defined(STM32F439xx) || defined(STM32F437xx) || defined(STM32F405xx) || defined(STM32F427xx) || defined(STM32F479xx) || defined(STM32F469xx) || defined(STM32F407xx))
-#    error "PB5 can not be configured as UART5 RX on STM32F446xx, STM32F417xx, STM32F429xx, STM32F415xx, STM32F439xx, STM32F437xx, STM32F405xx, STM32F427xx, STM32F479xx, STM32F469xx, STM32F407xx! "
-#  endif  /* (defined(STM32F446xx) || defined(STM32F417xx) || defined(STM32F429xx) || defined(STM32F415xx) || defined(STM32F439xx) || defined(STM32F437xx) || defined(STM32F405xx) || defined(STM32F427xx) || defined(STM32F479xx) || defined(STM32F469xx) || defined(STM32F407xx)) */
+#  if (defined(STM32F407xx) || defined(STM32F439xx) || defined(STM32F429xx) || defined(STM32F479xx) || defined(STM32F415xx) || defined(STM32F469xx) || defined(STM32F437xx) || defined(STM32F446xx) || defined(STM32F427xx) || defined(STM32F417xx) || defined(STM32F405xx))
+#    error "PB5 can not be configured as UART5 RX on STM32F407xx, STM32F439xx, STM32F429xx, STM32F479xx, STM32F415xx, STM32F469xx, STM32F437xx, STM32F446xx, STM32F427xx, STM32F417xx, STM32F405xx! "
+#  endif  /* (defined(STM32F407xx) || defined(STM32F439xx) || defined(STM32F429xx) || defined(STM32F479xx) || defined(STM32F415xx) || defined(STM32F469xx) || defined(STM32F437xx) || defined(STM32F446xx) || defined(STM32F427xx) || defined(STM32F417xx) || defined(STM32F405xx)) */
 #elif (UART5_RX_ID == 2)
 #  define UART5_RX_AF GPIO_AF11_UART5
-#  if (defined(STM32F446xx) || defined(STM32F417xx) || defined(STM32F429xx) || defined(STM32F415xx) || defined(STM32F439xx) || defined(STM32F437xx) || defined(STM32F405xx) || defined(STM32F427xx) || defined(STM32F479xx) || defined(STM32F469xx) || defined(STM32F407xx))
-#    error "PB8 can not be configured as UART5 RX on STM32F446xx, STM32F417xx, STM32F429xx, STM32F415xx, STM32F439xx, STM32F437xx, STM32F405xx, STM32F427xx, STM32F479xx, STM32F469xx, STM32F407xx! "
-#  endif  /* (defined(STM32F446xx) || defined(STM32F417xx) || defined(STM32F429xx) || defined(STM32F415xx) || defined(STM32F439xx) || defined(STM32F437xx) || defined(STM32F405xx) || defined(STM32F427xx) || defined(STM32F479xx) || defined(STM32F469xx) || defined(STM32F407xx)) */
+#  if (defined(STM32F407xx) || defined(STM32F439xx) || defined(STM32F429xx) || defined(STM32F479xx) || defined(STM32F415xx) || defined(STM32F469xx) || defined(STM32F437xx) || defined(STM32F446xx) || defined(STM32F427xx) || defined(STM32F417xx) || defined(STM32F405xx))
+#    error "PB8 can not be configured as UART5 RX on STM32F407xx, STM32F439xx, STM32F429xx, STM32F479xx, STM32F415xx, STM32F469xx, STM32F437xx, STM32F446xx, STM32F427xx, STM32F417xx, STM32F405xx! "
+#  endif  /* (defined(STM32F407xx) || defined(STM32F439xx) || defined(STM32F429xx) || defined(STM32F479xx) || defined(STM32F415xx) || defined(STM32F469xx) || defined(STM32F437xx) || defined(STM32F446xx) || defined(STM32F427xx) || defined(STM32F417xx) || defined(STM32F405xx)) */
 #elif (UART5_RX_ID == 3)
 #  define UART5_RX_AF GPIO_AF11_UART5
-#  if (defined(STM32F446xx) || defined(STM32F417xx) || defined(STM32F429xx) || defined(STM32F415xx) || defined(STM32F439xx) || defined(STM32F437xx) || defined(STM32F405xx) || defined(STM32F427xx) || defined(STM32F479xx) || defined(STM32F469xx) || defined(STM32F407xx))
-#    error "PB12 can not be configured as UART5 RX on STM32F446xx, STM32F417xx, STM32F429xx, STM32F415xx, STM32F439xx, STM32F437xx, STM32F405xx, STM32F427xx, STM32F479xx, STM32F469xx, STM32F407xx! "
-#  endif  /* (defined(STM32F446xx) || defined(STM32F417xx) || defined(STM32F429xx) || defined(STM32F415xx) || defined(STM32F439xx) || defined(STM32F437xx) || defined(STM32F405xx) || defined(STM32F427xx) || defined(STM32F479xx) || defined(STM32F469xx) || defined(STM32F407xx)) */
+#  if (defined(STM32F407xx) || defined(STM32F439xx) || defined(STM32F429xx) || defined(STM32F479xx) || defined(STM32F415xx) || defined(STM32F469xx) || defined(STM32F437xx) || defined(STM32F446xx) || defined(STM32F427xx) || defined(STM32F417xx) || defined(STM32F405xx))
+#    error "PB12 can not be configured as UART5 RX on STM32F407xx, STM32F439xx, STM32F429xx, STM32F479xx, STM32F415xx, STM32F469xx, STM32F437xx, STM32F446xx, STM32F427xx, STM32F417xx, STM32F405xx! "
+#  endif  /* (defined(STM32F407xx) || defined(STM32F439xx) || defined(STM32F429xx) || defined(STM32F479xx) || defined(STM32F415xx) || defined(STM32F469xx) || defined(STM32F437xx) || defined(STM32F446xx) || defined(STM32F427xx) || defined(STM32F417xx) || defined(STM32F405xx)) */
 #elif (UART5_RX_ID == 4)
 #  define UART5_RX_AF GPIO_AF8_UART5
 #elif (UART5_RX_ID == 5)
 #  define UART5_RX_AF GPIO_AF8_UART5
-#  if !(defined(STM32F412Vx) || defined(STM32F410Cx) || defined(STM32F401xC) || defined(STM32F411xE) || defined(STM32F410Tx) || defined(STM32F401xE) || defined(STM32F412Rx) || defined(STM32F412Zx) || defined(STM32F446xx) || defined(STM32F412Cx) || defined(STM32F410Rx))
-#    error "PE7 only can be configured as UART5 RX on STM32F412Vx, STM32F410Cx, STM32F401xC, STM32F411xE, STM32F410Tx, STM32F401xE, STM32F412Rx, STM32F412Zx, STM32F446xx, STM32F412Cx, STM32F410Rx! "
-#  endif  /* !(defined(STM32F412Vx) || defined(STM32F410Cx) || defined(STM32F401xC) || defined(STM32F411xE) || defined(STM32F410Tx) || defined(STM32F401xE) || defined(STM32F412Rx) || defined(STM32F412Zx) || defined(STM32F446xx) || defined(STM32F412Cx) || defined(STM32F410Rx)) */
+#  if !(defined(STM32F401xE) || defined(STM32F411xE) || defined(STM32F410Cx) || defined(STM32F412Vx) || defined(STM32F410Rx) || defined(STM32F410Tx) || defined(STM32F401xC) || defined(STM32F412Cx) || defined(STM32F446xx) || defined(STM32F412Rx) || defined(STM32F412Zx))
+#    error "PE7 only can be configured as UART5 RX on STM32F401xE, STM32F411xE, STM32F410Cx, STM32F412Vx, STM32F410Rx, STM32F410Tx, STM32F401xC, STM32F412Cx, STM32F446xx, STM32F412Rx, STM32F412Zx! "
+#  endif  /* !(defined(STM32F401xE) || defined(STM32F411xE) || defined(STM32F410Cx) || defined(STM32F412Vx) || defined(STM32F410Rx) || defined(STM32F410Tx) || defined(STM32F401xC) || defined(STM32F412Cx) || defined(STM32F446xx) || defined(STM32F412Rx) || defined(STM32F412Zx)) */
 #endif  /* UART5_RX_ID */
 
 #if (UART5_CTS_ID == 0)
 #elif (UART5_CTS_ID == 1)
 #  define UART5_CTS_AF GPIO_AF7_UART5
-#  if !(defined(STM32F412Vx) || defined(STM32F410Cx) || defined(STM32F401xC) || defined(STM32F411xE) || defined(STM32F410Tx) || defined(STM32F401xE) || defined(STM32F412Rx) || defined(STM32F412Zx) || defined(STM32F446xx) || defined(STM32F412Cx) || defined(STM32F410Rx))
-#    error "PC9 only can be configured as UART5 CTS on STM32F412Vx, STM32F410Cx, STM32F401xC, STM32F411xE, STM32F410Tx, STM32F401xE, STM32F412Rx, STM32F412Zx, STM32F446xx, STM32F412Cx, STM32F410Rx! "
-#  endif  /* !(defined(STM32F412Vx) || defined(STM32F410Cx) || defined(STM32F401xC) || defined(STM32F411xE) || defined(STM32F410Tx) || defined(STM32F401xE) || defined(STM32F412Rx) || defined(STM32F412Zx) || defined(STM32F446xx) || defined(STM32F412Cx) || defined(STM32F410Rx)) */
+#  if !(defined(STM32F401xE) || defined(STM32F411xE) || defined(STM32F410Cx) || defined(STM32F412Vx) || defined(STM32F410Rx) || defined(STM32F410Tx) || defined(STM32F401xC) || defined(STM32F412Cx) || defined(STM32F446xx) || defined(STM32F412Rx) || defined(STM32F412Zx))
+#    error "PC9 only can be configured as UART5 CTS on STM32F401xE, STM32F411xE, STM32F410Cx, STM32F412Vx, STM32F410Rx, STM32F410Tx, STM32F401xC, STM32F412Cx, STM32F446xx, STM32F412Rx, STM32F412Zx! "
+#  endif  /* !(defined(STM32F401xE) || defined(STM32F411xE) || defined(STM32F410Cx) || defined(STM32F412Vx) || defined(STM32F410Rx) || defined(STM32F410Tx) || defined(STM32F401xC) || defined(STM32F412Cx) || defined(STM32F446xx) || defined(STM32F412Rx) || defined(STM32F412Zx)) */
 #endif  /* UART5_CTS_ID */
 
 #if (UART5_RTS_ID == 0)
 #elif (UART5_RTS_ID == 1)
 #  define UART5_RTS_AF GPIO_AF7_UART5
-#  if !(defined(STM32F412Vx) || defined(STM32F410Cx) || defined(STM32F401xC) || defined(STM32F411xE) || defined(STM32F410Tx) || defined(STM32F401xE) || defined(STM32F412Rx) || defined(STM32F412Zx) || defined(STM32F446xx) || defined(STM32F412Cx) || defined(STM32F410Rx))
-#    error "PC8 only can be configured as UART5 RTS on STM32F412Vx, STM32F410Cx, STM32F401xC, STM32F411xE, STM32F410Tx, STM32F401xE, STM32F412Rx, STM32F412Zx, STM32F446xx, STM32F412Cx, STM32F410Rx! "
-#  endif  /* !(defined(STM32F412Vx) || defined(STM32F410Cx) || defined(STM32F401xC) || defined(STM32F411xE) || defined(STM32F410Tx) || defined(STM32F401xE) || defined(STM32F412Rx) || defined(STM32F412Zx) || defined(STM32F446xx) || defined(STM32F412Cx) || defined(STM32F410Rx)) */
+#  if !(defined(STM32F401xE) || defined(STM32F411xE) || defined(STM32F410Cx) || defined(STM32F412Vx) || defined(STM32F410Rx) || defined(STM32F410Tx) || defined(STM32F401xC) || defined(STM32F412Cx) || defined(STM32F446xx) || defined(STM32F412Rx) || defined(STM32F412Zx))
+#    error "PC8 only can be configured as UART5 RTS on STM32F401xE, STM32F411xE, STM32F410Cx, STM32F412Vx, STM32F410Rx, STM32F410Tx, STM32F401xC, STM32F412Cx, STM32F446xx, STM32F412Rx, STM32F412Zx! "
+#  endif  /* !(defined(STM32F401xE) || defined(STM32F411xE) || defined(STM32F410Cx) || defined(STM32F412Vx) || defined(STM32F410Rx) || defined(STM32F410Tx) || defined(STM32F401xC) || defined(STM32F412Cx) || defined(STM32F446xx) || defined(STM32F412Rx) || defined(STM32F412Zx)) */
 #endif  /* UART5_RTS_ID */
 
 extern UART_HandleTypeDef uart5_handle;
@@ -432,9 +431,9 @@ uint8_t uart5_deinit(void);
 #  if UART5_TX_DMA
 #    if (UART5_TX_DMA_NUMBER == 1) && (UART5_TX_DMA_STREAM == 7) && (UART5_TX_DMA_CHANNEL == 8)
 
-#     if (defined(STM32F446xx) || defined(STM32F417xx) || defined(STM32F429xx) || defined(STM32F415xx) || defined(STM32F439xx) || defined(STM32F437xx) || defined(STM32F405xx) || defined(STM32F427xx) || defined(STM32F479xx) || defined(STM32F469xx) || defined(STM32F407xx))
-#       error "This UART5 DMA TX configuration invalid on STM32F446xx, STM32F417xx, STM32F429xx, STM32F415xx, STM32F439xx, STM32F437xx, STM32F405xx, STM32F427xx, STM32F479xx, STM32F469xx, STM32F407xx! "
-#     endif  /* (defined(STM32F446xx) || defined(STM32F417xx) || defined(STM32F429xx) || defined(STM32F415xx) || defined(STM32F439xx) || defined(STM32F437xx) || defined(STM32F405xx) || defined(STM32F427xx) || defined(STM32F479xx) || defined(STM32F469xx) || defined(STM32F407xx)) */
+#     if (defined(STM32F407xx) || defined(STM32F439xx) || defined(STM32F429xx) || defined(STM32F479xx) || defined(STM32F415xx) || defined(STM32F469xx) || defined(STM32F437xx) || defined(STM32F446xx) || defined(STM32F427xx) || defined(STM32F417xx) || defined(STM32F405xx))
+#       error "This UART5 DMA TX configuration invalid on STM32F407xx, STM32F439xx, STM32F429xx, STM32F479xx, STM32F415xx, STM32F469xx, STM32F437xx, STM32F446xx, STM32F427xx, STM32F417xx, STM32F405xx! "
+#     endif  /* (defined(STM32F407xx) || defined(STM32F439xx) || defined(STM32F429xx) || defined(STM32F479xx) || defined(STM32F415xx) || defined(STM32F469xx) || defined(STM32F437xx) || defined(STM32F446xx) || defined(STM32F427xx) || defined(STM32F417xx) || defined(STM32F405xx)) */
 #    endif /* (UART5_TX_DMA_NUMBER == 1) && (UART5_TX_DMA_STREAM == 7) && (UART5_TX_DMA_CHANNEL == 8) */
 
 #    if (UART5_TX_DMA_NUMBER == 1) && (UART5_TX_DMA_STREAM == 7) && (UART5_TX_DMA_CHANNEL == 4)
@@ -466,57 +465,57 @@ uint8_t uart5_deinit(void);
 #if (USART6_TX_ID == 0)
 #elif (USART6_TX_ID == 1)
 #  define USART6_TX_AF GPIO_AF8_USART6
-#  if (defined(STM32F417xx) || defined(STM32F429xx) || defined(STM32F415xx) || defined(STM32F439xx) || defined(STM32F405xx) || defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F479xx) || defined(STM32F469xx) || defined(STM32F446xx) || defined(STM32F407xx))
-#    error "PA11 can not be configured as USART6 TX on STM32F417xx, STM32F429xx, STM32F415xx, STM32F439xx, STM32F405xx, STM32F427xx, STM32F437xx, STM32F479xx, STM32F469xx, STM32F446xx, STM32F407xx! "
-#  endif  /* (defined(STM32F417xx) || defined(STM32F429xx) || defined(STM32F415xx) || defined(STM32F439xx) || defined(STM32F405xx) || defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F479xx) || defined(STM32F469xx) || defined(STM32F446xx) || defined(STM32F407xx)) */
+#  if (defined(STM32F407xx) || defined(STM32F439xx) || defined(STM32F429xx) || defined(STM32F479xx) || defined(STM32F415xx) || defined(STM32F469xx) || defined(STM32F437xx) || defined(STM32F427xx) || defined(STM32F417xx) || defined(STM32F446xx) || defined(STM32F405xx))
+#    error "PA11 can not be configured as USART6 TX on STM32F407xx, STM32F439xx, STM32F429xx, STM32F479xx, STM32F415xx, STM32F469xx, STM32F437xx, STM32F427xx, STM32F417xx, STM32F446xx, STM32F405xx! "
+#  endif  /* (defined(STM32F407xx) || defined(STM32F439xx) || defined(STM32F429xx) || defined(STM32F479xx) || defined(STM32F415xx) || defined(STM32F469xx) || defined(STM32F437xx) || defined(STM32F427xx) || defined(STM32F417xx) || defined(STM32F446xx) || defined(STM32F405xx)) */
 #elif (USART6_TX_ID == 2)
 #  define USART6_TX_AF GPIO_AF8_USART6
 #elif (USART6_TX_ID == 3)
 #  define USART6_TX_AF GPIO_AF8_USART6
-#  if (defined(STM32F410Cx) || defined(STM32F401xC) || defined(STM32F411xE) || defined(STM32F410Tx) || defined(STM32F401xE) || defined(STM32F410Rx))
-#    error "PG14 can not be configured as USART6 TX on STM32F410Cx, STM32F401xC, STM32F411xE, STM32F410Tx, STM32F401xE, STM32F410Rx! "
-#  endif  /* (defined(STM32F410Cx) || defined(STM32F401xC) || defined(STM32F411xE) || defined(STM32F410Tx) || defined(STM32F401xE) || defined(STM32F410Rx)) */
+#  if (defined(STM32F401xE) || defined(STM32F411xE) || defined(STM32F410Cx) || defined(STM32F410Rx) || defined(STM32F410Tx) || defined(STM32F401xC))
+#    error "PG14 can not be configured as USART6 TX on STM32F401xE, STM32F411xE, STM32F410Cx, STM32F410Rx, STM32F410Tx, STM32F401xC! "
+#  endif  /* (defined(STM32F401xE) || defined(STM32F411xE) || defined(STM32F410Cx) || defined(STM32F410Rx) || defined(STM32F410Tx) || defined(STM32F401xC)) */
 #endif  /* USART6_TX_ID */
 
 #if (USART6_RX_ID == 0)
 #elif (USART6_RX_ID == 1)
 #  define USART6_RX_AF GPIO_AF8_USART6
-#  if (defined(STM32F417xx) || defined(STM32F429xx) || defined(STM32F415xx) || defined(STM32F439xx) || defined(STM32F405xx) || defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F479xx) || defined(STM32F469xx) || defined(STM32F446xx) || defined(STM32F407xx))
-#    error "PA12 can not be configured as USART6 RX on STM32F417xx, STM32F429xx, STM32F415xx, STM32F439xx, STM32F405xx, STM32F427xx, STM32F437xx, STM32F479xx, STM32F469xx, STM32F446xx, STM32F407xx! "
-#  endif  /* (defined(STM32F417xx) || defined(STM32F429xx) || defined(STM32F415xx) || defined(STM32F439xx) || defined(STM32F405xx) || defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F479xx) || defined(STM32F469xx) || defined(STM32F446xx) || defined(STM32F407xx)) */
+#  if (defined(STM32F407xx) || defined(STM32F439xx) || defined(STM32F429xx) || defined(STM32F479xx) || defined(STM32F415xx) || defined(STM32F469xx) || defined(STM32F437xx) || defined(STM32F427xx) || defined(STM32F417xx) || defined(STM32F446xx) || defined(STM32F405xx))
+#    error "PA12 can not be configured as USART6 RX on STM32F407xx, STM32F439xx, STM32F429xx, STM32F479xx, STM32F415xx, STM32F469xx, STM32F437xx, STM32F427xx, STM32F417xx, STM32F446xx, STM32F405xx! "
+#  endif  /* (defined(STM32F407xx) || defined(STM32F439xx) || defined(STM32F429xx) || defined(STM32F479xx) || defined(STM32F415xx) || defined(STM32F469xx) || defined(STM32F437xx) || defined(STM32F427xx) || defined(STM32F417xx) || defined(STM32F446xx) || defined(STM32F405xx)) */
 #elif (USART6_RX_ID == 2)
 #  define USART6_RX_AF GPIO_AF8_USART6
 #elif (USART6_RX_ID == 3)
 #  define USART6_RX_AF GPIO_AF8_USART6
-#  if (defined(STM32F410Cx) || defined(STM32F401xC) || defined(STM32F411xE) || defined(STM32F410Tx) || defined(STM32F401xE) || defined(STM32F410Rx))
-#    error "PG9 can not be configured as USART6 RX on STM32F410Cx, STM32F401xC, STM32F411xE, STM32F410Tx, STM32F401xE, STM32F410Rx! "
-#  endif  /* (defined(STM32F410Cx) || defined(STM32F401xC) || defined(STM32F411xE) || defined(STM32F410Tx) || defined(STM32F401xE) || defined(STM32F410Rx)) */
+#  if (defined(STM32F401xE) || defined(STM32F411xE) || defined(STM32F410Cx) || defined(STM32F410Rx) || defined(STM32F410Tx) || defined(STM32F401xC))
+#    error "PG9 can not be configured as USART6 RX on STM32F401xE, STM32F411xE, STM32F410Cx, STM32F410Rx, STM32F410Tx, STM32F401xC! "
+#  endif  /* (defined(STM32F401xE) || defined(STM32F411xE) || defined(STM32F410Cx) || defined(STM32F410Rx) || defined(STM32F410Tx) || defined(STM32F401xC)) */
 #endif  /* USART6_RX_ID */
 
 #if (USART6_CTS_ID == 0)
 #elif (USART6_CTS_ID == 1)
 #  define USART6_CTS_AF GPIO_AF8_USART6
-#  if (defined(STM32F410Cx) || defined(STM32F401xC) || defined(STM32F411xE) || defined(STM32F410Tx) || defined(STM32F401xE) || defined(STM32F410Rx))
-#    error "PG13 can not be configured as USART6 CTS on STM32F410Cx, STM32F401xC, STM32F411xE, STM32F410Tx, STM32F401xE, STM32F410Rx! "
-#  endif  /* (defined(STM32F410Cx) || defined(STM32F401xC) || defined(STM32F411xE) || defined(STM32F410Tx) || defined(STM32F401xE) || defined(STM32F410Rx)) */
+#  if (defined(STM32F401xE) || defined(STM32F411xE) || defined(STM32F410Cx) || defined(STM32F410Rx) || defined(STM32F410Tx) || defined(STM32F401xC))
+#    error "PG13 can not be configured as USART6 CTS on STM32F401xE, STM32F411xE, STM32F410Cx, STM32F410Rx, STM32F410Tx, STM32F401xC! "
+#  endif  /* (defined(STM32F401xE) || defined(STM32F411xE) || defined(STM32F410Cx) || defined(STM32F410Rx) || defined(STM32F410Tx) || defined(STM32F401xC)) */
 #elif (USART6_CTS_ID == 2)
 #  define USART6_CTS_AF GPIO_AF8_USART6
-#  if (defined(STM32F410Cx) || defined(STM32F401xC) || defined(STM32F411xE) || defined(STM32F410Tx) || defined(STM32F401xE) || defined(STM32F410Rx))
-#    error "PG15 can not be configured as USART6 CTS on STM32F410Cx, STM32F401xC, STM32F411xE, STM32F410Tx, STM32F401xE, STM32F410Rx! "
-#  endif  /* (defined(STM32F410Cx) || defined(STM32F401xC) || defined(STM32F411xE) || defined(STM32F410Tx) || defined(STM32F401xE) || defined(STM32F410Rx)) */
+#  if (defined(STM32F401xE) || defined(STM32F411xE) || defined(STM32F410Cx) || defined(STM32F410Rx) || defined(STM32F410Tx) || defined(STM32F401xC))
+#    error "PG15 can not be configured as USART6 CTS on STM32F401xE, STM32F411xE, STM32F410Cx, STM32F410Rx, STM32F410Tx, STM32F401xC! "
+#  endif  /* (defined(STM32F401xE) || defined(STM32F411xE) || defined(STM32F410Cx) || defined(STM32F410Rx) || defined(STM32F410Tx) || defined(STM32F401xC)) */
 #endif  /* USART6_CTS_ID */
 
 #if (USART6_RTS_ID == 0)
 #elif (USART6_RTS_ID == 1)
 #  define USART6_RTS_AF GPIO_AF8_USART6
-#  if (defined(STM32F410Cx) || defined(STM32F401xC) || defined(STM32F411xE) || defined(STM32F410Tx) || defined(STM32F401xE) || defined(STM32F410Rx))
-#    error "PG8 can not be configured as USART6 RTS on STM32F410Cx, STM32F401xC, STM32F411xE, STM32F410Tx, STM32F401xE, STM32F410Rx! "
-#  endif  /* (defined(STM32F410Cx) || defined(STM32F401xC) || defined(STM32F411xE) || defined(STM32F410Tx) || defined(STM32F401xE) || defined(STM32F410Rx)) */
+#  if (defined(STM32F401xE) || defined(STM32F411xE) || defined(STM32F410Cx) || defined(STM32F410Rx) || defined(STM32F410Tx) || defined(STM32F401xC))
+#    error "PG8 can not be configured as USART6 RTS on STM32F401xE, STM32F411xE, STM32F410Cx, STM32F410Rx, STM32F410Tx, STM32F401xC! "
+#  endif  /* (defined(STM32F401xE) || defined(STM32F411xE) || defined(STM32F410Cx) || defined(STM32F410Rx) || defined(STM32F410Tx) || defined(STM32F401xC)) */
 #elif (USART6_RTS_ID == 2)
 #  define USART6_RTS_AF GPIO_AF8_USART6
-#  if (defined(STM32F410Cx) || defined(STM32F401xC) || defined(STM32F411xE) || defined(STM32F410Tx) || defined(STM32F401xE) || defined(STM32F410Rx))
-#    error "PG12 can not be configured as USART6 RTS on STM32F410Cx, STM32F401xC, STM32F411xE, STM32F410Tx, STM32F401xE, STM32F410Rx! "
-#  endif  /* (defined(STM32F410Cx) || defined(STM32F401xC) || defined(STM32F411xE) || defined(STM32F410Tx) || defined(STM32F401xE) || defined(STM32F410Rx)) */
+#  if (defined(STM32F401xE) || defined(STM32F411xE) || defined(STM32F410Cx) || defined(STM32F410Rx) || defined(STM32F410Tx) || defined(STM32F401xC))
+#    error "PG12 can not be configured as USART6 RTS on STM32F401xE, STM32F411xE, STM32F410Cx, STM32F410Rx, STM32F410Tx, STM32F401xC! "
+#  endif  /* (defined(STM32F401xE) || defined(STM32F411xE) || defined(STM32F410Cx) || defined(STM32F410Rx) || defined(STM32F410Tx) || defined(STM32F401xC)) */
 #endif  /* USART6_RTS_ID */
 
 extern UART_HandleTypeDef usart6_handle;
@@ -554,27 +553,27 @@ uint8_t usart6_deinit(void);
 #if (UART7_TX_ID == 0)
 #elif (UART7_TX_ID == 1)
 #  define UART7_TX_AF GPIO_AF8_UART7
-#  if (defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F437xx) || defined(STM32F427xx) || defined(STM32F479xx) || defined(STM32F469xx))
-#    error "PA15 can not be configured as UART7 TX on STM32F429xx, STM32F439xx, STM32F437xx, STM32F427xx, STM32F479xx, STM32F469xx! "
-#  endif  /* (defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F437xx) || defined(STM32F427xx) || defined(STM32F479xx) || defined(STM32F469xx)) */
+#  if (defined(STM32F439xx) || defined(STM32F429xx) || defined(STM32F479xx) || defined(STM32F469xx) || defined(STM32F437xx) || defined(STM32F427xx))
+#    error "PA15 can not be configured as UART7 TX on STM32F439xx, STM32F429xx, STM32F479xx, STM32F469xx, STM32F437xx, STM32F427xx! "
+#  endif  /* (defined(STM32F439xx) || defined(STM32F429xx) || defined(STM32F479xx) || defined(STM32F469xx) || defined(STM32F437xx) || defined(STM32F427xx)) */
 #elif (UART7_TX_ID == 2)
 #  define UART7_TX_AF GPIO_AF8_UART7
-#  if (defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F437xx) || defined(STM32F427xx) || defined(STM32F479xx) || defined(STM32F469xx))
-#    error "PB4 can not be configured as UART7 TX on STM32F429xx, STM32F439xx, STM32F437xx, STM32F427xx, STM32F479xx, STM32F469xx! "
-#  endif  /* (defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F437xx) || defined(STM32F427xx) || defined(STM32F479xx) || defined(STM32F469xx)) */
+#  if (defined(STM32F439xx) || defined(STM32F429xx) || defined(STM32F479xx) || defined(STM32F469xx) || defined(STM32F437xx) || defined(STM32F427xx))
+#    error "PB4 can not be configured as UART7 TX on STM32F439xx, STM32F429xx, STM32F479xx, STM32F469xx, STM32F437xx, STM32F427xx! "
+#  endif  /* (defined(STM32F439xx) || defined(STM32F429xx) || defined(STM32F479xx) || defined(STM32F469xx) || defined(STM32F437xx) || defined(STM32F427xx)) */
 #endif  /* UART7_TX_ID */
 
 #if (UART7_RX_ID == 0)
 #elif (UART7_RX_ID == 1)
 #  define UART7_RX_AF GPIO_AF8_UART7
-#  if (defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F437xx) || defined(STM32F427xx) || defined(STM32F479xx) || defined(STM32F469xx))
-#    error "PA8 can not be configured as UART7 RX on STM32F429xx, STM32F439xx, STM32F437xx, STM32F427xx, STM32F479xx, STM32F469xx! "
-#  endif  /* (defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F437xx) || defined(STM32F427xx) || defined(STM32F479xx) || defined(STM32F469xx)) */
+#  if (defined(STM32F439xx) || defined(STM32F429xx) || defined(STM32F479xx) || defined(STM32F469xx) || defined(STM32F437xx) || defined(STM32F427xx))
+#    error "PA8 can not be configured as UART7 RX on STM32F439xx, STM32F429xx, STM32F479xx, STM32F469xx, STM32F437xx, STM32F427xx! "
+#  endif  /* (defined(STM32F439xx) || defined(STM32F429xx) || defined(STM32F479xx) || defined(STM32F469xx) || defined(STM32F437xx) || defined(STM32F427xx)) */
 #elif (UART7_RX_ID == 2)
 #  define UART7_RX_AF GPIO_AF8_UART7
-#  if (defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F437xx) || defined(STM32F427xx) || defined(STM32F479xx) || defined(STM32F469xx))
-#    error "PB3 can not be configured as UART7 RX on STM32F429xx, STM32F439xx, STM32F437xx, STM32F427xx, STM32F479xx, STM32F469xx! "
-#  endif  /* (defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F437xx) || defined(STM32F427xx) || defined(STM32F479xx) || defined(STM32F469xx)) */
+#  if (defined(STM32F439xx) || defined(STM32F429xx) || defined(STM32F479xx) || defined(STM32F469xx) || defined(STM32F437xx) || defined(STM32F427xx))
+#    error "PB3 can not be configured as UART7 RX on STM32F439xx, STM32F429xx, STM32F479xx, STM32F469xx, STM32F437xx, STM32F427xx! "
+#  endif  /* (defined(STM32F439xx) || defined(STM32F429xx) || defined(STM32F479xx) || defined(STM32F469xx) || defined(STM32F437xx) || defined(STM32F427xx)) */
 #endif  /* UART7_RX_ID */
 
 extern UART_HandleTypeDef uart7_handle;
@@ -612,17 +611,17 @@ uint8_t uart7_deinit(void);
 #if (UART8_TX_ID == 0)
 #elif (UART8_TX_ID == 1)
 #  define UART8_TX_AF GPIO_AF8_UART8
-#  if (defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F437xx) || defined(STM32F427xx) || defined(STM32F479xx) || defined(STM32F469xx))
-#    error "PF9 can not be configured as UART8 TX on STM32F429xx, STM32F439xx, STM32F437xx, STM32F427xx, STM32F479xx, STM32F469xx! "
-#  endif  /* (defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F437xx) || defined(STM32F427xx) || defined(STM32F479xx) || defined(STM32F469xx)) */
+#  if (defined(STM32F439xx) || defined(STM32F429xx) || defined(STM32F479xx) || defined(STM32F469xx) || defined(STM32F437xx) || defined(STM32F427xx))
+#    error "PF9 can not be configured as UART8 TX on STM32F439xx, STM32F429xx, STM32F479xx, STM32F469xx, STM32F437xx, STM32F427xx! "
+#  endif  /* (defined(STM32F439xx) || defined(STM32F429xx) || defined(STM32F479xx) || defined(STM32F469xx) || defined(STM32F437xx) || defined(STM32F427xx)) */
 #endif  /* UART8_TX_ID */
 
 #if (UART8_RX_ID == 0)
 #elif (UART8_RX_ID == 1)
 #  define UART8_RX_AF GPIO_AF8_UART8
-#  if (defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F437xx) || defined(STM32F427xx) || defined(STM32F479xx) || defined(STM32F469xx))
-#    error "PF8 can not be configured as UART8 RX on STM32F429xx, STM32F439xx, STM32F437xx, STM32F427xx, STM32F479xx, STM32F469xx! "
-#  endif  /* (defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F437xx) || defined(STM32F427xx) || defined(STM32F479xx) || defined(STM32F469xx)) */
+#  if (defined(STM32F439xx) || defined(STM32F429xx) || defined(STM32F479xx) || defined(STM32F469xx) || defined(STM32F437xx) || defined(STM32F427xx))
+#    error "PF8 can not be configured as UART8 RX on STM32F439xx, STM32F429xx, STM32F479xx, STM32F469xx, STM32F437xx, STM32F427xx! "
+#  endif  /* (defined(STM32F439xx) || defined(STM32F429xx) || defined(STM32F479xx) || defined(STM32F469xx) || defined(STM32F437xx) || defined(STM32F427xx)) */
 #endif  /* UART8_RX_ID */
 
 extern UART_HandleTypeDef uart8_handle;
@@ -633,9 +632,9 @@ uint8_t uart8_deinit(void);
 #  if UART8_RX_DMA
 #    if (UART8_RX_DMA_NUMBER == 1) && (UART8_RX_DMA_STREAM == 0) && (UART8_RX_DMA_CHANNEL == 5)
 
-#     if (defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F437xx) || defined(STM32F427xx) || defined(STM32F479xx) || defined(STM32F469xx))
-#       error "This UART8 DMA RX configuration invalid on STM32F429xx, STM32F439xx, STM32F437xx, STM32F427xx, STM32F479xx, STM32F469xx! "
-#     endif  /* (defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F437xx) || defined(STM32F427xx) || defined(STM32F479xx) || defined(STM32F469xx)) */
+#     if (defined(STM32F439xx) || defined(STM32F429xx) || defined(STM32F479xx) || defined(STM32F469xx) || defined(STM32F437xx) || defined(STM32F427xx))
+#       error "This UART8 DMA RX configuration invalid on STM32F439xx, STM32F429xx, STM32F479xx, STM32F469xx, STM32F437xx, STM32F427xx! "
+#     endif  /* (defined(STM32F439xx) || defined(STM32F429xx) || defined(STM32F479xx) || defined(STM32F469xx) || defined(STM32F437xx) || defined(STM32F427xx)) */
 #    endif /* (UART8_RX_DMA_NUMBER == 1) && (UART8_RX_DMA_STREAM == 0) && (UART8_RX_DMA_CHANNEL == 5) */
 
 #    define UART8_RX_DMA_IRQn                                                  \

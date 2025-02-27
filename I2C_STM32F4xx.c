@@ -1,10 +1,9 @@
-
 /**
  * @file    I2C_STM32F4xx.c
  * @author  Deadline039
  * @brief   Chip Support Package of I2C on STM32F4xx
  * @version 1.0
- * @date    2025-02-02
+ * @date    2025-02-27
  * @note    Generate Automatically. 
  */
 

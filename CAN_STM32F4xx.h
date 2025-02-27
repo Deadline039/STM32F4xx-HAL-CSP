@@ -1,10 +1,9 @@
-
 /**
  * @file    CAN_STM32F4xx.h
  * @author  Deadline039
  * @brief   Chip Support Package of CAN on STM32F4xx
  * @version 1.0
- * @date    2025-02-02
+ * @date    2025-02-27
  * @note    The calculation formula of CAN rate reference to NXP
  *          Application Note: CAN Bit Timing Requirements (AN1798)
  *          https://www.nxp.com/docs/en/application-note/AN1798.pdf
@@ -79,14 +78,14 @@ typedef enum {
 #  define CAN1_TX_AF GPIO_AF9_CAN1
 #elif (CAN1_TX_ID == 3)
 #  define CAN1_TX_AF GPIO_AF9_CAN1
-#  if (defined(STM32F417xx) || defined(STM32F429xx) || defined(STM32F415xx) || defined(STM32F439xx) || defined(STM32F437xx) || defined(STM32F405xx) || defined(STM32F427xx) || defined(STM32F479xx) || defined(STM32F469xx) || defined(STM32F446xx) || defined(STM32F407xx))
-#    error "PG1 can not be configured as CAN1 TX on STM32F417xx, STM32F429xx, STM32F415xx, STM32F439xx, STM32F437xx, STM32F405xx, STM32F427xx, STM32F479xx, STM32F469xx, STM32F446xx, STM32F407xx! "
-#  endif  /* (defined(STM32F417xx) || defined(STM32F429xx) || defined(STM32F415xx) || defined(STM32F439xx) || defined(STM32F437xx) || defined(STM32F405xx) || defined(STM32F427xx) || defined(STM32F479xx) || defined(STM32F469xx) || defined(STM32F446xx) || defined(STM32F407xx)) */
+#  if (defined(STM32F407xx) || defined(STM32F439xx) || defined(STM32F429xx) || defined(STM32F479xx) || defined(STM32F415xx) || defined(STM32F469xx) || defined(STM32F437xx) || defined(STM32F427xx) || defined(STM32F417xx) || defined(STM32F446xx) || defined(STM32F405xx))
+#    error "PG1 can not be configured as CAN1 TX on STM32F407xx, STM32F439xx, STM32F429xx, STM32F479xx, STM32F415xx, STM32F469xx, STM32F437xx, STM32F427xx, STM32F417xx, STM32F446xx, STM32F405xx! "
+#  endif  /* (defined(STM32F407xx) || defined(STM32F439xx) || defined(STM32F429xx) || defined(STM32F479xx) || defined(STM32F415xx) || defined(STM32F469xx) || defined(STM32F437xx) || defined(STM32F427xx) || defined(STM32F417xx) || defined(STM32F446xx) || defined(STM32F405xx)) */
 #elif (CAN1_TX_ID == 4)
 #  define CAN1_TX_AF GPIO_AF9_CAN1
-#  if (defined(STM32F412Vx) || defined(STM32F413xx) || defined(STM32F423xx) || defined(STM32F412Rx) || defined(STM32F412Zx) || defined(STM32F446xx) || defined(STM32F412Cx))
-#    error "PH13 can not be configured as CAN1 TX on STM32F412Vx, STM32F413xx, STM32F423xx, STM32F412Rx, STM32F412Zx, STM32F446xx, STM32F412Cx! "
-#  endif  /* (defined(STM32F412Vx) || defined(STM32F413xx) || defined(STM32F423xx) || defined(STM32F412Rx) || defined(STM32F412Zx) || defined(STM32F446xx) || defined(STM32F412Cx)) */
+#  if (defined(STM32F412Vx) || defined(STM32F446xx) || defined(STM32F412Cx) || defined(STM32F413xx) || defined(STM32F423xx) || defined(STM32F412Rx) || defined(STM32F412Zx))
+#    error "PH13 can not be configured as CAN1 TX on STM32F412Vx, STM32F446xx, STM32F412Cx, STM32F413xx, STM32F423xx, STM32F412Rx, STM32F412Zx! "
+#  endif  /* (defined(STM32F412Vx) || defined(STM32F446xx) || defined(STM32F412Cx) || defined(STM32F413xx) || defined(STM32F423xx) || defined(STM32F412Rx) || defined(STM32F412Zx)) */
 #endif  /* CAN1_TX_ID */
 
 #if (CAN1_RX_ID == 0)
@@ -97,14 +96,14 @@ typedef enum {
 #  define CAN1_RX_AF GPIO_AF9_CAN1
 #elif (CAN1_RX_ID == 3)
 #  define CAN1_RX_AF GPIO_AF9_CAN1
-#  if (defined(STM32F417xx) || defined(STM32F429xx) || defined(STM32F415xx) || defined(STM32F439xx) || defined(STM32F437xx) || defined(STM32F405xx) || defined(STM32F427xx) || defined(STM32F479xx) || defined(STM32F469xx) || defined(STM32F446xx) || defined(STM32F407xx))
-#    error "PG0 can not be configured as CAN1 RX on STM32F417xx, STM32F429xx, STM32F415xx, STM32F439xx, STM32F437xx, STM32F405xx, STM32F427xx, STM32F479xx, STM32F469xx, STM32F446xx, STM32F407xx! "
-#  endif  /* (defined(STM32F417xx) || defined(STM32F429xx) || defined(STM32F415xx) || defined(STM32F439xx) || defined(STM32F437xx) || defined(STM32F405xx) || defined(STM32F427xx) || defined(STM32F479xx) || defined(STM32F469xx) || defined(STM32F446xx) || defined(STM32F407xx)) */
+#  if (defined(STM32F407xx) || defined(STM32F439xx) || defined(STM32F429xx) || defined(STM32F479xx) || defined(STM32F415xx) || defined(STM32F469xx) || defined(STM32F437xx) || defined(STM32F427xx) || defined(STM32F417xx) || defined(STM32F446xx) || defined(STM32F405xx))
+#    error "PG0 can not be configured as CAN1 RX on STM32F407xx, STM32F439xx, STM32F429xx, STM32F479xx, STM32F415xx, STM32F469xx, STM32F437xx, STM32F427xx, STM32F417xx, STM32F446xx, STM32F405xx! "
+#  endif  /* (defined(STM32F407xx) || defined(STM32F439xx) || defined(STM32F429xx) || defined(STM32F479xx) || defined(STM32F415xx) || defined(STM32F469xx) || defined(STM32F437xx) || defined(STM32F427xx) || defined(STM32F417xx) || defined(STM32F446xx) || defined(STM32F405xx)) */
 #elif (CAN1_RX_ID == 4)
 #  define CAN1_RX_AF GPIO_AF9_CAN1
-#  if (defined(STM32F412Vx) || defined(STM32F413xx) || defined(STM32F423xx) || defined(STM32F412Rx) || defined(STM32F412Zx) || defined(STM32F446xx) || defined(STM32F412Cx))
-#    error "PI9 can not be configured as CAN1 RX on STM32F412Vx, STM32F413xx, STM32F423xx, STM32F412Rx, STM32F412Zx, STM32F446xx, STM32F412Cx! "
-#  endif  /* (defined(STM32F412Vx) || defined(STM32F413xx) || defined(STM32F423xx) || defined(STM32F412Rx) || defined(STM32F412Zx) || defined(STM32F446xx) || defined(STM32F412Cx)) */
+#  if (defined(STM32F412Vx) || defined(STM32F446xx) || defined(STM32F412Cx) || defined(STM32F413xx) || defined(STM32F423xx) || defined(STM32F412Rx) || defined(STM32F412Zx))
+#    error "PI9 can not be configured as CAN1 RX on STM32F412Vx, STM32F446xx, STM32F412Cx, STM32F413xx, STM32F423xx, STM32F412Rx, STM32F412Zx! "
+#  endif  /* (defined(STM32F412Vx) || defined(STM32F446xx) || defined(STM32F412Cx) || defined(STM32F413xx) || defined(STM32F423xx) || defined(STM32F412Rx) || defined(STM32F412Zx)) */
 #endif  /* CAN1_RX_ID */
 
 extern CAN_HandleTypeDef can1_handle;
@@ -131,9 +130,9 @@ uint8_t can1_deinit(void);
 #  define CAN2_TX_AF GPIO_AF9_CAN2
 #elif (CAN2_TX_ID == 2)
 #  define CAN2_TX_AF GPIO_AF9_CAN2
-#  if (defined(STM32F417xx) || defined(STM32F429xx) || defined(STM32F415xx) || defined(STM32F439xx) || defined(STM32F437xx) || defined(STM32F405xx) || defined(STM32F427xx) || defined(STM32F479xx) || defined(STM32F469xx) || defined(STM32F446xx) || defined(STM32F407xx))
-#    error "PG12 can not be configured as CAN2 TX on STM32F417xx, STM32F429xx, STM32F415xx, STM32F439xx, STM32F437xx, STM32F405xx, STM32F427xx, STM32F479xx, STM32F469xx, STM32F446xx, STM32F407xx! "
-#  endif  /* (defined(STM32F417xx) || defined(STM32F429xx) || defined(STM32F415xx) || defined(STM32F439xx) || defined(STM32F437xx) || defined(STM32F405xx) || defined(STM32F427xx) || defined(STM32F479xx) || defined(STM32F469xx) || defined(STM32F446xx) || defined(STM32F407xx)) */
+#  if (defined(STM32F407xx) || defined(STM32F439xx) || defined(STM32F429xx) || defined(STM32F479xx) || defined(STM32F415xx) || defined(STM32F469xx) || defined(STM32F437xx) || defined(STM32F427xx) || defined(STM32F417xx) || defined(STM32F446xx) || defined(STM32F405xx))
+#    error "PG12 can not be configured as CAN2 TX on STM32F407xx, STM32F439xx, STM32F429xx, STM32F479xx, STM32F415xx, STM32F469xx, STM32F437xx, STM32F427xx, STM32F417xx, STM32F446xx, STM32F405xx! "
+#  endif  /* (defined(STM32F407xx) || defined(STM32F439xx) || defined(STM32F429xx) || defined(STM32F479xx) || defined(STM32F415xx) || defined(STM32F469xx) || defined(STM32F437xx) || defined(STM32F427xx) || defined(STM32F417xx) || defined(STM32F446xx) || defined(STM32F405xx)) */
 #endif  /* CAN2_TX_ID */
 
 #if (CAN2_RX_ID == 0)
@@ -142,9 +141,9 @@ uint8_t can1_deinit(void);
 #  define CAN2_RX_AF GPIO_AF9_CAN2
 #elif (CAN2_RX_ID == 2)
 #  define CAN2_RX_AF GPIO_AF9_CAN2
-#  if (defined(STM32F417xx) || defined(STM32F429xx) || defined(STM32F415xx) || defined(STM32F439xx) || defined(STM32F437xx) || defined(STM32F405xx) || defined(STM32F427xx) || defined(STM32F479xx) || defined(STM32F469xx) || defined(STM32F446xx) || defined(STM32F407xx))
-#    error "PG11 can not be configured as CAN2 RX on STM32F417xx, STM32F429xx, STM32F415xx, STM32F439xx, STM32F437xx, STM32F405xx, STM32F427xx, STM32F479xx, STM32F469xx, STM32F446xx, STM32F407xx! "
-#  endif  /* (defined(STM32F417xx) || defined(STM32F429xx) || defined(STM32F415xx) || defined(STM32F439xx) || defined(STM32F437xx) || defined(STM32F405xx) || defined(STM32F427xx) || defined(STM32F479xx) || defined(STM32F469xx) || defined(STM32F446xx) || defined(STM32F407xx)) */
+#  if (defined(STM32F407xx) || defined(STM32F439xx) || defined(STM32F429xx) || defined(STM32F479xx) || defined(STM32F415xx) || defined(STM32F469xx) || defined(STM32F437xx) || defined(STM32F427xx) || defined(STM32F417xx) || defined(STM32F446xx) || defined(STM32F405xx))
+#    error "PG11 can not be configured as CAN2 RX on STM32F407xx, STM32F439xx, STM32F429xx, STM32F479xx, STM32F415xx, STM32F469xx, STM32F437xx, STM32F427xx, STM32F417xx, STM32F446xx, STM32F405xx! "
+#  endif  /* (defined(STM32F407xx) || defined(STM32F439xx) || defined(STM32F429xx) || defined(STM32F479xx) || defined(STM32F415xx) || defined(STM32F469xx) || defined(STM32F437xx) || defined(STM32F427xx) || defined(STM32F417xx) || defined(STM32F446xx) || defined(STM32F405xx)) */
 #endif  /* CAN2_RX_ID */
 
 extern CAN_HandleTypeDef can2_handle;
