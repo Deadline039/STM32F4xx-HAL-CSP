@@ -48,7 +48,7 @@ CAN_HandleTypeDef can1_handle = {.Instance = CAN1,
  * @retval - 6: `CAN_INITED`:            This can is inited.
  */
 uint8_t can1_init(uint32_t baud_rate, uint32_t prop_delay) {
-    if (__HAL_RCC_CAN1_IS_CLK_ENABLED()) {
+    if (HAL_CAN_GetState(&can1_handle) != HAL_CAN_STATE_RESET) {
         return CAN_INITED;
     }
 
@@ -165,7 +165,7 @@ void CAN1_SCE_IRQHandler(void) {
  * @retval - 2: `CAN_NO_INIT`:     This can is no init.
  */
 uint8_t can1_deinit(void) {
-    if (__HAL_RCC_CAN1_CLK_DISABLE()) {
+    if (HAL_CAN_GetState(&can1_handle) == HAL_CAN_STATE_RESET) {
         return CAN_NO_INIT;
     }
 
@@ -221,7 +221,7 @@ CAN_HandleTypeDef can2_handle = {.Instance = CAN2,
  * @retval - 6: `CAN_INITED`:            This can is inited.
  */
 uint8_t can2_init(uint32_t baud_rate, uint32_t prop_delay) {
-    if (__HAL_RCC_CAN2_IS_CLK_ENABLED()) {
+    if (HAL_CAN_GetState(&can2_handle) != HAL_CAN_STATE_RESET) {
         return CAN_INITED;
     }
 
@@ -338,7 +338,7 @@ void CAN2_SCE_IRQHandler(void) {
  * @retval - 2: `CAN_NO_INIT`:     This can is no init.
  */
 uint8_t can2_deinit(void) {
-    if (__HAL_RCC_CAN2_CLK_DISABLE()) {
+    if (HAL_CAN_GetState(&can2_handle) == HAL_CAN_STATE_RESET) {
         return CAN_NO_INIT;
     }
 
@@ -394,7 +394,7 @@ CAN_HandleTypeDef can3_handle = {.Instance = CAN3,
  * @retval - 6: `CAN_INITED`:            This can is inited.
  */
 uint8_t can3_init(uint32_t baud_rate, uint32_t prop_delay) {
-    if (__HAL_RCC_CAN3_IS_CLK_ENABLED()) {
+    if (HAL_CAN_GetState(&can3_handle) != HAL_CAN_STATE_RESET) {
         return CAN_INITED;
     }
 
@@ -511,7 +511,7 @@ void CAN3_SCE_IRQHandler(void) {
  * @retval - 2: `CAN_NO_INIT`:     This can is no init.
  */
 uint8_t can3_deinit(void) {
-    if (__HAL_RCC_CAN3_CLK_DISABLE()) {
+    if (HAL_CAN_GetState(&can3_handle) == HAL_CAN_STATE_RESET) {
         return CAN_NO_INIT;
     }
 
