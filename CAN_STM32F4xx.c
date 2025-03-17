@@ -908,7 +908,7 @@ uint8_t can_send_message(can_selected_t can_selected, uint32_t can_ide,
     uint16_t wait_time = 0;
     uint32_t tx_mail_box = CAN_TX_MAILBOX0;
 
-    static CAN_TxHeaderTypeDef tx_header;
+    CAN_TxHeaderTypeDef tx_header = {0};
     tx_header.IDE = can_ide;
     tx_header.RTR = CAN_RTR_DATA;
     tx_header.DLC = len;
@@ -966,7 +966,7 @@ uint8_t can_send_remote(can_selected_t can_selected, uint32_t can_ide,
     uint16_t wait_time = 0;
     uint32_t tx_mail_box = CAN_TX_MAILBOX0;
 
-    static CAN_TxHeaderTypeDef tx_header;
+    CAN_TxHeaderTypeDef tx_header = {0};
     tx_header.IDE = can_ide;
     tx_header.RTR = CAN_RTR_REMOTE;
     tx_header.DLC = len;

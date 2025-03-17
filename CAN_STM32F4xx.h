@@ -36,7 +36,7 @@ extern "C" {
 #define CAN_NO_INIT             2
 
 /* Wait for can tx mailbox empty times. */
-#define CAN_SEND_TIMEOUT        100
+#define CAN_SEND_TIMEOUT        1000
 
 /**
  * @}
