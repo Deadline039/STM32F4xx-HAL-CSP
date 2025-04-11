@@ -554,12 +554,12 @@ void HAL_CAN_MspInit(CAN_HandleTypeDef *hcan) {
 
         CSP_GPIO_CLK_ENABLE(CAN3_TX_PORT);
         gpio_init_struct.Pin = CAN3_TX_PIN;
-        gpio_init_struct.Alternate = CAN3_TX_AF;
+        gpio_init_struct.Alternate = CAN3_TX_GPIO_AF;
         HAL_GPIO_Init(CSP_GPIO_PORT(CAN3_TX_PORT), &gpio_init_struct);
 
         CSP_GPIO_CLK_ENABLE(CAN3_RX_PORT);
         gpio_init_struct.Pin = CAN3_RX_PIN;
-        gpio_init_struct.Alternate = CAN3_RX_AF;
+        gpio_init_struct.Alternate = CAN3_RX_GPIO_AF;
         HAL_GPIO_Init(CSP_GPIO_PORT(CAN3_RX_PORT), &gpio_init_struct);
         __HAL_RCC_CAN3_CLK_ENABLE();
 
@@ -595,12 +595,12 @@ void HAL_CAN_MspInit(CAN_HandleTypeDef *hcan) {
 
     CSP_GPIO_CLK_ENABLE(CAN1_TX_PORT);
     gpio_init_struct.Pin = CAN1_TX_PIN;
-    gpio_init_struct.Alternate = CAN1_TX_AF;
+    gpio_init_struct.Alternate = CAN1_TX_GPIO_AF;
     HAL_GPIO_Init(CSP_GPIO_PORT(CAN1_TX_PORT), &gpio_init_struct);
 
     CSP_GPIO_CLK_ENABLE(CAN1_RX_PORT);
     gpio_init_struct.Pin = CAN1_RX_PIN;
-    gpio_init_struct.Alternate = CAN1_RX_AF;
+    gpio_init_struct.Alternate = CAN1_RX_GPIO_AF;
     HAL_GPIO_Init(CSP_GPIO_PORT(CAN1_RX_PORT), &gpio_init_struct);
 
 #if CAN1_TX_IT_ENABLE
@@ -630,13 +630,13 @@ void HAL_CAN_MspInit(CAN_HandleTypeDef *hcan) {
 
     CSP_GPIO_CLK_ENABLE(CAN2_TX_PORT);
     gpio_init_struct.Pin = CAN2_TX_PIN;
-    gpio_init_struct.Alternate = CAN2_TX_AF;
+    gpio_init_struct.Alternate = CAN2_TX_GPIO_AF;
 
     HAL_GPIO_Init(CSP_GPIO_PORT(CAN2_TX_PORT), &gpio_init_struct);
 
     CSP_GPIO_CLK_ENABLE(CAN2_RX_PORT);
     gpio_init_struct.Pin = CAN2_RX_PIN;
-    gpio_init_struct.Alternate = CAN2_RX_AF;
+    gpio_init_struct.Alternate = CAN2_RX_GPIO_AF;
     HAL_GPIO_Init(CSP_GPIO_PORT(CAN2_RX_PORT), &gpio_init_struct);
 
 #if CAN2_TX_IT_ENABLE
