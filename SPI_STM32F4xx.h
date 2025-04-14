@@ -974,5 +974,5 @@ uint8_t qspi_receive(uint8_t *data, uint32_t len);
 }
 #endif /* __cplusplus */
 
-#endif /* __SPI_STM32G4xx_H */
+#endif /* __SPI_STM32F4xx_H */
 
