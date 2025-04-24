@@ -2,8 +2,8 @@
  * @file    CSP_Config.h
  * @author  Deadline039
  * @brief   The CSP configuration of STM32F4xx.
- * @version 3.3.0
- * @date    2025-04-10
+ * @version 3.3.1
+ * @date    2025-04-25
  * @note    Generate Automatically.
  */
 
@@ -14,7 +14,7 @@
 
 // <e> USART1 (Universal asynchronous receiver transmitter)
 
-#define USART1_ENABLE 1 
+#define USART1_ENABLE 1
 
 #if USART1_ENABLE
 
@@ -91,7 +91,7 @@
 #endif  /* USART1_RTS_ID */
 
 //   <e> Enable USART1 Interrupt
-#define USART1_IT_ENABLE 1
+#define USART1_IT_ENABLE 0
 
 #if USART1_IT_ENABLE
 

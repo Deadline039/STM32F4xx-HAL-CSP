@@ -2,8 +2,8 @@
  * @file    RTC_STM32F4xx.c
  * @author  Deadline039
  * @brief   Chip Support Package of RTC on STM32F4xx
- * @version 3.3.0
- * @date    2025-04-10
+ * @version 3.3.1
+ * @date    2025-04-25
  */
 
 #include <CSP_Config.h>

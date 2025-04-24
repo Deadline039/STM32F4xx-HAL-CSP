@@ -2,8 +2,8 @@
  * @file    RTC_STM32F4xx.h
  * @author  Deadline039
  * @brief   Chip Support Package of RTC on STM32F4xx
- * @version 3.3.0
- * @date    2025-04-10
+ * @version 3.3.1
+ * @date    2025-04-25
  * @note    We used C time library to process the time. The hardware
  *          configuration reference the ST: AN3371.
  *          You should attention the time zone if you want to set time by NTP.
