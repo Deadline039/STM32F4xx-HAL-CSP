@@ -2,8 +2,8 @@
  * @file    CSP_Config.h
  * @author  Deadline039
  * @brief   The CSP configuration of STM32F4xx.
- * @version 3.3.1
- * @date    2025-04-25
+ * @version 3.3.2
+ * @date    2025-05-19
  * @note    Generate Automatically.
  */
 
@@ -14,7 +14,7 @@
 
 // <e> USART1 (Universal asynchronous receiver transmitter)
 
-#define USART1_ENABLE 1
+#define USART1_ENABLE 1 
 
 #if USART1_ENABLE
 
@@ -1195,7 +1195,7 @@
 #if UART7_ENABLE
 
 //   <o> UART7_TX Pin
-//       <0=>Not Used <1=>PA15 <2=>PB4 
+//       <0=>Not Used <1=>PA15 <2=>PB4 <3=>PE8 <4=>PF7 
 #define UART7_TX_ID 0
 
 #if (UART7_TX_ID == 0)
@@ -1208,12 +1208,20 @@
 #define UART7_TX 1
 #define UART7_TX_PORT B
 #define UART7_TX_PIN GPIO_PIN_4
+#elif (UART7_TX_ID == 3)
+#define UART7_TX 1
+#define UART7_TX_PORT E
+#define UART7_TX_PIN GPIO_PIN_8
+#elif (UART7_TX_ID == 4)
+#define UART7_TX 1
+#define UART7_TX_PORT F
+#define UART7_TX_PIN GPIO_PIN_7
 #else   /* UART7_TX_ID */
 #error "Invalid UART7_TX Pin Configuration! "
 #endif  /* UART7_TX_ID */
 
 //   <o> UART7_RX Pin
-//       <0=>Not Used <1=>PA8 <2=>PB3 
+//       <0=>Not Used <1=>PA8 <2=>PB3 <3=>PE7 <4=>PF6 
 #define UART7_RX_ID 0
 
 #if (UART7_RX_ID == 0)
@@ -1226,6 +1234,14 @@
 #define UART7_RX 1
 #define UART7_RX_PORT B
 #define UART7_RX_PIN GPIO_PIN_3
+#elif (UART7_RX_ID == 3)
+#define UART7_RX 1
+#define UART7_RX_PORT E
+#define UART7_RX_PIN GPIO_PIN_7
+#elif (UART7_RX_ID == 4)
+#define UART7_RX 1
+#define UART7_RX_PORT F
+#define UART7_RX_PIN GPIO_PIN_6
 #else   /* UART7_RX_ID */
 #error "Invalid UART7_RX Pin Configuration! "
 #endif  /* UART7_RX_ID */
@@ -1347,12 +1363,16 @@
 #if UART8_ENABLE
 
 //   <o> UART8_TX Pin
-//       <0=>Not Used <1=>PF9 
+//       <0=>Not Used <1=>PE1 <2=>PF9 
 #define UART8_TX_ID 0
 
 #if (UART8_TX_ID == 0)
 #define UART8_TX 0
 #elif (UART8_TX_ID == 1)
+#define UART8_TX 1
+#define UART8_TX_PORT E
+#define UART8_TX_PIN GPIO_PIN_1
+#elif (UART8_TX_ID == 2)
 #define UART8_TX 1
 #define UART8_TX_PORT F
 #define UART8_TX_PIN GPIO_PIN_9
@@ -1361,12 +1381,16 @@
 #endif  /* UART8_TX_ID */
 
 //   <o> UART8_RX Pin
-//       <0=>Not Used <1=>PF8 
+//       <0=>Not Used <1=>PE0 <2=>PF8 
 #define UART8_RX_ID 0
 
 #if (UART8_RX_ID == 0)
 #define UART8_RX 0
 #elif (UART8_RX_ID == 1)
+#define UART8_RX 1
+#define UART8_RX_PORT E
+#define UART8_RX_PIN GPIO_PIN_0
+#elif (UART8_RX_ID == 2)
 #define UART8_RX 1
 #define UART8_RX_PORT F
 #define UART8_RX_PIN GPIO_PIN_8

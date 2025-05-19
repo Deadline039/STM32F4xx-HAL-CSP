@@ -2,8 +2,8 @@
  * @file    SPI_STM32F4xx.h
  * @author  Deadline039
  * @brief   Chip Support Package of SPI and QSPI on STM32F4xx
- * @version 3.3.1
- * @date    2025-04-25
+ * @version 3.3.2
+ * @date    2025-05-19
  * @note    Generate Automatically.
  */
 
@@ -98,9 +98,9 @@ uint8_t spi1_deinit(void);
 #  if SPI1_TX_DMA
 #    if (SPI1_TX_DMA_NUMBER == 2) && (SPI1_TX_DMA_STREAM == 2) && (SPI1_TX_DMA_CHANNEL == 2)
 
-#     if !(defined(STM32F410Rx) || defined(STM32F412Zx) || defined(STM32F413xx) || defined(STM32F412Rx) || defined(STM32F423xx) || defined(STM32F411xE) || defined(STM32F412Cx) || defined(STM32F410Tx) || defined(STM32F412Vx) || defined(STM32F410Cx))
-#       error "This SPI1 DMA TX configuration only valid on STM32F410Rx, STM32F412Zx, STM32F413xx, STM32F412Rx, STM32F423xx, STM32F411xE, STM32F412Cx, STM32F410Tx, STM32F412Vx, STM32F410Cx! "
-#     endif  /* !(defined(STM32F410Rx) || defined(STM32F412Zx) || defined(STM32F413xx) || defined(STM32F412Rx) || defined(STM32F423xx) || defined(STM32F411xE) || defined(STM32F412Cx) || defined(STM32F410Tx) || defined(STM32F412Vx) || defined(STM32F410Cx)) */
+#     if !(defined(STM32F411xE) || defined(STM32F423xx) || defined(STM32F412Rx) || defined(STM32F412Cx) || defined(STM32F412Zx) || defined(STM32F410Tx) || defined(STM32F413xx) || defined(STM32F412Vx) || defined(STM32F410Cx) || defined(STM32F410Rx))
+#       error "This SPI1 DMA TX configuration only valid on STM32F411xE, STM32F423xx, STM32F412Rx, STM32F412Cx, STM32F412Zx, STM32F410Tx, STM32F413xx, STM32F412Vx, STM32F410Cx, STM32F410Rx! "
+#     endif  /* !(defined(STM32F411xE) || defined(STM32F423xx) || defined(STM32F412Rx) || defined(STM32F412Cx) || defined(STM32F412Zx) || defined(STM32F410Tx) || defined(STM32F413xx) || defined(STM32F412Vx) || defined(STM32F410Cx) || defined(STM32F410Rx)) */
 #    endif /* (SPI1_TX_DMA_NUMBER == 2) && (SPI1_TX_DMA_STREAM == 2) && (SPI1_TX_DMA_CHANNEL == 2) */
 
 #    define SPI1_TX_DMA_IRQn                                                  \
@@ -124,34 +124,28 @@ uint8_t spi1_deinit(void);
 
 #if (SPI2_SCK_ID == 0)
 #  define SPI2_SCK_GPIO_AF GPIO_AF5_SPI2
-#  if (defined(STM32F417xx) || defined(STM32F405xx) || defined(STM32F407xx) || defined(STM32F415xx))
-#    error "PB10 can not be configured as SPI2 SCK on STM32F417xx, STM32F405xx, STM32F407xx, STM32F415xx! "
-#  endif  /* (defined(STM32F417xx) || defined(STM32F405xx) || defined(STM32F407xx) || defined(STM32F415xx)) */
 #elif (SPI2_SCK_ID == 1)
 #  define SPI2_SCK_GPIO_AF GPIO_AF5_SPI2
-#  if (defined(STM32F417xx) || defined(STM32F405xx) || defined(STM32F407xx) || defined(STM32F415xx))
-#    error "PB13 can not be configured as SPI2 SCK on STM32F417xx, STM32F405xx, STM32F407xx, STM32F415xx! "
-#  endif  /* (defined(STM32F417xx) || defined(STM32F405xx) || defined(STM32F407xx) || defined(STM32F415xx)) */
 #elif (SPI2_SCK_ID == 2)
 #  define SPI2_SCK_GPIO_AF GPIO_AF5_SPI2
-#  if (defined(STM32F410Rx) || defined(STM32F405xx) || defined(STM32F417xx) || defined(STM32F410Cx) || defined(STM32F410Tx) || defined(STM32F407xx) || defined(STM32F415xx))
-#    error "PD3 can not be configured as SPI2 SCK on STM32F410Rx, STM32F405xx, STM32F417xx, STM32F410Cx, STM32F410Tx, STM32F407xx, STM32F415xx! "
-#  endif  /* (defined(STM32F410Rx) || defined(STM32F405xx) || defined(STM32F417xx) || defined(STM32F410Cx) || defined(STM32F410Tx) || defined(STM32F407xx) || defined(STM32F415xx)) */
+#  if (defined(STM32F410Rx) || defined(STM32F415xx) || defined(STM32F405xx) || defined(STM32F407xx) || defined(STM32F417xx) || defined(STM32F410Cx) || defined(STM32F410Tx))
+#    error "PD3 can not be configured as SPI2 SCK on STM32F410Rx, STM32F415xx, STM32F405xx, STM32F407xx, STM32F417xx, STM32F410Cx, STM32F410Tx! "
+#  endif  /* (defined(STM32F410Rx) || defined(STM32F415xx) || defined(STM32F405xx) || defined(STM32F407xx) || defined(STM32F417xx) || defined(STM32F410Cx) || defined(STM32F410Tx)) */
 #elif (SPI2_SCK_ID == 3)
 #  define SPI2_SCK_GPIO_AF GPIO_AF5_SPI2
-#  if !(defined(STM32F410Rx) || defined(STM32F412Zx) || defined(STM32F413xx) || defined(STM32F412Rx) || defined(STM32F446xx) || defined(STM32F411xE) || defined(STM32F423xx) || defined(STM32F412Cx) || defined(STM32F410Tx) || defined(STM32F412Vx) || defined(STM32F410Cx))
-#    error "PC7 only can be configured as SPI2 SCK on STM32F410Rx, STM32F412Zx, STM32F413xx, STM32F412Rx, STM32F446xx, STM32F411xE, STM32F423xx, STM32F412Cx, STM32F410Tx, STM32F412Vx, STM32F410Cx! "
-#  endif  /* !(defined(STM32F410Rx) || defined(STM32F412Zx) || defined(STM32F413xx) || defined(STM32F412Rx) || defined(STM32F446xx) || defined(STM32F411xE) || defined(STM32F423xx) || defined(STM32F412Cx) || defined(STM32F410Tx) || defined(STM32F412Vx) || defined(STM32F410Cx)) */
+#  if !(defined(STM32F411xE) || defined(STM32F423xx) || defined(STM32F446xx) || defined(STM32F412Rx) || defined(STM32F412Cx) || defined(STM32F412Zx) || defined(STM32F410Tx) || defined(STM32F413xx) || defined(STM32F412Vx) || defined(STM32F410Cx) || defined(STM32F410Rx))
+#    error "PC7 only can be configured as SPI2 SCK on STM32F411xE, STM32F423xx, STM32F446xx, STM32F412Rx, STM32F412Cx, STM32F412Zx, STM32F410Tx, STM32F413xx, STM32F412Vx, STM32F410Cx, STM32F410Rx! "
+#  endif  /* !(defined(STM32F411xE) || defined(STM32F423xx) || defined(STM32F446xx) || defined(STM32F412Rx) || defined(STM32F412Cx) || defined(STM32F412Zx) || defined(STM32F410Tx) || defined(STM32F413xx) || defined(STM32F412Vx) || defined(STM32F410Cx) || defined(STM32F410Rx)) */
 #elif (SPI2_SCK_ID == 4)
 #  define SPI2_SCK_GPIO_AF GPIO_AF5_SPI2
-#  if !(defined(STM32F413xx) || defined(STM32F446xx) || defined(STM32F423xx) || defined(STM32F469xx) || defined(STM32F479xx))
-#    error "PA9 only can be configured as SPI2 SCK on STM32F413xx, STM32F446xx, STM32F423xx, STM32F469xx, STM32F479xx! "
-#  endif  /* !(defined(STM32F413xx) || defined(STM32F446xx) || defined(STM32F423xx) || defined(STM32F469xx) || defined(STM32F479xx)) */
+#  if !(defined(STM32F423xx) || defined(STM32F479xx) || defined(STM32F446xx) || defined(STM32F469xx) || defined(STM32F413xx))
+#    error "PA9 only can be configured as SPI2 SCK on STM32F423xx, STM32F479xx, STM32F446xx, STM32F469xx, STM32F413xx! "
+#  endif  /* !(defined(STM32F423xx) || defined(STM32F479xx) || defined(STM32F446xx) || defined(STM32F469xx) || defined(STM32F413xx)) */
 #elif (SPI2_SCK_ID == 5)
 #  define SPI2_SCK_GPIO_AF GPIO_AF5_SPI2
-#  if !(defined(STM32F437xx) || defined(STM32F427xx) || defined(STM32F469xx) || defined(STM32F439xx) || defined(STM32F479xx) || defined(STM32F429xx))
-#    error "PI1 only can be configured as SPI2 SCK on STM32F437xx, STM32F427xx, STM32F469xx, STM32F439xx, STM32F479xx, STM32F429xx! "
-#  endif  /* !(defined(STM32F437xx) || defined(STM32F427xx) || defined(STM32F469xx) || defined(STM32F439xx) || defined(STM32F479xx) || defined(STM32F429xx)) */
+#  if !(defined(STM32F479xx) || defined(STM32F437xx) || defined(STM32F415xx) || defined(STM32F405xx) || defined(STM32F407xx) || defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F469xx) || defined(STM32F417xx) || defined(STM32F427xx))
+#    error "PI1 only can be configured as SPI2 SCK on STM32F479xx, STM32F437xx, STM32F415xx, STM32F405xx, STM32F407xx, STM32F429xx, STM32F439xx, STM32F469xx, STM32F417xx, STM32F427xx! "
+#  endif  /* !(defined(STM32F479xx) || defined(STM32F437xx) || defined(STM32F415xx) || defined(STM32F405xx) || defined(STM32F407xx) || defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F469xx) || defined(STM32F417xx) || defined(STM32F427xx)) */
 #endif  /* SPI2_SCK_ID */
 
 #if (SPI2_MISO_ID == 0)
@@ -166,22 +160,16 @@ uint8_t spi1_deinit(void);
 #  endif  /* !(defined(STM32F423xx) || defined(STM32F413xx)) */
 #elif (SPI2_MISO_ID == 4)
 #  define SPI2_MISO_GPIO_AF GPIO_AF5_SPI2
-#  if !(defined(STM32F469xx) || defined(STM32F429xx) || defined(STM32F437xx) || defined(STM32F407xx) || defined(STM32F405xx) || defined(STM32F427xx) || defined(STM32F417xx) || defined(STM32F439xx) || defined(STM32F479xx) || defined(STM32F415xx))
-#    error "PI2 only can be configured as SPI2 MISO on STM32F469xx, STM32F429xx, STM32F437xx, STM32F407xx, STM32F405xx, STM32F427xx, STM32F417xx, STM32F439xx, STM32F479xx, STM32F415xx! "
-#  endif  /* !(defined(STM32F469xx) || defined(STM32F429xx) || defined(STM32F437xx) || defined(STM32F407xx) || defined(STM32F405xx) || defined(STM32F427xx) || defined(STM32F417xx) || defined(STM32F439xx) || defined(STM32F479xx) || defined(STM32F415xx)) */
+#  if !(defined(STM32F479xx) || defined(STM32F437xx) || defined(STM32F415xx) || defined(STM32F405xx) || defined(STM32F407xx) || defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F469xx) || defined(STM32F417xx) || defined(STM32F427xx))
+#    error "PI2 only can be configured as SPI2 MISO on STM32F479xx, STM32F437xx, STM32F415xx, STM32F405xx, STM32F407xx, STM32F429xx, STM32F439xx, STM32F469xx, STM32F417xx, STM32F427xx! "
+#  endif  /* !(defined(STM32F479xx) || defined(STM32F437xx) || defined(STM32F415xx) || defined(STM32F405xx) || defined(STM32F407xx) || defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F469xx) || defined(STM32F417xx) || defined(STM32F427xx)) */
 #endif  /* SPI2_MISO_ID */
 
 #if (SPI2_MOSI_ID == 0)
 #elif (SPI2_MOSI_ID == 1)
 #  define SPI2_MOSI_GPIO_AF GPIO_AF5_SPI2
-#  if (defined(STM32F417xx) || defined(STM32F405xx) || defined(STM32F407xx) || defined(STM32F415xx))
-#    error "PB15 can not be configured as SPI2 MOSI on STM32F417xx, STM32F405xx, STM32F407xx, STM32F415xx! "
-#  endif  /* (defined(STM32F417xx) || defined(STM32F405xx) || defined(STM32F407xx) || defined(STM32F415xx)) */
 #elif (SPI2_MOSI_ID == 2)
 #  define SPI2_MOSI_GPIO_AF GPIO_AF5_SPI2
-#  if (defined(STM32F405xx) || defined(STM32F446xx) || defined(STM32F417xx) || defined(STM32F407xx) || defined(STM32F415xx))
-#    error "PC3 can not be configured as SPI2 MOSI on STM32F405xx, STM32F446xx, STM32F417xx, STM32F407xx, STM32F415xx! "
-#  endif  /* (defined(STM32F405xx) || defined(STM32F446xx) || defined(STM32F417xx) || defined(STM32F407xx) || defined(STM32F415xx)) */
 #elif (SPI2_MOSI_ID == 3)
 #  define SPI2_MOSI_GPIO_AF GPIO_AF5_SPI2
 #  if !(defined(STM32F423xx) || defined(STM32F413xx))
@@ -189,9 +177,9 @@ uint8_t spi1_deinit(void);
 #  endif  /* !(defined(STM32F423xx) || defined(STM32F413xx)) */
 #elif (SPI2_MOSI_ID == 4)
 #  define SPI2_MOSI_GPIO_AF GPIO_AF5_SPI2
-#  if !(defined(STM32F437xx) || defined(STM32F427xx) || defined(STM32F469xx) || defined(STM32F439xx) || defined(STM32F479xx) || defined(STM32F429xx))
-#    error "PI3 only can be configured as SPI2 MOSI on STM32F437xx, STM32F427xx, STM32F469xx, STM32F439xx, STM32F479xx, STM32F429xx! "
-#  endif  /* !(defined(STM32F437xx) || defined(STM32F427xx) || defined(STM32F469xx) || defined(STM32F439xx) || defined(STM32F479xx) || defined(STM32F429xx)) */
+#  if !(defined(STM32F479xx) || defined(STM32F437xx) || defined(STM32F415xx) || defined(STM32F405xx) || defined(STM32F407xx) || defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F469xx) || defined(STM32F417xx) || defined(STM32F427xx))
+#    error "PI3 only can be configured as SPI2 MOSI on STM32F479xx, STM32F437xx, STM32F415xx, STM32F405xx, STM32F407xx, STM32F429xx, STM32F439xx, STM32F469xx, STM32F417xx, STM32F427xx! "
+#  endif  /* !(defined(STM32F479xx) || defined(STM32F437xx) || defined(STM32F415xx) || defined(STM32F405xx) || defined(STM32F407xx) || defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F469xx) || defined(STM32F417xx) || defined(STM32F427xx)) */
 #elif (SPI2_MOSI_ID == 5)
 #  define SPI2_MOSI_GPIO_AF GPIO_AF7_SPI2
 #  if !(defined(STM32F446xx) || defined(STM32F479xx) || defined(STM32F469xx))
@@ -202,14 +190,8 @@ uint8_t spi1_deinit(void);
 #if (SPI2_NSS_ID == 0)
 #elif (SPI2_NSS_ID == 1)
 #  define SPI2_NSS_GPIO_AF GPIO_AF5_SPI2
-#  if (defined(STM32F417xx) || defined(STM32F405xx) || defined(STM32F407xx) || defined(STM32F415xx))
-#    error "PB9 can not be configured as SPI2 NSS on STM32F417xx, STM32F405xx, STM32F407xx, STM32F415xx! "
-#  endif  /* (defined(STM32F417xx) || defined(STM32F405xx) || defined(STM32F407xx) || defined(STM32F415xx)) */
 #elif (SPI2_NSS_ID == 2)
 #  define SPI2_NSS_GPIO_AF GPIO_AF5_SPI2
-#  if (defined(STM32F417xx) || defined(STM32F405xx) || defined(STM32F407xx) || defined(STM32F415xx))
-#    error "PB12 can not be configured as SPI2 NSS on STM32F417xx, STM32F405xx, STM32F407xx, STM32F415xx! "
-#  endif  /* (defined(STM32F417xx) || defined(STM32F405xx) || defined(STM32F407xx) || defined(STM32F415xx)) */
 #elif (SPI2_NSS_ID == 3)
 #  define SPI2_NSS_GPIO_AF GPIO_AF5_SPI2
 #  if !(defined(STM32F423xx) || defined(STM32F413xx))
@@ -217,9 +199,9 @@ uint8_t spi1_deinit(void);
 #  endif  /* !(defined(STM32F423xx) || defined(STM32F413xx)) */
 #elif (SPI2_NSS_ID == 4)
 #  define SPI2_NSS_GPIO_AF GPIO_AF5_SPI2
-#  if !(defined(STM32F437xx) || defined(STM32F427xx) || defined(STM32F469xx) || defined(STM32F439xx) || defined(STM32F479xx) || defined(STM32F429xx))
-#    error "PI0 only can be configured as SPI2 NSS on STM32F437xx, STM32F427xx, STM32F469xx, STM32F439xx, STM32F479xx, STM32F429xx! "
-#  endif  /* !(defined(STM32F437xx) || defined(STM32F427xx) || defined(STM32F469xx) || defined(STM32F439xx) || defined(STM32F479xx) || defined(STM32F429xx)) */
+#  if !(defined(STM32F479xx) || defined(STM32F437xx) || defined(STM32F415xx) || defined(STM32F405xx) || defined(STM32F407xx) || defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F469xx) || defined(STM32F417xx) || defined(STM32F427xx))
+#    error "PI0 only can be configured as SPI2 NSS on STM32F479xx, STM32F437xx, STM32F415xx, STM32F405xx, STM32F407xx, STM32F429xx, STM32F439xx, STM32F469xx, STM32F417xx, STM32F427xx! "
+#  endif  /* !(defined(STM32F479xx) || defined(STM32F437xx) || defined(STM32F415xx) || defined(STM32F405xx) || defined(STM32F407xx) || defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F469xx) || defined(STM32F417xx) || defined(STM32F427xx)) */
 #elif (SPI2_NSS_ID == 5)
 #  define SPI2_NSS_GPIO_AF GPIO_AF7_SPI2
 #  if !(defined(STM32F446xx))
@@ -267,16 +249,13 @@ uint8_t spi2_deinit(void);
 
 #if (SPI3_SCK_ID == 0)
 #  define SPI3_SCK_GPIO_AF GPIO_AF6_SPI3
-#  if (defined(STM32F417xx) || defined(STM32F405xx) || defined(STM32F407xx) || defined(STM32F415xx))
-#    error "PB3 can not be configured as SPI3 SCK on STM32F417xx, STM32F405xx, STM32F407xx, STM32F415xx! "
-#  endif  /* (defined(STM32F417xx) || defined(STM32F405xx) || defined(STM32F407xx) || defined(STM32F415xx)) */
 #elif (SPI3_SCK_ID == 1)
 #  define SPI3_SCK_GPIO_AF GPIO_AF6_SPI3
 #elif (SPI3_SCK_ID == 2)
 #  define SPI3_SCK_GPIO_AF GPIO_AF7_SPI3
-#  if !(defined(STM32F410Rx) || defined(STM32F412Zx) || defined(STM32F413xx) || defined(STM32F412Rx) || defined(STM32F423xx) || defined(STM32F411xE) || defined(STM32F412Cx) || defined(STM32F410Tx) || defined(STM32F412Vx) || defined(STM32F410Cx))
-#    error "PB12 only can be configured as SPI3 SCK on STM32F410Rx, STM32F412Zx, STM32F413xx, STM32F412Rx, STM32F423xx, STM32F411xE, STM32F412Cx, STM32F410Tx, STM32F412Vx, STM32F410Cx! "
-#  endif  /* !(defined(STM32F410Rx) || defined(STM32F412Zx) || defined(STM32F413xx) || defined(STM32F412Rx) || defined(STM32F423xx) || defined(STM32F411xE) || defined(STM32F412Cx) || defined(STM32F410Tx) || defined(STM32F412Vx) || defined(STM32F410Cx)) */
+#  if !(defined(STM32F411xE) || defined(STM32F423xx) || defined(STM32F412Rx) || defined(STM32F412Cx) || defined(STM32F412Zx) || defined(STM32F410Tx) || defined(STM32F413xx) || defined(STM32F412Vx) || defined(STM32F410Cx) || defined(STM32F410Rx))
+#    error "PB12 only can be configured as SPI3 SCK on STM32F411xE, STM32F423xx, STM32F412Rx, STM32F412Cx, STM32F412Zx, STM32F410Tx, STM32F413xx, STM32F412Vx, STM32F410Cx, STM32F410Rx! "
+#  endif  /* !(defined(STM32F411xE) || defined(STM32F423xx) || defined(STM32F412Rx) || defined(STM32F412Cx) || defined(STM32F412Zx) || defined(STM32F410Tx) || defined(STM32F413xx) || defined(STM32F412Vx) || defined(STM32F410Cx) || defined(STM32F410Rx)) */
 #endif  /* SPI3_SCK_ID */
 
 #if (SPI3_MISO_ID == 0)
@@ -289,47 +268,38 @@ uint8_t spi2_deinit(void);
 #if (SPI3_MOSI_ID == 0)
 #elif (SPI3_MOSI_ID == 1)
 #  define SPI3_MOSI_GPIO_AF GPIO_AF6_SPI3
-#  if (defined(STM32F417xx) || defined(STM32F405xx) || defined(STM32F407xx) || defined(STM32F415xx))
-#    error "PB5 can not be configured as SPI3 MOSI on STM32F417xx, STM32F405xx, STM32F407xx, STM32F415xx! "
-#  endif  /* (defined(STM32F417xx) || defined(STM32F405xx) || defined(STM32F407xx) || defined(STM32F415xx)) */
 #elif (SPI3_MOSI_ID == 2)
 #  define SPI3_MOSI_GPIO_AF GPIO_AF6_SPI3
-#  if (defined(STM32F417xx) || defined(STM32F405xx) || defined(STM32F407xx) || defined(STM32F415xx))
-#    error "PC12 can not be configured as SPI3 MOSI on STM32F417xx, STM32F405xx, STM32F407xx, STM32F415xx! "
-#  endif  /* (defined(STM32F417xx) || defined(STM32F405xx) || defined(STM32F407xx) || defined(STM32F415xx)) */
 #elif (SPI3_MOSI_ID == 3)
 #  define SPI3_MOSI_GPIO_AF GPIO_AF5_SPI3
-#  if (defined(STM32F417xx) || defined(STM32F405xx) || defined(STM32F407xx) || defined(STM32F415xx))
-#    error "PD6 can not be configured as SPI3 MOSI on STM32F417xx, STM32F405xx, STM32F407xx, STM32F415xx! "
-#  endif  /* (defined(STM32F417xx) || defined(STM32F405xx) || defined(STM32F407xx) || defined(STM32F415xx)) */
+#  if (defined(STM32F407xx) || defined(STM32F417xx) || defined(STM32F405xx) || defined(STM32F415xx))
+#    error "PD6 can not be configured as SPI3 MOSI on STM32F407xx, STM32F417xx, STM32F405xx, STM32F415xx! "
+#  endif  /* (defined(STM32F407xx) || defined(STM32F417xx) || defined(STM32F405xx) || defined(STM32F415xx)) */
 #elif (SPI3_MOSI_ID == 4)
 #  define SPI3_MOSI_GPIO_AF GPIO_AF7_SPI3
-#  if !(defined(STM32F446xx) || defined(STM32F410Tx) || defined(STM32F410Rx) || defined(STM32F410Cx))
-#    error "PB0 only can be configured as SPI3 MOSI on STM32F446xx, STM32F410Tx, STM32F410Rx, STM32F410Cx! "
-#  endif  /* !(defined(STM32F446xx) || defined(STM32F410Tx) || defined(STM32F410Rx) || defined(STM32F410Cx)) */
+#  if !(defined(STM32F410Tx) || defined(STM32F446xx) || defined(STM32F410Cx) || defined(STM32F410Rx))
+#    error "PB0 only can be configured as SPI3 MOSI on STM32F410Tx, STM32F446xx, STM32F410Cx, STM32F410Rx! "
+#  endif  /* !(defined(STM32F410Tx) || defined(STM32F446xx) || defined(STM32F410Cx) || defined(STM32F410Rx)) */
 #elif (SPI3_MOSI_ID == 5)
 #  define SPI3_MOSI_GPIO_AF GPIO_AF7_SPI3
-#  if !(defined(STM32F446xx) || defined(STM32F410Tx) || defined(STM32F410Rx) || defined(STM32F410Cx))
-#    error "PB2 only can be configured as SPI3 MOSI on STM32F446xx, STM32F410Tx, STM32F410Rx, STM32F410Cx! "
-#  endif  /* !(defined(STM32F446xx) || defined(STM32F410Tx) || defined(STM32F410Rx) || defined(STM32F410Cx)) */
+#  if !(defined(STM32F410Tx) || defined(STM32F446xx) || defined(STM32F410Cx) || defined(STM32F410Rx))
+#    error "PB2 only can be configured as SPI3 MOSI on STM32F410Tx, STM32F446xx, STM32F410Cx, STM32F410Rx! "
+#  endif  /* !(defined(STM32F410Tx) || defined(STM32F446xx) || defined(STM32F410Cx) || defined(STM32F410Rx)) */
 #elif (SPI3_MOSI_ID == 6)
 #  define SPI3_MOSI_GPIO_AF GPIO_AF5_SPI3
-#  if !(defined(STM32F446xx) || defined(STM32F410Tx) || defined(STM32F410Rx) || defined(STM32F410Cx))
-#    error "PC1 only can be configured as SPI3 MOSI on STM32F446xx, STM32F410Tx, STM32F410Rx, STM32F410Cx! "
-#  endif  /* !(defined(STM32F446xx) || defined(STM32F410Tx) || defined(STM32F410Rx) || defined(STM32F410Cx)) */
+#  if !(defined(STM32F410Tx) || defined(STM32F446xx) || defined(STM32F410Cx) || defined(STM32F410Rx))
+#    error "PC1 only can be configured as SPI3 MOSI on STM32F410Tx, STM32F446xx, STM32F410Cx, STM32F410Rx! "
+#  endif  /* !(defined(STM32F410Tx) || defined(STM32F446xx) || defined(STM32F410Cx) || defined(STM32F410Rx)) */
 #elif (SPI3_MOSI_ID == 7)
 #  define SPI3_MOSI_GPIO_AF GPIO_AF6_SPI3
-#  if !(defined(STM32F446xx) || defined(STM32F410Tx) || defined(STM32F410Rx) || defined(STM32F410Cx))
-#    error "PD0 only can be configured as SPI3 MOSI on STM32F446xx, STM32F410Tx, STM32F410Rx, STM32F410Cx! "
-#  endif  /* !(defined(STM32F446xx) || defined(STM32F410Tx) || defined(STM32F410Rx) || defined(STM32F410Cx)) */
+#  if !(defined(STM32F410Tx) || defined(STM32F446xx) || defined(STM32F410Cx) || defined(STM32F410Rx))
+#    error "PD0 only can be configured as SPI3 MOSI on STM32F410Tx, STM32F446xx, STM32F410Cx, STM32F410Rx! "
+#  endif  /* !(defined(STM32F410Tx) || defined(STM32F446xx) || defined(STM32F410Cx) || defined(STM32F410Rx)) */
 #endif  /* SPI3_MOSI_ID */
 
 #if (SPI3_NSS_ID == 0)
 #elif (SPI3_NSS_ID == 1)
 #  define SPI3_NSS_GPIO_AF GPIO_AF6_SPI3
-#  if (defined(STM32F417xx) || defined(STM32F405xx) || defined(STM32F407xx) || defined(STM32F415xx))
-#    error "PA4 can not be configured as SPI3 NSS on STM32F417xx, STM32F405xx, STM32F407xx, STM32F415xx! "
-#  endif  /* (defined(STM32F417xx) || defined(STM32F405xx) || defined(STM32F407xx) || defined(STM32F415xx)) */
 #elif (SPI3_NSS_ID == 2)
 #  define SPI3_NSS_GPIO_AF GPIO_AF6_SPI3
 #endif  /* SPI3_NSS_ID */
@@ -373,14 +343,14 @@ uint8_t spi3_deinit(void);
 #  define SPI4_SCK_GPIO_AF GPIO_AF5_SPI4
 #elif (SPI4_SCK_ID == 2)
 #  define SPI4_SCK_GPIO_AF GPIO_AF6_SPI4
-#  if (defined(STM32F437xx) || defined(STM32F401xC) || defined(STM32F427xx) || defined(STM32F446xx) || defined(STM32F401xE) || defined(STM32F469xx) || defined(STM32F439xx) || defined(STM32F479xx) || defined(STM32F429xx))
-#    error "PB13 can not be configured as SPI4 SCK on STM32F437xx, STM32F401xC, STM32F427xx, STM32F446xx, STM32F401xE, STM32F469xx, STM32F439xx, STM32F479xx, STM32F429xx! "
-#  endif  /* (defined(STM32F437xx) || defined(STM32F401xC) || defined(STM32F427xx) || defined(STM32F446xx) || defined(STM32F401xE) || defined(STM32F469xx) || defined(STM32F439xx) || defined(STM32F479xx) || defined(STM32F429xx)) */
+#  if (defined(STM32F479xx) || defined(STM32F437xx) || defined(STM32F446xx) || defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F469xx) || defined(STM32F401xE) || defined(STM32F427xx) || defined(STM32F401xC))
+#    error "PB13 can not be configured as SPI4 SCK on STM32F479xx, STM32F437xx, STM32F446xx, STM32F429xx, STM32F439xx, STM32F469xx, STM32F401xE, STM32F427xx, STM32F401xC! "
+#  endif  /* (defined(STM32F479xx) || defined(STM32F437xx) || defined(STM32F446xx) || defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F469xx) || defined(STM32F401xE) || defined(STM32F427xx) || defined(STM32F401xC)) */
 #elif (SPI4_SCK_ID == 3)
 #  define SPI4_SCK_GPIO_AF GPIO_AF6_SPI4
-#  if !(defined(STM32F410Rx) || defined(STM32F405xx) || defined(STM32F446xx) || defined(STM32F417xx) || defined(STM32F410Cx) || defined(STM32F410Tx) || defined(STM32F407xx) || defined(STM32F415xx))
-#    error "PG11 only can be configured as SPI4 SCK on STM32F410Rx, STM32F405xx, STM32F446xx, STM32F417xx, STM32F410Cx, STM32F410Tx, STM32F407xx, STM32F415xx! "
-#  endif  /* !(defined(STM32F410Rx) || defined(STM32F405xx) || defined(STM32F446xx) || defined(STM32F417xx) || defined(STM32F410Cx) || defined(STM32F410Tx) || defined(STM32F407xx) || defined(STM32F415xx)) */
+#  if !(defined(STM32F410Rx) || defined(STM32F415xx) || defined(STM32F405xx) || defined(STM32F446xx) || defined(STM32F407xx) || defined(STM32F417xx) || defined(STM32F410Cx) || defined(STM32F410Tx))
+#    error "PG11 only can be configured as SPI4 SCK on STM32F410Rx, STM32F415xx, STM32F405xx, STM32F446xx, STM32F407xx, STM32F417xx, STM32F410Cx, STM32F410Tx! "
+#  endif  /* !(defined(STM32F410Rx) || defined(STM32F415xx) || defined(STM32F405xx) || defined(STM32F446xx) || defined(STM32F407xx) || defined(STM32F417xx) || defined(STM32F410Cx) || defined(STM32F410Tx)) */
 #endif  /* SPI4_SCK_ID */
 
 #if (SPI4_MISO_ID == 0)
@@ -390,19 +360,19 @@ uint8_t spi3_deinit(void);
 #  define SPI4_MISO_GPIO_AF GPIO_AF5_SPI4
 #elif (SPI4_MISO_ID == 3)
 #  define SPI4_MISO_GPIO_AF GPIO_AF6_SPI4
-#  if (defined(STM32F437xx) || defined(STM32F401xC) || defined(STM32F427xx) || defined(STM32F446xx) || defined(STM32F401xE) || defined(STM32F469xx) || defined(STM32F439xx) || defined(STM32F479xx) || defined(STM32F429xx))
-#    error "PA11 can not be configured as SPI4 MISO on STM32F437xx, STM32F401xC, STM32F427xx, STM32F446xx, STM32F401xE, STM32F469xx, STM32F439xx, STM32F479xx, STM32F429xx! "
-#  endif  /* (defined(STM32F437xx) || defined(STM32F401xC) || defined(STM32F427xx) || defined(STM32F446xx) || defined(STM32F401xE) || defined(STM32F469xx) || defined(STM32F439xx) || defined(STM32F479xx) || defined(STM32F429xx)) */
+#  if (defined(STM32F479xx) || defined(STM32F437xx) || defined(STM32F446xx) || defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F469xx) || defined(STM32F401xE) || defined(STM32F427xx) || defined(STM32F401xC))
+#    error "PA11 can not be configured as SPI4 MISO on STM32F479xx, STM32F437xx, STM32F446xx, STM32F429xx, STM32F439xx, STM32F469xx, STM32F401xE, STM32F427xx, STM32F401xC! "
+#  endif  /* (defined(STM32F479xx) || defined(STM32F437xx) || defined(STM32F446xx) || defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F469xx) || defined(STM32F401xE) || defined(STM32F427xx) || defined(STM32F401xC)) */
 #elif (SPI4_MISO_ID == 4)
 #  define SPI4_MISO_GPIO_AF GPIO_AF5_SPI4
-#  if !(defined(STM32F410Rx) || defined(STM32F405xx) || defined(STM32F446xx) || defined(STM32F417xx) || defined(STM32F410Cx) || defined(STM32F410Tx) || defined(STM32F407xx) || defined(STM32F415xx))
-#    error "PD0 only can be configured as SPI4 MISO on STM32F410Rx, STM32F405xx, STM32F446xx, STM32F417xx, STM32F410Cx, STM32F410Tx, STM32F407xx, STM32F415xx! "
-#  endif  /* !(defined(STM32F410Rx) || defined(STM32F405xx) || defined(STM32F446xx) || defined(STM32F417xx) || defined(STM32F410Cx) || defined(STM32F410Tx) || defined(STM32F407xx) || defined(STM32F415xx)) */
+#  if !(defined(STM32F410Rx) || defined(STM32F415xx) || defined(STM32F405xx) || defined(STM32F446xx) || defined(STM32F407xx) || defined(STM32F417xx) || defined(STM32F410Cx) || defined(STM32F410Tx))
+#    error "PD0 only can be configured as SPI4 MISO on STM32F410Rx, STM32F415xx, STM32F405xx, STM32F446xx, STM32F407xx, STM32F417xx, STM32F410Cx, STM32F410Tx! "
+#  endif  /* !(defined(STM32F410Rx) || defined(STM32F415xx) || defined(STM32F405xx) || defined(STM32F446xx) || defined(STM32F407xx) || defined(STM32F417xx) || defined(STM32F410Cx) || defined(STM32F410Tx)) */
 #elif (SPI4_MISO_ID == 5)
 #  define SPI4_MISO_GPIO_AF GPIO_AF6_SPI4
-#  if !(defined(STM32F410Rx) || defined(STM32F405xx) || defined(STM32F446xx) || defined(STM32F417xx) || defined(STM32F410Cx) || defined(STM32F410Tx) || defined(STM32F407xx) || defined(STM32F415xx))
-#    error "PG12 only can be configured as SPI4 MISO on STM32F410Rx, STM32F405xx, STM32F446xx, STM32F417xx, STM32F410Cx, STM32F410Tx, STM32F407xx, STM32F415xx! "
-#  endif  /* !(defined(STM32F410Rx) || defined(STM32F405xx) || defined(STM32F446xx) || defined(STM32F417xx) || defined(STM32F410Cx) || defined(STM32F410Tx) || defined(STM32F407xx) || defined(STM32F415xx)) */
+#  if !(defined(STM32F410Rx) || defined(STM32F415xx) || defined(STM32F405xx) || defined(STM32F446xx) || defined(STM32F407xx) || defined(STM32F417xx) || defined(STM32F410Cx) || defined(STM32F410Tx))
+#    error "PG12 only can be configured as SPI4 MISO on STM32F410Rx, STM32F415xx, STM32F405xx, STM32F446xx, STM32F407xx, STM32F417xx, STM32F410Cx, STM32F410Tx! "
+#  endif  /* !(defined(STM32F410Rx) || defined(STM32F415xx) || defined(STM32F405xx) || defined(STM32F446xx) || defined(STM32F407xx) || defined(STM32F417xx) || defined(STM32F410Cx) || defined(STM32F410Tx)) */
 #endif  /* SPI4_MISO_ID */
 
 #if (SPI4_MOSI_ID == 0)
@@ -412,14 +382,14 @@ uint8_t spi3_deinit(void);
 #  define SPI4_MOSI_GPIO_AF GPIO_AF5_SPI4
 #elif (SPI4_MOSI_ID == 3)
 #  define SPI4_MOSI_GPIO_AF GPIO_AF5_SPI4
-#  if (defined(STM32F437xx) || defined(STM32F401xC) || defined(STM32F427xx) || defined(STM32F446xx) || defined(STM32F401xE) || defined(STM32F469xx) || defined(STM32F439xx) || defined(STM32F479xx) || defined(STM32F429xx))
-#    error "PA1 can not be configured as SPI4 MOSI on STM32F437xx, STM32F401xC, STM32F427xx, STM32F446xx, STM32F401xE, STM32F469xx, STM32F439xx, STM32F479xx, STM32F429xx! "
-#  endif  /* (defined(STM32F437xx) || defined(STM32F401xC) || defined(STM32F427xx) || defined(STM32F446xx) || defined(STM32F401xE) || defined(STM32F469xx) || defined(STM32F439xx) || defined(STM32F479xx) || defined(STM32F429xx)) */
+#  if (defined(STM32F479xx) || defined(STM32F437xx) || defined(STM32F446xx) || defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F469xx) || defined(STM32F401xE) || defined(STM32F427xx) || defined(STM32F401xC))
+#    error "PA1 can not be configured as SPI4 MOSI on STM32F479xx, STM32F437xx, STM32F446xx, STM32F429xx, STM32F439xx, STM32F469xx, STM32F401xE, STM32F427xx, STM32F401xC! "
+#  endif  /* (defined(STM32F479xx) || defined(STM32F437xx) || defined(STM32F446xx) || defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F469xx) || defined(STM32F401xE) || defined(STM32F427xx) || defined(STM32F401xC)) */
 #elif (SPI4_MOSI_ID == 4)
 #  define SPI4_MOSI_GPIO_AF GPIO_AF6_SPI4
-#  if !(defined(STM32F410Rx) || defined(STM32F405xx) || defined(STM32F446xx) || defined(STM32F417xx) || defined(STM32F410Cx) || defined(STM32F410Tx) || defined(STM32F407xx) || defined(STM32F415xx))
-#    error "PG13 only can be configured as SPI4 MOSI on STM32F410Rx, STM32F405xx, STM32F446xx, STM32F417xx, STM32F410Cx, STM32F410Tx, STM32F407xx, STM32F415xx! "
-#  endif  /* !(defined(STM32F410Rx) || defined(STM32F405xx) || defined(STM32F446xx) || defined(STM32F417xx) || defined(STM32F410Cx) || defined(STM32F410Tx) || defined(STM32F407xx) || defined(STM32F415xx)) */
+#  if !(defined(STM32F410Rx) || defined(STM32F415xx) || defined(STM32F405xx) || defined(STM32F446xx) || defined(STM32F407xx) || defined(STM32F417xx) || defined(STM32F410Cx) || defined(STM32F410Tx))
+#    error "PG13 only can be configured as SPI4 MOSI on STM32F410Rx, STM32F415xx, STM32F405xx, STM32F446xx, STM32F407xx, STM32F417xx, STM32F410Cx, STM32F410Tx! "
+#  endif  /* !(defined(STM32F410Rx) || defined(STM32F415xx) || defined(STM32F405xx) || defined(STM32F446xx) || defined(STM32F407xx) || defined(STM32F417xx) || defined(STM32F410Cx) || defined(STM32F410Tx)) */
 #endif  /* SPI4_MOSI_ID */
 
 #if (SPI4_NSS_ID == 0)
@@ -429,14 +399,14 @@ uint8_t spi3_deinit(void);
 #  define SPI4_NSS_GPIO_AF GPIO_AF5_SPI4
 #elif (SPI4_NSS_ID == 3)
 #  define SPI4_NSS_GPIO_AF GPIO_AF6_SPI4
-#  if (defined(STM32F437xx) || defined(STM32F401xC) || defined(STM32F427xx) || defined(STM32F446xx) || defined(STM32F401xE) || defined(STM32F469xx) || defined(STM32F439xx) || defined(STM32F479xx) || defined(STM32F429xx))
-#    error "PB12 can not be configured as SPI4 NSS on STM32F437xx, STM32F401xC, STM32F427xx, STM32F446xx, STM32F401xE, STM32F469xx, STM32F439xx, STM32F479xx, STM32F429xx! "
-#  endif  /* (defined(STM32F437xx) || defined(STM32F401xC) || defined(STM32F427xx) || defined(STM32F446xx) || defined(STM32F401xE) || defined(STM32F469xx) || defined(STM32F439xx) || defined(STM32F479xx) || defined(STM32F429xx)) */
+#  if (defined(STM32F479xx) || defined(STM32F437xx) || defined(STM32F446xx) || defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F469xx) || defined(STM32F401xE) || defined(STM32F427xx) || defined(STM32F401xC))
+#    error "PB12 can not be configured as SPI4 NSS on STM32F479xx, STM32F437xx, STM32F446xx, STM32F429xx, STM32F439xx, STM32F469xx, STM32F401xE, STM32F427xx, STM32F401xC! "
+#  endif  /* (defined(STM32F479xx) || defined(STM32F437xx) || defined(STM32F446xx) || defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F469xx) || defined(STM32F401xE) || defined(STM32F427xx) || defined(STM32F401xC)) */
 #elif (SPI4_NSS_ID == 4)
 #  define SPI4_NSS_GPIO_AF GPIO_AF6_SPI4
-#  if !(defined(STM32F410Rx) || defined(STM32F405xx) || defined(STM32F446xx) || defined(STM32F417xx) || defined(STM32F410Cx) || defined(STM32F410Tx) || defined(STM32F407xx) || defined(STM32F415xx))
-#    error "PG14 only can be configured as SPI4 NSS on STM32F410Rx, STM32F405xx, STM32F446xx, STM32F417xx, STM32F410Cx, STM32F410Tx, STM32F407xx, STM32F415xx! "
-#  endif  /* !(defined(STM32F410Rx) || defined(STM32F405xx) || defined(STM32F446xx) || defined(STM32F417xx) || defined(STM32F410Cx) || defined(STM32F410Tx) || defined(STM32F407xx) || defined(STM32F415xx)) */
+#  if !(defined(STM32F410Rx) || defined(STM32F415xx) || defined(STM32F405xx) || defined(STM32F446xx) || defined(STM32F407xx) || defined(STM32F417xx) || defined(STM32F410Cx) || defined(STM32F410Tx))
+#    error "PG14 only can be configured as SPI4 NSS on STM32F410Rx, STM32F415xx, STM32F405xx, STM32F446xx, STM32F407xx, STM32F417xx, STM32F410Cx, STM32F410Tx! "
+#  endif  /* !(defined(STM32F410Rx) || defined(STM32F415xx) || defined(STM32F405xx) || defined(STM32F446xx) || defined(STM32F407xx) || defined(STM32F417xx) || defined(STM32F410Cx) || defined(STM32F410Tx)) */
 #endif  /* SPI4_NSS_ID */
 
 extern SPI_HandleTypeDef spi4_handle;
@@ -448,9 +418,9 @@ uint8_t spi4_deinit(void);
 #  if SPI4_RX_DMA
 #    if (SPI4_RX_DMA_NUMBER == 2) && (SPI4_RX_DMA_STREAM == 4) && (SPI4_RX_DMA_CHANNEL == 4)
 
-#     if (defined(STM32F437xx) || defined(STM32F401xC) || defined(STM32F427xx) || defined(STM32F446xx) || defined(STM32F401xE) || defined(STM32F469xx) || defined(STM32F439xx) || defined(STM32F479xx) || defined(STM32F429xx))
-#       error "This SPI4 DMA RX configuration invalid on STM32F437xx, STM32F401xC, STM32F427xx, STM32F446xx, STM32F401xE, STM32F469xx, STM32F439xx, STM32F479xx, STM32F429xx! "
-#     endif  /* (defined(STM32F437xx) || defined(STM32F401xC) || defined(STM32F427xx) || defined(STM32F446xx) || defined(STM32F401xE) || defined(STM32F469xx) || defined(STM32F439xx) || defined(STM32F479xx) || defined(STM32F429xx)) */
+#     if (defined(STM32F479xx) || defined(STM32F437xx) || defined(STM32F446xx) || defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F469xx) || defined(STM32F401xE) || defined(STM32F427xx) || defined(STM32F401xC))
+#       error "This SPI4 DMA RX configuration invalid on STM32F479xx, STM32F437xx, STM32F446xx, STM32F429xx, STM32F439xx, STM32F469xx, STM32F401xE, STM32F427xx, STM32F401xC! "
+#     endif  /* (defined(STM32F479xx) || defined(STM32F437xx) || defined(STM32F446xx) || defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F469xx) || defined(STM32F401xE) || defined(STM32F427xx) || defined(STM32F401xC)) */
 #    endif /* (SPI4_RX_DMA_NUMBER == 2) && (SPI4_RX_DMA_STREAM == 4) && (SPI4_RX_DMA_CHANNEL == 4) */
 
 #    define SPI4_RX_DMA_IRQn                                                  \
@@ -481,118 +451,118 @@ uint8_t spi4_deinit(void);
 
 #if (SPI5_SCK_ID == 0)
 #  define SPI5_SCK_GPIO_AF GPIO_AF6_SPI5
-#  if (defined(STM32F437xx) || defined(STM32F427xx) || defined(STM32F469xx) || defined(STM32F439xx) || defined(STM32F479xx) || defined(STM32F429xx))
-#    error "PB0 can not be configured as SPI5 SCK on STM32F437xx, STM32F427xx, STM32F469xx, STM32F439xx, STM32F479xx, STM32F429xx! "
-#  endif  /* (defined(STM32F437xx) || defined(STM32F427xx) || defined(STM32F469xx) || defined(STM32F439xx) || defined(STM32F479xx) || defined(STM32F429xx)) */
+#  if (defined(STM32F479xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F469xx) || defined(STM32F427xx))
+#    error "PB0 can not be configured as SPI5 SCK on STM32F479xx, STM32F437xx, STM32F429xx, STM32F439xx, STM32F469xx, STM32F427xx! "
+#  endif  /* (defined(STM32F479xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F469xx) || defined(STM32F427xx)) */
 #elif (SPI5_SCK_ID == 1)
 #  define SPI5_SCK_GPIO_AF GPIO_AF6_SPI5
-#  if (defined(STM32F410Rx) || defined(STM32F437xx) || defined(STM32F427xx) || defined(STM32F469xx) || defined(STM32F410Cx) || defined(STM32F410Tx) || defined(STM32F439xx) || defined(STM32F479xx) || defined(STM32F429xx))
-#    error "PE2 can not be configured as SPI5 SCK on STM32F410Rx, STM32F437xx, STM32F427xx, STM32F469xx, STM32F410Cx, STM32F410Tx, STM32F439xx, STM32F479xx, STM32F429xx! "
-#  endif  /* (defined(STM32F410Rx) || defined(STM32F437xx) || defined(STM32F427xx) || defined(STM32F469xx) || defined(STM32F410Cx) || defined(STM32F410Tx) || defined(STM32F439xx) || defined(STM32F479xx) || defined(STM32F429xx)) */
+#  if (defined(STM32F479xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F469xx) || defined(STM32F427xx) || defined(STM32F410Tx) || defined(STM32F410Cx) || defined(STM32F410Rx))
+#    error "PE2 can not be configured as SPI5 SCK on STM32F479xx, STM32F437xx, STM32F429xx, STM32F439xx, STM32F469xx, STM32F427xx, STM32F410Tx, STM32F410Cx, STM32F410Rx! "
+#  endif  /* (defined(STM32F479xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F469xx) || defined(STM32F427xx) || defined(STM32F410Tx) || defined(STM32F410Cx) || defined(STM32F410Rx)) */
 #elif (SPI5_SCK_ID == 2)
 #  define SPI5_SCK_GPIO_AF GPIO_AF6_SPI5
-#  if (defined(STM32F410Rx) || defined(STM32F437xx) || defined(STM32F427xx) || defined(STM32F469xx) || defined(STM32F410Cx) || defined(STM32F410Tx) || defined(STM32F439xx) || defined(STM32F479xx) || defined(STM32F429xx))
-#    error "PE12 can not be configured as SPI5 SCK on STM32F410Rx, STM32F437xx, STM32F427xx, STM32F469xx, STM32F410Cx, STM32F410Tx, STM32F439xx, STM32F479xx, STM32F429xx! "
-#  endif  /* (defined(STM32F410Rx) || defined(STM32F437xx) || defined(STM32F427xx) || defined(STM32F469xx) || defined(STM32F410Cx) || defined(STM32F410Tx) || defined(STM32F439xx) || defined(STM32F479xx) || defined(STM32F429xx)) */
+#  if (defined(STM32F479xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F469xx) || defined(STM32F427xx) || defined(STM32F410Tx) || defined(STM32F410Cx) || defined(STM32F410Rx))
+#    error "PE12 can not be configured as SPI5 SCK on STM32F479xx, STM32F437xx, STM32F429xx, STM32F439xx, STM32F469xx, STM32F427xx, STM32F410Tx, STM32F410Cx, STM32F410Rx! "
+#  endif  /* (defined(STM32F479xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F469xx) || defined(STM32F427xx) || defined(STM32F410Tx) || defined(STM32F410Cx) || defined(STM32F410Rx)) */
 #elif (SPI5_SCK_ID == 3)
 #  define SPI5_SCK_GPIO_AF GPIO_AF5_SPI5
-#  if (defined(STM32F410Rx) || defined(STM32F412Zx) || defined(STM32F413xx) || defined(STM32F412Rx) || defined(STM32F423xx) || defined(STM32F411xE) || defined(STM32F412Cx) || defined(STM32F410Tx) || defined(STM32F412Vx) || defined(STM32F410Cx))
-#    error "PF7 can not be configured as SPI5 SCK on STM32F410Rx, STM32F412Zx, STM32F413xx, STM32F412Rx, STM32F423xx, STM32F411xE, STM32F412Cx, STM32F410Tx, STM32F412Vx, STM32F410Cx! "
-#  endif  /* (defined(STM32F410Rx) || defined(STM32F412Zx) || defined(STM32F413xx) || defined(STM32F412Rx) || defined(STM32F423xx) || defined(STM32F411xE) || defined(STM32F412Cx) || defined(STM32F410Tx) || defined(STM32F412Vx) || defined(STM32F410Cx)) */
+#  if (defined(STM32F411xE) || defined(STM32F423xx) || defined(STM32F412Rx) || defined(STM32F412Cx) || defined(STM32F412Zx) || defined(STM32F410Tx) || defined(STM32F413xx) || defined(STM32F412Vx) || defined(STM32F410Cx) || defined(STM32F410Rx))
+#    error "PF7 can not be configured as SPI5 SCK on STM32F411xE, STM32F423xx, STM32F412Rx, STM32F412Cx, STM32F412Zx, STM32F410Tx, STM32F413xx, STM32F412Vx, STM32F410Cx, STM32F410Rx! "
+#  endif  /* (defined(STM32F411xE) || defined(STM32F423xx) || defined(STM32F412Rx) || defined(STM32F412Cx) || defined(STM32F412Zx) || defined(STM32F410Tx) || defined(STM32F413xx) || defined(STM32F412Vx) || defined(STM32F410Cx) || defined(STM32F410Rx)) */
 #elif (SPI5_SCK_ID == 4)
 #  define SPI5_SCK_GPIO_AF GPIO_AF5_SPI5
-#  if (defined(STM32F410Rx) || defined(STM32F412Zx) || defined(STM32F413xx) || defined(STM32F412Rx) || defined(STM32F423xx) || defined(STM32F411xE) || defined(STM32F412Cx) || defined(STM32F410Tx) || defined(STM32F412Vx) || defined(STM32F410Cx))
-#    error "PH6 can not be configured as SPI5 SCK on STM32F410Rx, STM32F412Zx, STM32F413xx, STM32F412Rx, STM32F423xx, STM32F411xE, STM32F412Cx, STM32F410Tx, STM32F412Vx, STM32F410Cx! "
-#  endif  /* (defined(STM32F410Rx) || defined(STM32F412Zx) || defined(STM32F413xx) || defined(STM32F412Rx) || defined(STM32F423xx) || defined(STM32F411xE) || defined(STM32F412Cx) || defined(STM32F410Tx) || defined(STM32F412Vx) || defined(STM32F410Cx)) */
+#  if (defined(STM32F411xE) || defined(STM32F423xx) || defined(STM32F412Rx) || defined(STM32F412Cx) || defined(STM32F412Zx) || defined(STM32F410Tx) || defined(STM32F413xx) || defined(STM32F412Vx) || defined(STM32F410Cx) || defined(STM32F410Rx))
+#    error "PH6 can not be configured as SPI5 SCK on STM32F411xE, STM32F423xx, STM32F412Rx, STM32F412Cx, STM32F412Zx, STM32F410Tx, STM32F413xx, STM32F412Vx, STM32F410Cx, STM32F410Rx! "
+#  endif  /* (defined(STM32F411xE) || defined(STM32F423xx) || defined(STM32F412Rx) || defined(STM32F412Cx) || defined(STM32F412Zx) || defined(STM32F410Tx) || defined(STM32F413xx) || defined(STM32F412Vx) || defined(STM32F410Cx) || defined(STM32F410Rx)) */
 #endif  /* SPI5_SCK_ID */
 
 #if (SPI5_MISO_ID == 0)
 #elif (SPI5_MISO_ID == 1)
 #  define SPI5_MISO_GPIO_AF GPIO_AF6_SPI5
-#  if (defined(STM32F437xx) || defined(STM32F427xx) || defined(STM32F469xx) || defined(STM32F439xx) || defined(STM32F479xx) || defined(STM32F429xx))
-#    error "PA12 can not be configured as SPI5 MISO on STM32F437xx, STM32F427xx, STM32F469xx, STM32F439xx, STM32F479xx, STM32F429xx! "
-#  endif  /* (defined(STM32F437xx) || defined(STM32F427xx) || defined(STM32F469xx) || defined(STM32F439xx) || defined(STM32F479xx) || defined(STM32F429xx)) */
+#  if (defined(STM32F479xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F469xx) || defined(STM32F427xx))
+#    error "PA12 can not be configured as SPI5 MISO on STM32F479xx, STM32F437xx, STM32F429xx, STM32F439xx, STM32F469xx, STM32F427xx! "
+#  endif  /* (defined(STM32F479xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F469xx) || defined(STM32F427xx)) */
 #elif (SPI5_MISO_ID == 2)
 #  define SPI5_MISO_GPIO_AF GPIO_AF6_SPI5
-#  if (defined(STM32F410Rx) || defined(STM32F437xx) || defined(STM32F427xx) || defined(STM32F469xx) || defined(STM32F410Cx) || defined(STM32F410Tx) || defined(STM32F439xx) || defined(STM32F479xx) || defined(STM32F429xx))
-#    error "PE5 can not be configured as SPI5 MISO on STM32F410Rx, STM32F437xx, STM32F427xx, STM32F469xx, STM32F410Cx, STM32F410Tx, STM32F439xx, STM32F479xx, STM32F429xx! "
-#  endif  /* (defined(STM32F410Rx) || defined(STM32F437xx) || defined(STM32F427xx) || defined(STM32F469xx) || defined(STM32F410Cx) || defined(STM32F410Tx) || defined(STM32F439xx) || defined(STM32F479xx) || defined(STM32F429xx)) */
+#  if (defined(STM32F479xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F469xx) || defined(STM32F427xx) || defined(STM32F410Tx) || defined(STM32F410Cx) || defined(STM32F410Rx))
+#    error "PE5 can not be configured as SPI5 MISO on STM32F479xx, STM32F437xx, STM32F429xx, STM32F439xx, STM32F469xx, STM32F427xx, STM32F410Tx, STM32F410Cx, STM32F410Rx! "
+#  endif  /* (defined(STM32F479xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F469xx) || defined(STM32F427xx) || defined(STM32F410Tx) || defined(STM32F410Cx) || defined(STM32F410Rx)) */
 #elif (SPI5_MISO_ID == 3)
 #  define SPI5_MISO_GPIO_AF GPIO_AF6_SPI5
-#  if (defined(STM32F410Rx) || defined(STM32F437xx) || defined(STM32F427xx) || defined(STM32F469xx) || defined(STM32F410Cx) || defined(STM32F410Tx) || defined(STM32F439xx) || defined(STM32F479xx) || defined(STM32F429xx))
-#    error "PE13 can not be configured as SPI5 MISO on STM32F410Rx, STM32F437xx, STM32F427xx, STM32F469xx, STM32F410Cx, STM32F410Tx, STM32F439xx, STM32F479xx, STM32F429xx! "
-#  endif  /* (defined(STM32F410Rx) || defined(STM32F437xx) || defined(STM32F427xx) || defined(STM32F469xx) || defined(STM32F410Cx) || defined(STM32F410Tx) || defined(STM32F439xx) || defined(STM32F479xx) || defined(STM32F429xx)) */
+#  if (defined(STM32F479xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F469xx) || defined(STM32F427xx) || defined(STM32F410Tx) || defined(STM32F410Cx) || defined(STM32F410Rx))
+#    error "PE13 can not be configured as SPI5 MISO on STM32F479xx, STM32F437xx, STM32F429xx, STM32F439xx, STM32F469xx, STM32F427xx, STM32F410Tx, STM32F410Cx, STM32F410Rx! "
+#  endif  /* (defined(STM32F479xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F469xx) || defined(STM32F427xx) || defined(STM32F410Tx) || defined(STM32F410Cx) || defined(STM32F410Rx)) */
 #elif (SPI5_MISO_ID == 4)
 #  define SPI5_MISO_GPIO_AF GPIO_AF5_SPI5
-#  if (defined(STM32F410Rx) || defined(STM32F412Zx) || defined(STM32F413xx) || defined(STM32F412Rx) || defined(STM32F423xx) || defined(STM32F411xE) || defined(STM32F412Cx) || defined(STM32F410Tx) || defined(STM32F412Vx) || defined(STM32F410Cx))
-#    error "PF8 can not be configured as SPI5 MISO on STM32F410Rx, STM32F412Zx, STM32F413xx, STM32F412Rx, STM32F423xx, STM32F411xE, STM32F412Cx, STM32F410Tx, STM32F412Vx, STM32F410Cx! "
-#  endif  /* (defined(STM32F410Rx) || defined(STM32F412Zx) || defined(STM32F413xx) || defined(STM32F412Rx) || defined(STM32F423xx) || defined(STM32F411xE) || defined(STM32F412Cx) || defined(STM32F410Tx) || defined(STM32F412Vx) || defined(STM32F410Cx)) */
+#  if (defined(STM32F411xE) || defined(STM32F423xx) || defined(STM32F412Rx) || defined(STM32F412Cx) || defined(STM32F412Zx) || defined(STM32F410Tx) || defined(STM32F413xx) || defined(STM32F412Vx) || defined(STM32F410Cx) || defined(STM32F410Rx))
+#    error "PF8 can not be configured as SPI5 MISO on STM32F411xE, STM32F423xx, STM32F412Rx, STM32F412Cx, STM32F412Zx, STM32F410Tx, STM32F413xx, STM32F412Vx, STM32F410Cx, STM32F410Rx! "
+#  endif  /* (defined(STM32F411xE) || defined(STM32F423xx) || defined(STM32F412Rx) || defined(STM32F412Cx) || defined(STM32F412Zx) || defined(STM32F410Tx) || defined(STM32F413xx) || defined(STM32F412Vx) || defined(STM32F410Cx) || defined(STM32F410Rx)) */
 #elif (SPI5_MISO_ID == 5)
 #  define SPI5_MISO_GPIO_AF GPIO_AF5_SPI5
-#  if (defined(STM32F410Rx) || defined(STM32F412Zx) || defined(STM32F413xx) || defined(STM32F412Rx) || defined(STM32F423xx) || defined(STM32F411xE) || defined(STM32F412Cx) || defined(STM32F410Tx) || defined(STM32F412Vx) || defined(STM32F410Cx))
-#    error "PH7 can not be configured as SPI5 MISO on STM32F410Rx, STM32F412Zx, STM32F413xx, STM32F412Rx, STM32F423xx, STM32F411xE, STM32F412Cx, STM32F410Tx, STM32F412Vx, STM32F410Cx! "
-#  endif  /* (defined(STM32F410Rx) || defined(STM32F412Zx) || defined(STM32F413xx) || defined(STM32F412Rx) || defined(STM32F423xx) || defined(STM32F411xE) || defined(STM32F412Cx) || defined(STM32F410Tx) || defined(STM32F412Vx) || defined(STM32F410Cx)) */
+#  if (defined(STM32F411xE) || defined(STM32F423xx) || defined(STM32F412Rx) || defined(STM32F412Cx) || defined(STM32F412Zx) || defined(STM32F410Tx) || defined(STM32F413xx) || defined(STM32F412Vx) || defined(STM32F410Cx) || defined(STM32F410Rx))
+#    error "PH7 can not be configured as SPI5 MISO on STM32F411xE, STM32F423xx, STM32F412Rx, STM32F412Cx, STM32F412Zx, STM32F410Tx, STM32F413xx, STM32F412Vx, STM32F410Cx, STM32F410Rx! "
+#  endif  /* (defined(STM32F411xE) || defined(STM32F423xx) || defined(STM32F412Rx) || defined(STM32F412Cx) || defined(STM32F412Zx) || defined(STM32F410Tx) || defined(STM32F413xx) || defined(STM32F412Vx) || defined(STM32F410Cx) || defined(STM32F410Rx)) */
 #endif  /* SPI5_MISO_ID */
 
 #if (SPI5_MOSI_ID == 0)
 #elif (SPI5_MOSI_ID == 1)
 #  define SPI5_MOSI_GPIO_AF GPIO_AF6_SPI5
-#  if (defined(STM32F437xx) || defined(STM32F427xx) || defined(STM32F469xx) || defined(STM32F439xx) || defined(STM32F479xx) || defined(STM32F429xx))
-#    error "PA10 can not be configured as SPI5 MOSI on STM32F437xx, STM32F427xx, STM32F469xx, STM32F439xx, STM32F479xx, STM32F429xx! "
-#  endif  /* (defined(STM32F437xx) || defined(STM32F427xx) || defined(STM32F469xx) || defined(STM32F439xx) || defined(STM32F479xx) || defined(STM32F429xx)) */
+#  if (defined(STM32F479xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F469xx) || defined(STM32F427xx))
+#    error "PA10 can not be configured as SPI5 MOSI on STM32F479xx, STM32F437xx, STM32F429xx, STM32F439xx, STM32F469xx, STM32F427xx! "
+#  endif  /* (defined(STM32F479xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F469xx) || defined(STM32F427xx)) */
 #elif (SPI5_MOSI_ID == 2)
 #  define SPI5_MOSI_GPIO_AF GPIO_AF6_SPI5
-#  if (defined(STM32F437xx) || defined(STM32F427xx) || defined(STM32F469xx) || defined(STM32F439xx) || defined(STM32F479xx) || defined(STM32F429xx))
-#    error "PB8 can not be configured as SPI5 MOSI on STM32F437xx, STM32F427xx, STM32F469xx, STM32F439xx, STM32F479xx, STM32F429xx! "
-#  endif  /* (defined(STM32F437xx) || defined(STM32F427xx) || defined(STM32F469xx) || defined(STM32F439xx) || defined(STM32F479xx) || defined(STM32F429xx)) */
+#  if (defined(STM32F479xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F469xx) || defined(STM32F427xx))
+#    error "PB8 can not be configured as SPI5 MOSI on STM32F479xx, STM32F437xx, STM32F429xx, STM32F439xx, STM32F469xx, STM32F427xx! "
+#  endif  /* (defined(STM32F479xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F469xx) || defined(STM32F427xx)) */
 #elif (SPI5_MOSI_ID == 3)
 #  define SPI5_MOSI_GPIO_AF GPIO_AF6_SPI5
-#  if (defined(STM32F410Rx) || defined(STM32F437xx) || defined(STM32F427xx) || defined(STM32F469xx) || defined(STM32F410Cx) || defined(STM32F410Tx) || defined(STM32F439xx) || defined(STM32F479xx) || defined(STM32F429xx))
-#    error "PE6 can not be configured as SPI5 MOSI on STM32F410Rx, STM32F437xx, STM32F427xx, STM32F469xx, STM32F410Cx, STM32F410Tx, STM32F439xx, STM32F479xx, STM32F429xx! "
-#  endif  /* (defined(STM32F410Rx) || defined(STM32F437xx) || defined(STM32F427xx) || defined(STM32F469xx) || defined(STM32F410Cx) || defined(STM32F410Tx) || defined(STM32F439xx) || defined(STM32F479xx) || defined(STM32F429xx)) */
+#  if (defined(STM32F479xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F469xx) || defined(STM32F427xx) || defined(STM32F410Tx) || defined(STM32F410Cx) || defined(STM32F410Rx))
+#    error "PE6 can not be configured as SPI5 MOSI on STM32F479xx, STM32F437xx, STM32F429xx, STM32F439xx, STM32F469xx, STM32F427xx, STM32F410Tx, STM32F410Cx, STM32F410Rx! "
+#  endif  /* (defined(STM32F479xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F469xx) || defined(STM32F427xx) || defined(STM32F410Tx) || defined(STM32F410Cx) || defined(STM32F410Rx)) */
 #elif (SPI5_MOSI_ID == 4)
 #  define SPI5_MOSI_GPIO_AF GPIO_AF6_SPI5
-#  if (defined(STM32F410Rx) || defined(STM32F437xx) || defined(STM32F427xx) || defined(STM32F469xx) || defined(STM32F410Cx) || defined(STM32F410Tx) || defined(STM32F439xx) || defined(STM32F479xx) || defined(STM32F429xx))
-#    error "PE14 can not be configured as SPI5 MOSI on STM32F410Rx, STM32F437xx, STM32F427xx, STM32F469xx, STM32F410Cx, STM32F410Tx, STM32F439xx, STM32F479xx, STM32F429xx! "
-#  endif  /* (defined(STM32F410Rx) || defined(STM32F437xx) || defined(STM32F427xx) || defined(STM32F469xx) || defined(STM32F410Cx) || defined(STM32F410Tx) || defined(STM32F439xx) || defined(STM32F479xx) || defined(STM32F429xx)) */
+#  if (defined(STM32F479xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F469xx) || defined(STM32F427xx) || defined(STM32F410Tx) || defined(STM32F410Cx) || defined(STM32F410Rx))
+#    error "PE14 can not be configured as SPI5 MOSI on STM32F479xx, STM32F437xx, STM32F429xx, STM32F439xx, STM32F469xx, STM32F427xx, STM32F410Tx, STM32F410Cx, STM32F410Rx! "
+#  endif  /* (defined(STM32F479xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F469xx) || defined(STM32F427xx) || defined(STM32F410Tx) || defined(STM32F410Cx) || defined(STM32F410Rx)) */
 #elif (SPI5_MOSI_ID == 5)
 #  define SPI5_MOSI_GPIO_AF GPIO_AF5_SPI5
-#  if (defined(STM32F410Rx) || defined(STM32F412Zx) || defined(STM32F413xx) || defined(STM32F412Rx) || defined(STM32F423xx) || defined(STM32F411xE) || defined(STM32F412Cx) || defined(STM32F410Tx) || defined(STM32F412Vx) || defined(STM32F410Cx))
-#    error "PF9 can not be configured as SPI5 MOSI on STM32F410Rx, STM32F412Zx, STM32F413xx, STM32F412Rx, STM32F423xx, STM32F411xE, STM32F412Cx, STM32F410Tx, STM32F412Vx, STM32F410Cx! "
-#  endif  /* (defined(STM32F410Rx) || defined(STM32F412Zx) || defined(STM32F413xx) || defined(STM32F412Rx) || defined(STM32F423xx) || defined(STM32F411xE) || defined(STM32F412Cx) || defined(STM32F410Tx) || defined(STM32F412Vx) || defined(STM32F410Cx)) */
+#  if (defined(STM32F411xE) || defined(STM32F423xx) || defined(STM32F412Rx) || defined(STM32F412Cx) || defined(STM32F412Zx) || defined(STM32F410Tx) || defined(STM32F413xx) || defined(STM32F412Vx) || defined(STM32F410Cx) || defined(STM32F410Rx))
+#    error "PF9 can not be configured as SPI5 MOSI on STM32F411xE, STM32F423xx, STM32F412Rx, STM32F412Cx, STM32F412Zx, STM32F410Tx, STM32F413xx, STM32F412Vx, STM32F410Cx, STM32F410Rx! "
+#  endif  /* (defined(STM32F411xE) || defined(STM32F423xx) || defined(STM32F412Rx) || defined(STM32F412Cx) || defined(STM32F412Zx) || defined(STM32F410Tx) || defined(STM32F413xx) || defined(STM32F412Vx) || defined(STM32F410Cx) || defined(STM32F410Rx)) */
 #elif (SPI5_MOSI_ID == 6)
 #  define SPI5_MOSI_GPIO_AF GPIO_AF5_SPI5
-#  if (defined(STM32F410Rx) || defined(STM32F412Zx) || defined(STM32F413xx) || defined(STM32F412Rx) || defined(STM32F423xx) || defined(STM32F411xE) || defined(STM32F412Cx) || defined(STM32F410Tx) || defined(STM32F412Vx) || defined(STM32F410Cx))
-#    error "PF11 can not be configured as SPI5 MOSI on STM32F410Rx, STM32F412Zx, STM32F413xx, STM32F412Rx, STM32F423xx, STM32F411xE, STM32F412Cx, STM32F410Tx, STM32F412Vx, STM32F410Cx! "
-#  endif  /* (defined(STM32F410Rx) || defined(STM32F412Zx) || defined(STM32F413xx) || defined(STM32F412Rx) || defined(STM32F423xx) || defined(STM32F411xE) || defined(STM32F412Cx) || defined(STM32F410Tx) || defined(STM32F412Vx) || defined(STM32F410Cx)) */
+#  if (defined(STM32F411xE) || defined(STM32F423xx) || defined(STM32F412Rx) || defined(STM32F412Cx) || defined(STM32F412Zx) || defined(STM32F410Tx) || defined(STM32F413xx) || defined(STM32F412Vx) || defined(STM32F410Cx) || defined(STM32F410Rx))
+#    error "PF11 can not be configured as SPI5 MOSI on STM32F411xE, STM32F423xx, STM32F412Rx, STM32F412Cx, STM32F412Zx, STM32F410Tx, STM32F413xx, STM32F412Vx, STM32F410Cx, STM32F410Rx! "
+#  endif  /* (defined(STM32F411xE) || defined(STM32F423xx) || defined(STM32F412Rx) || defined(STM32F412Cx) || defined(STM32F412Zx) || defined(STM32F410Tx) || defined(STM32F413xx) || defined(STM32F412Vx) || defined(STM32F410Cx) || defined(STM32F410Rx)) */
 #endif  /* SPI5_MOSI_ID */
 
 #if (SPI5_NSS_ID == 0)
 #elif (SPI5_NSS_ID == 1)
 #  define SPI5_NSS_GPIO_AF GPIO_AF6_SPI5
-#  if (defined(STM32F437xx) || defined(STM32F427xx) || defined(STM32F469xx) || defined(STM32F439xx) || defined(STM32F479xx) || defined(STM32F429xx))
-#    error "PB1 can not be configured as SPI5 NSS on STM32F437xx, STM32F427xx, STM32F469xx, STM32F439xx, STM32F479xx, STM32F429xx! "
-#  endif  /* (defined(STM32F437xx) || defined(STM32F427xx) || defined(STM32F469xx) || defined(STM32F439xx) || defined(STM32F479xx) || defined(STM32F429xx)) */
+#  if (defined(STM32F479xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F469xx) || defined(STM32F427xx))
+#    error "PB1 can not be configured as SPI5 NSS on STM32F479xx, STM32F437xx, STM32F429xx, STM32F439xx, STM32F469xx, STM32F427xx! "
+#  endif  /* (defined(STM32F479xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F469xx) || defined(STM32F427xx)) */
 #elif (SPI5_NSS_ID == 2)
 #  define SPI5_NSS_GPIO_AF GPIO_AF6_SPI5
-#  if (defined(STM32F410Rx) || defined(STM32F437xx) || defined(STM32F427xx) || defined(STM32F469xx) || defined(STM32F410Cx) || defined(STM32F410Tx) || defined(STM32F439xx) || defined(STM32F479xx) || defined(STM32F429xx))
-#    error "PE4 can not be configured as SPI5 NSS on STM32F410Rx, STM32F437xx, STM32F427xx, STM32F469xx, STM32F410Cx, STM32F410Tx, STM32F439xx, STM32F479xx, STM32F429xx! "
-#  endif  /* (defined(STM32F410Rx) || defined(STM32F437xx) || defined(STM32F427xx) || defined(STM32F469xx) || defined(STM32F410Cx) || defined(STM32F410Tx) || defined(STM32F439xx) || defined(STM32F479xx) || defined(STM32F429xx)) */
+#  if (defined(STM32F479xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F469xx) || defined(STM32F427xx) || defined(STM32F410Tx) || defined(STM32F410Cx) || defined(STM32F410Rx))
+#    error "PE4 can not be configured as SPI5 NSS on STM32F479xx, STM32F437xx, STM32F429xx, STM32F439xx, STM32F469xx, STM32F427xx, STM32F410Tx, STM32F410Cx, STM32F410Rx! "
+#  endif  /* (defined(STM32F479xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F469xx) || defined(STM32F427xx) || defined(STM32F410Tx) || defined(STM32F410Cx) || defined(STM32F410Rx)) */
 #elif (SPI5_NSS_ID == 3)
 #  define SPI5_NSS_GPIO_AF GPIO_AF6_SPI5
-#  if (defined(STM32F410Rx) || defined(STM32F437xx) || defined(STM32F427xx) || defined(STM32F469xx) || defined(STM32F410Cx) || defined(STM32F410Tx) || defined(STM32F439xx) || defined(STM32F479xx) || defined(STM32F429xx))
-#    error "PE11 can not be configured as SPI5 NSS on STM32F410Rx, STM32F437xx, STM32F427xx, STM32F469xx, STM32F410Cx, STM32F410Tx, STM32F439xx, STM32F479xx, STM32F429xx! "
-#  endif  /* (defined(STM32F410Rx) || defined(STM32F437xx) || defined(STM32F427xx) || defined(STM32F469xx) || defined(STM32F410Cx) || defined(STM32F410Tx) || defined(STM32F439xx) || defined(STM32F479xx) || defined(STM32F429xx)) */
+#  if (defined(STM32F479xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F469xx) || defined(STM32F427xx) || defined(STM32F410Tx) || defined(STM32F410Cx) || defined(STM32F410Rx))
+#    error "PE11 can not be configured as SPI5 NSS on STM32F479xx, STM32F437xx, STM32F429xx, STM32F439xx, STM32F469xx, STM32F427xx, STM32F410Tx, STM32F410Cx, STM32F410Rx! "
+#  endif  /* (defined(STM32F479xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F469xx) || defined(STM32F427xx) || defined(STM32F410Tx) || defined(STM32F410Cx) || defined(STM32F410Rx)) */
 #elif (SPI5_NSS_ID == 4)
 #  define SPI5_NSS_GPIO_AF GPIO_AF5_SPI5
-#  if (defined(STM32F410Rx) || defined(STM32F412Zx) || defined(STM32F413xx) || defined(STM32F412Rx) || defined(STM32F423xx) || defined(STM32F411xE) || defined(STM32F412Cx) || defined(STM32F410Tx) || defined(STM32F412Vx) || defined(STM32F410Cx))
-#    error "PF6 can not be configured as SPI5 NSS on STM32F410Rx, STM32F412Zx, STM32F413xx, STM32F412Rx, STM32F423xx, STM32F411xE, STM32F412Cx, STM32F410Tx, STM32F412Vx, STM32F410Cx! "
-#  endif  /* (defined(STM32F410Rx) || defined(STM32F412Zx) || defined(STM32F413xx) || defined(STM32F412Rx) || defined(STM32F423xx) || defined(STM32F411xE) || defined(STM32F412Cx) || defined(STM32F410Tx) || defined(STM32F412Vx) || defined(STM32F410Cx)) */
+#  if (defined(STM32F411xE) || defined(STM32F423xx) || defined(STM32F412Rx) || defined(STM32F412Cx) || defined(STM32F412Zx) || defined(STM32F410Tx) || defined(STM32F413xx) || defined(STM32F412Vx) || defined(STM32F410Cx) || defined(STM32F410Rx))
+#    error "PF6 can not be configured as SPI5 NSS on STM32F411xE, STM32F423xx, STM32F412Rx, STM32F412Cx, STM32F412Zx, STM32F410Tx, STM32F413xx, STM32F412Vx, STM32F410Cx, STM32F410Rx! "
+#  endif  /* (defined(STM32F411xE) || defined(STM32F423xx) || defined(STM32F412Rx) || defined(STM32F412Cx) || defined(STM32F412Zx) || defined(STM32F410Tx) || defined(STM32F413xx) || defined(STM32F412Vx) || defined(STM32F410Cx) || defined(STM32F410Rx)) */
 #elif (SPI5_NSS_ID == 5)
 #  define SPI5_NSS_GPIO_AF GPIO_AF5_SPI5
-#  if (defined(STM32F410Rx) || defined(STM32F412Zx) || defined(STM32F413xx) || defined(STM32F412Rx) || defined(STM32F423xx) || defined(STM32F411xE) || defined(STM32F412Cx) || defined(STM32F410Tx) || defined(STM32F412Vx) || defined(STM32F410Cx))
-#    error "PH5 can not be configured as SPI5 NSS on STM32F410Rx, STM32F412Zx, STM32F413xx, STM32F412Rx, STM32F423xx, STM32F411xE, STM32F412Cx, STM32F410Tx, STM32F412Vx, STM32F410Cx! "
-#  endif  /* (defined(STM32F410Rx) || defined(STM32F412Zx) || defined(STM32F413xx) || defined(STM32F412Rx) || defined(STM32F423xx) || defined(STM32F411xE) || defined(STM32F412Cx) || defined(STM32F410Tx) || defined(STM32F412Vx) || defined(STM32F410Cx)) */
+#  if (defined(STM32F411xE) || defined(STM32F423xx) || defined(STM32F412Rx) || defined(STM32F412Cx) || defined(STM32F412Zx) || defined(STM32F410Tx) || defined(STM32F413xx) || defined(STM32F412Vx) || defined(STM32F410Cx) || defined(STM32F410Rx))
+#    error "PH5 can not be configured as SPI5 NSS on STM32F411xE, STM32F423xx, STM32F412Rx, STM32F412Cx, STM32F412Zx, STM32F410Tx, STM32F413xx, STM32F412Vx, STM32F410Cx, STM32F410Rx! "
+#  endif  /* (defined(STM32F411xE) || defined(STM32F423xx) || defined(STM32F412Rx) || defined(STM32F412Cx) || defined(STM32F412Zx) || defined(STM32F410Tx) || defined(STM32F413xx) || defined(STM32F412Vx) || defined(STM32F410Cx) || defined(STM32F410Rx)) */
 #endif  /* SPI5_NSS_ID */
 
 extern SPI_HandleTypeDef spi5_handle;
@@ -611,9 +581,9 @@ uint8_t spi5_deinit(void);
 #  if SPI5_TX_DMA
 #    if (SPI5_TX_DMA_NUMBER == 2) && (SPI5_TX_DMA_STREAM == 5) && (SPI5_TX_DMA_CHANNEL == 5)
 
-#     if (defined(STM32F437xx) || defined(STM32F427xx) || defined(STM32F469xx) || defined(STM32F439xx) || defined(STM32F479xx) || defined(STM32F429xx))
-#       error "This SPI5 DMA TX configuration invalid on STM32F437xx, STM32F427xx, STM32F469xx, STM32F439xx, STM32F479xx, STM32F429xx! "
-#     endif  /* (defined(STM32F437xx) || defined(STM32F427xx) || defined(STM32F469xx) || defined(STM32F439xx) || defined(STM32F479xx) || defined(STM32F429xx)) */
+#     if (defined(STM32F479xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F469xx) || defined(STM32F427xx))
+#       error "This SPI5 DMA TX configuration invalid on STM32F479xx, STM32F437xx, STM32F429xx, STM32F439xx, STM32F469xx, STM32F427xx! "
+#     endif  /* (defined(STM32F479xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F469xx) || defined(STM32F427xx)) */
 #    endif /* (SPI5_TX_DMA_NUMBER == 2) && (SPI5_TX_DMA_STREAM == 5) && (SPI5_TX_DMA_CHANNEL == 5) */
 
 #    define SPI5_TX_DMA_IRQn                                                  \
@@ -700,9 +670,9 @@ uint8_t spi_change_speed(SPI_HandleTypeDef *hspi, uint8_t speed);
 
 #if (QUADSPI_CLK_ID == 0)
 #  define QUADSPI_CLK_GPIO_AF GPIO_AF9_QUADSPI
-#  if (defined(STM32F446xx) || defined(STM32F479xx) || defined(STM32F469xx))
-#    error "PB1 can not be configured as QUADSPI CLK on STM32F446xx, STM32F479xx, STM32F469xx! "
-#  endif  /* (defined(STM32F446xx) || defined(STM32F479xx) || defined(STM32F469xx)) */
+#  if (defined(STM32F469xx) || defined(STM32F479xx) || defined(STM32F446xx))
+#    error "PB1 can not be configured as QUADSPI CLK on STM32F469xx, STM32F479xx, STM32F446xx! "
+#  endif  /* (defined(STM32F469xx) || defined(STM32F479xx) || defined(STM32F446xx)) */
 #elif (QUADSPI_CLK_ID == 1)
 #  define QUADSPI_CLK_GPIO_AF GPIO_AF9_QUADSPI
 #  if (defined(STM32F479xx) || defined(STM32F469xx))
@@ -715,14 +685,14 @@ uint8_t spi_change_speed(SPI_HandleTypeDef *hspi, uint8_t speed);
 #  endif  /* (defined(STM32F479xx) || defined(STM32F469xx)) */
 #elif (QUADSPI_CLK_ID == 3)
 #  define QUADSPI_CLK_GPIO_AF GPIO_AF10_QUADSPI
-#  if (defined(STM32F412Zx) || defined(STM32F413xx) || defined(STM32F412Rx) || defined(STM32F446xx) || defined(STM32F423xx) || defined(STM32F412Cx) || defined(STM32F412Vx))
-#    error "PA7 can not be configured as QUADSPI CLK on STM32F412Zx, STM32F413xx, STM32F412Rx, STM32F446xx, STM32F423xx, STM32F412Cx, STM32F412Vx! "
-#  endif  /* (defined(STM32F412Zx) || defined(STM32F413xx) || defined(STM32F412Rx) || defined(STM32F446xx) || defined(STM32F423xx) || defined(STM32F412Cx) || defined(STM32F412Vx)) */
+#  if (defined(STM32F423xx) || defined(STM32F446xx) || defined(STM32F412Rx) || defined(STM32F412Cx) || defined(STM32F412Zx) || defined(STM32F413xx) || defined(STM32F412Vx))
+#    error "PA7 can not be configured as QUADSPI CLK on STM32F423xx, STM32F446xx, STM32F412Rx, STM32F412Cx, STM32F412Zx, STM32F413xx, STM32F412Vx! "
+#  endif  /* (defined(STM32F423xx) || defined(STM32F446xx) || defined(STM32F412Rx) || defined(STM32F412Cx) || defined(STM32F412Zx) || defined(STM32F413xx) || defined(STM32F412Vx)) */
 #elif (QUADSPI_CLK_ID == 4)
 #  define QUADSPI_CLK_GPIO_AF GPIO_AF9_QUADSPI
-#  if (defined(STM32F412Zx) || defined(STM32F413xx) || defined(STM32F412Rx) || defined(STM32F446xx) || defined(STM32F423xx) || defined(STM32F412Cx) || defined(STM32F412Vx))
-#    error "PF10 can not be configured as QUADSPI CLK on STM32F412Zx, STM32F413xx, STM32F412Rx, STM32F446xx, STM32F423xx, STM32F412Cx, STM32F412Vx! "
-#  endif  /* (defined(STM32F412Zx) || defined(STM32F413xx) || defined(STM32F412Rx) || defined(STM32F446xx) || defined(STM32F423xx) || defined(STM32F412Cx) || defined(STM32F412Vx)) */
+#  if (defined(STM32F423xx) || defined(STM32F446xx) || defined(STM32F412Rx) || defined(STM32F412Cx) || defined(STM32F412Zx) || defined(STM32F413xx) || defined(STM32F412Vx))
+#    error "PF10 can not be configured as QUADSPI CLK on STM32F423xx, STM32F446xx, STM32F412Rx, STM32F412Cx, STM32F412Zx, STM32F413xx, STM32F412Vx! "
+#  endif  /* (defined(STM32F423xx) || defined(STM32F446xx) || defined(STM32F412Rx) || defined(STM32F412Cx) || defined(STM32F412Zx) || defined(STM32F413xx) || defined(STM32F412Vx)) */
 #endif  /* QUADSPI_CLK_ID */
 
 #if QUADSPI_BANK1_ENABLE
@@ -730,9 +700,9 @@ uint8_t spi_change_speed(SPI_HandleTypeDef *hspi, uint8_t speed);
 #if (QUADSPI_BK1_IO0_ID == 0)
 #elif (QUADSPI_BK1_IO0_ID == 1)
 #  define QUADSPI_BK1_IO0_GPIO_AF GPIO_AF10_QUADSPI
-#  if (defined(STM32F446xx) || defined(STM32F479xx) || defined(STM32F469xx))
-#    error "PA6 can not be configured as QUADSPI BK1_IO0 on STM32F446xx, STM32F479xx, STM32F469xx! "
-#  endif  /* (defined(STM32F446xx) || defined(STM32F479xx) || defined(STM32F469xx)) */
+#  if (defined(STM32F469xx) || defined(STM32F479xx) || defined(STM32F446xx))
+#    error "PA6 can not be configured as QUADSPI BK1_IO0 on STM32F469xx, STM32F479xx, STM32F446xx! "
+#  endif  /* (defined(STM32F469xx) || defined(STM32F479xx) || defined(STM32F446xx)) */
 #elif (QUADSPI_BK1_IO0_ID == 2)
 #  define QUADSPI_BK1_IO0_GPIO_AF GPIO_AF9_QUADSPI
 #elif (QUADSPI_BK1_IO0_ID == 3)
@@ -743,17 +713,17 @@ uint8_t spi_change_speed(SPI_HandleTypeDef *hspi, uint8_t speed);
 #  define QUADSPI_BK1_IO0_GPIO_AF GPIO_AF10_QUADSPI
 #elif (QUADSPI_BK1_IO0_ID == 6)
 #  define QUADSPI_BK1_IO0_GPIO_AF GPIO_AF9_QUADSPI
-#  if (defined(STM32F412Zx) || defined(STM32F413xx) || defined(STM32F412Rx) || defined(STM32F446xx) || defined(STM32F423xx) || defined(STM32F412Cx) || defined(STM32F412Vx))
-#    error "PH2 can not be configured as QUADSPI BK1_IO0 on STM32F412Zx, STM32F413xx, STM32F412Rx, STM32F446xx, STM32F423xx, STM32F412Cx, STM32F412Vx! "
-#  endif  /* (defined(STM32F412Zx) || defined(STM32F413xx) || defined(STM32F412Rx) || defined(STM32F446xx) || defined(STM32F423xx) || defined(STM32F412Cx) || defined(STM32F412Vx)) */
+#  if (defined(STM32F423xx) || defined(STM32F446xx) || defined(STM32F412Rx) || defined(STM32F412Cx) || defined(STM32F412Zx) || defined(STM32F413xx) || defined(STM32F412Vx))
+#    error "PH2 can not be configured as QUADSPI BK1_IO0 on STM32F423xx, STM32F446xx, STM32F412Rx, STM32F412Cx, STM32F412Zx, STM32F413xx, STM32F412Vx! "
+#  endif  /* (defined(STM32F423xx) || defined(STM32F446xx) || defined(STM32F412Rx) || defined(STM32F412Cx) || defined(STM32F412Zx) || defined(STM32F413xx) || defined(STM32F412Vx)) */
 #endif  /* QUADSPI_BK1_IO0_ID */
 
 #if (QUADSPI_BK1_IO1_ID == 0)
 #elif (QUADSPI_BK1_IO1_ID == 1)
 #  define QUADSPI_BK1_IO1_GPIO_AF GPIO_AF10_QUADSPI
-#  if (defined(STM32F446xx) || defined(STM32F479xx) || defined(STM32F469xx))
-#    error "PA7 can not be configured as QUADSPI BK1_IO1 on STM32F446xx, STM32F479xx, STM32F469xx! "
-#  endif  /* (defined(STM32F446xx) || defined(STM32F479xx) || defined(STM32F469xx)) */
+#  if (defined(STM32F469xx) || defined(STM32F479xx) || defined(STM32F446xx))
+#    error "PA7 can not be configured as QUADSPI BK1_IO1 on STM32F469xx, STM32F479xx, STM32F446xx! "
+#  endif  /* (defined(STM32F469xx) || defined(STM32F479xx) || defined(STM32F446xx)) */
 #elif (QUADSPI_BK1_IO1_ID == 2)
 #  define QUADSPI_BK1_IO1_GPIO_AF GPIO_AF9_QUADSPI
 #elif (QUADSPI_BK1_IO1_ID == 3)
@@ -764,22 +734,22 @@ uint8_t spi_change_speed(SPI_HandleTypeDef *hspi, uint8_t speed);
 #  define QUADSPI_BK1_IO1_GPIO_AF GPIO_AF10_QUADSPI
 #elif (QUADSPI_BK1_IO1_ID == 6)
 #  define QUADSPI_BK1_IO1_GPIO_AF GPIO_AF9_QUADSPI
-#  if (defined(STM32F412Zx) || defined(STM32F413xx) || defined(STM32F412Rx) || defined(STM32F446xx) || defined(STM32F423xx) || defined(STM32F412Cx) || defined(STM32F412Vx))
-#    error "PH3 can not be configured as QUADSPI BK1_IO1 on STM32F412Zx, STM32F413xx, STM32F412Rx, STM32F446xx, STM32F423xx, STM32F412Cx, STM32F412Vx! "
-#  endif  /* (defined(STM32F412Zx) || defined(STM32F413xx) || defined(STM32F412Rx) || defined(STM32F446xx) || defined(STM32F423xx) || defined(STM32F412Cx) || defined(STM32F412Vx)) */
+#  if (defined(STM32F423xx) || defined(STM32F446xx) || defined(STM32F412Rx) || defined(STM32F412Cx) || defined(STM32F412Zx) || defined(STM32F413xx) || defined(STM32F412Vx))
+#    error "PH3 can not be configured as QUADSPI BK1_IO1 on STM32F423xx, STM32F446xx, STM32F412Rx, STM32F412Cx, STM32F412Zx, STM32F413xx, STM32F412Vx! "
+#  endif  /* (defined(STM32F423xx) || defined(STM32F446xx) || defined(STM32F412Rx) || defined(STM32F412Cx) || defined(STM32F412Zx) || defined(STM32F413xx) || defined(STM32F412Vx)) */
 #endif  /* QUADSPI_BK1_IO1_ID */
 
 #if (QUADSPI_BK1_IO2_ID == 0)
 #elif (QUADSPI_BK1_IO2_ID == 1)
 #  define QUADSPI_BK1_IO2_GPIO_AF GPIO_AF10_QUADSPI
-#  if (defined(STM32F446xx) || defined(STM32F479xx) || defined(STM32F469xx))
-#    error "PC4 can not be configured as QUADSPI BK1_IO2 on STM32F446xx, STM32F479xx, STM32F469xx! "
-#  endif  /* (defined(STM32F446xx) || defined(STM32F479xx) || defined(STM32F469xx)) */
+#  if (defined(STM32F469xx) || defined(STM32F479xx) || defined(STM32F446xx))
+#    error "PC4 can not be configured as QUADSPI BK1_IO2 on STM32F469xx, STM32F479xx, STM32F446xx! "
+#  endif  /* (defined(STM32F469xx) || defined(STM32F479xx) || defined(STM32F446xx)) */
 #elif (QUADSPI_BK1_IO2_ID == 2)
 #  define QUADSPI_BK1_IO2_GPIO_AF GPIO_AF9_QUADSPI
-#  if (defined(STM32F446xx) || defined(STM32F479xx) || defined(STM32F469xx))
-#    error "PC8 can not be configured as QUADSPI BK1_IO2 on STM32F446xx, STM32F479xx, STM32F469xx! "
-#  endif  /* (defined(STM32F446xx) || defined(STM32F479xx) || defined(STM32F469xx)) */
+#  if (defined(STM32F469xx) || defined(STM32F479xx) || defined(STM32F446xx))
+#    error "PC8 can not be configured as QUADSPI BK1_IO2 on STM32F469xx, STM32F479xx, STM32F446xx! "
+#  endif  /* (defined(STM32F469xx) || defined(STM32F479xx) || defined(STM32F446xx)) */
 #elif (QUADSPI_BK1_IO2_ID == 3)
 #  define QUADSPI_BK1_IO2_GPIO_AF GPIO_AF9_QUADSPI
 #elif (QUADSPI_BK1_IO2_ID == 4)
@@ -795,9 +765,9 @@ uint8_t spi_change_speed(SPI_HandleTypeDef *hspi, uint8_t speed);
 #  define QUADSPI_BK1_IO3_GPIO_AF GPIO_AF9_QUADSPI
 #elif (QUADSPI_BK1_IO3_ID == 2)
 #  define QUADSPI_BK1_IO3_GPIO_AF GPIO_AF10_QUADSPI
-#  if (defined(STM32F446xx) || defined(STM32F479xx) || defined(STM32F469xx))
-#    error "PC5 can not be configured as QUADSPI BK1_IO3 on STM32F446xx, STM32F479xx, STM32F469xx! "
-#  endif  /* (defined(STM32F446xx) || defined(STM32F479xx) || defined(STM32F469xx)) */
+#  if (defined(STM32F469xx) || defined(STM32F479xx) || defined(STM32F446xx))
+#    error "PC5 can not be configured as QUADSPI BK1_IO3 on STM32F469xx, STM32F479xx, STM32F446xx! "
+#  endif  /* (defined(STM32F469xx) || defined(STM32F479xx) || defined(STM32F446xx)) */
 #elif (QUADSPI_BK1_IO3_ID == 3)
 #  define QUADSPI_BK1_IO3_GPIO_AF GPIO_AF9_QUADSPI
 #elif (QUADSPI_BK1_IO3_ID == 4)
@@ -820,9 +790,9 @@ uint8_t spi_change_speed(SPI_HandleTypeDef *hspi, uint8_t speed);
 #  endif  /* (defined(STM32F479xx) || defined(STM32F469xx)) */
 #elif (QUADSPI_BK1_NCS_ID == 4)
 #  define QUADSPI_BK1_NCS_GPIO_AF GPIO_AF9_QUADSPI
-#  if (defined(STM32F412Zx) || defined(STM32F413xx) || defined(STM32F412Rx) || defined(STM32F446xx) || defined(STM32F423xx) || defined(STM32F412Cx) || defined(STM32F412Vx))
-#    error "PB10 can not be configured as QUADSPI BK1_NCS on STM32F412Zx, STM32F413xx, STM32F412Rx, STM32F446xx, STM32F423xx, STM32F412Cx, STM32F412Vx! "
-#  endif  /* (defined(STM32F412Zx) || defined(STM32F413xx) || defined(STM32F412Rx) || defined(STM32F446xx) || defined(STM32F423xx) || defined(STM32F412Cx) || defined(STM32F412Vx)) */
+#  if (defined(STM32F423xx) || defined(STM32F446xx) || defined(STM32F412Rx) || defined(STM32F412Cx) || defined(STM32F412Zx) || defined(STM32F413xx) || defined(STM32F412Vx))
+#    error "PB10 can not be configured as QUADSPI BK1_NCS on STM32F423xx, STM32F446xx, STM32F412Rx, STM32F412Cx, STM32F412Zx, STM32F413xx, STM32F412Vx! "
+#  endif  /* (defined(STM32F423xx) || defined(STM32F446xx) || defined(STM32F412Rx) || defined(STM32F412Cx) || defined(STM32F412Zx) || defined(STM32F413xx) || defined(STM32F412Vx)) */
 #endif  /* QUADSPI_BK1_NCS_ID */
 
 #endif /* QUADSPI_BANK1_ENABLE */
@@ -832,9 +802,9 @@ uint8_t spi_change_speed(SPI_HandleTypeDef *hspi, uint8_t speed);
 #if (QUADSPI_BK2_IO0_ID == 0)
 #elif (QUADSPI_BK2_IO0_ID == 1)
 #  define QUADSPI_BK2_IO0_GPIO_AF GPIO_AF10_QUADSPI
-#  if (defined(STM32F446xx) || defined(STM32F479xx) || defined(STM32F469xx))
-#    error "PA6 can not be configured as QUADSPI BK2_IO0 on STM32F446xx, STM32F479xx, STM32F469xx! "
-#  endif  /* (defined(STM32F446xx) || defined(STM32F479xx) || defined(STM32F469xx)) */
+#  if (defined(STM32F469xx) || defined(STM32F479xx) || defined(STM32F446xx))
+#    error "PA6 can not be configured as QUADSPI BK2_IO0 on STM32F469xx, STM32F479xx, STM32F446xx! "
+#  endif  /* (defined(STM32F469xx) || defined(STM32F479xx) || defined(STM32F446xx)) */
 #elif (QUADSPI_BK2_IO0_ID == 2)
 #  define QUADSPI_BK2_IO0_GPIO_AF GPIO_AF9_QUADSPI
 #elif (QUADSPI_BK2_IO0_ID == 3)
@@ -845,17 +815,17 @@ uint8_t spi_change_speed(SPI_HandleTypeDef *hspi, uint8_t speed);
 #  define QUADSPI_BK2_IO0_GPIO_AF GPIO_AF10_QUADSPI
 #elif (QUADSPI_BK2_IO0_ID == 6)
 #  define QUADSPI_BK2_IO0_GPIO_AF GPIO_AF9_QUADSPI
-#  if (defined(STM32F412Zx) || defined(STM32F413xx) || defined(STM32F412Rx) || defined(STM32F446xx) || defined(STM32F423xx) || defined(STM32F412Cx) || defined(STM32F412Vx))
-#    error "PH2 can not be configured as QUADSPI BK2_IO0 on STM32F412Zx, STM32F413xx, STM32F412Rx, STM32F446xx, STM32F423xx, STM32F412Cx, STM32F412Vx! "
-#  endif  /* (defined(STM32F412Zx) || defined(STM32F413xx) || defined(STM32F412Rx) || defined(STM32F446xx) || defined(STM32F423xx) || defined(STM32F412Cx) || defined(STM32F412Vx)) */
+#  if (defined(STM32F423xx) || defined(STM32F446xx) || defined(STM32F412Rx) || defined(STM32F412Cx) || defined(STM32F412Zx) || defined(STM32F413xx) || defined(STM32F412Vx))
+#    error "PH2 can not be configured as QUADSPI BK2_IO0 on STM32F423xx, STM32F446xx, STM32F412Rx, STM32F412Cx, STM32F412Zx, STM32F413xx, STM32F412Vx! "
+#  endif  /* (defined(STM32F423xx) || defined(STM32F446xx) || defined(STM32F412Rx) || defined(STM32F412Cx) || defined(STM32F412Zx) || defined(STM32F413xx) || defined(STM32F412Vx)) */
 #endif  /* QUADSPI_BK2_IO0_ID */
 
 #if (QUADSPI_BK2_IO1_ID == 0)
 #elif (QUADSPI_BK2_IO1_ID == 1)
 #  define QUADSPI_BK2_IO1_GPIO_AF GPIO_AF10_QUADSPI
-#  if (defined(STM32F446xx) || defined(STM32F479xx) || defined(STM32F469xx))
-#    error "PA7 can not be configured as QUADSPI BK2_IO1 on STM32F446xx, STM32F479xx, STM32F469xx! "
-#  endif  /* (defined(STM32F446xx) || defined(STM32F479xx) || defined(STM32F469xx)) */
+#  if (defined(STM32F469xx) || defined(STM32F479xx) || defined(STM32F446xx))
+#    error "PA7 can not be configured as QUADSPI BK2_IO1 on STM32F469xx, STM32F479xx, STM32F446xx! "
+#  endif  /* (defined(STM32F469xx) || defined(STM32F479xx) || defined(STM32F446xx)) */
 #elif (QUADSPI_BK2_IO1_ID == 2)
 #  define QUADSPI_BK2_IO1_GPIO_AF GPIO_AF9_QUADSPI
 #elif (QUADSPI_BK2_IO1_ID == 3)
@@ -866,22 +836,22 @@ uint8_t spi_change_speed(SPI_HandleTypeDef *hspi, uint8_t speed);
 #  define QUADSPI_BK2_IO1_GPIO_AF GPIO_AF10_QUADSPI
 #elif (QUADSPI_BK2_IO1_ID == 6)
 #  define QUADSPI_BK2_IO1_GPIO_AF GPIO_AF9_QUADSPI
-#  if (defined(STM32F412Zx) || defined(STM32F413xx) || defined(STM32F412Rx) || defined(STM32F446xx) || defined(STM32F423xx) || defined(STM32F412Cx) || defined(STM32F412Vx))
-#    error "PH3 can not be configured as QUADSPI BK2_IO1 on STM32F412Zx, STM32F413xx, STM32F412Rx, STM32F446xx, STM32F423xx, STM32F412Cx, STM32F412Vx! "
-#  endif  /* (defined(STM32F412Zx) || defined(STM32F413xx) || defined(STM32F412Rx) || defined(STM32F446xx) || defined(STM32F423xx) || defined(STM32F412Cx) || defined(STM32F412Vx)) */
+#  if (defined(STM32F423xx) || defined(STM32F446xx) || defined(STM32F412Rx) || defined(STM32F412Cx) || defined(STM32F412Zx) || defined(STM32F413xx) || defined(STM32F412Vx))
+#    error "PH3 can not be configured as QUADSPI BK2_IO1 on STM32F423xx, STM32F446xx, STM32F412Rx, STM32F412Cx, STM32F412Zx, STM32F413xx, STM32F412Vx! "
+#  endif  /* (defined(STM32F423xx) || defined(STM32F446xx) || defined(STM32F412Rx) || defined(STM32F412Cx) || defined(STM32F412Zx) || defined(STM32F413xx) || defined(STM32F412Vx)) */
 #endif  /* QUADSPI_BK2_IO1_ID */
 
 #if (QUADSPI_BK2_IO2_ID == 0)
 #elif (QUADSPI_BK2_IO2_ID == 1)
 #  define QUADSPI_BK2_IO2_GPIO_AF GPIO_AF10_QUADSPI
-#  if (defined(STM32F446xx) || defined(STM32F479xx) || defined(STM32F469xx))
-#    error "PC4 can not be configured as QUADSPI BK2_IO2 on STM32F446xx, STM32F479xx, STM32F469xx! "
-#  endif  /* (defined(STM32F446xx) || defined(STM32F479xx) || defined(STM32F469xx)) */
+#  if (defined(STM32F469xx) || defined(STM32F479xx) || defined(STM32F446xx))
+#    error "PC4 can not be configured as QUADSPI BK2_IO2 on STM32F469xx, STM32F479xx, STM32F446xx! "
+#  endif  /* (defined(STM32F469xx) || defined(STM32F479xx) || defined(STM32F446xx)) */
 #elif (QUADSPI_BK2_IO2_ID == 2)
 #  define QUADSPI_BK2_IO2_GPIO_AF GPIO_AF9_QUADSPI
-#  if (defined(STM32F446xx) || defined(STM32F479xx) || defined(STM32F469xx))
-#    error "PC8 can not be configured as QUADSPI BK2_IO2 on STM32F446xx, STM32F479xx, STM32F469xx! "
-#  endif  /* (defined(STM32F446xx) || defined(STM32F479xx) || defined(STM32F469xx)) */
+#  if (defined(STM32F469xx) || defined(STM32F479xx) || defined(STM32F446xx))
+#    error "PC8 can not be configured as QUADSPI BK2_IO2 on STM32F469xx, STM32F479xx, STM32F446xx! "
+#  endif  /* (defined(STM32F469xx) || defined(STM32F479xx) || defined(STM32F446xx)) */
 #elif (QUADSPI_BK2_IO2_ID == 3)
 #  define QUADSPI_BK2_IO2_GPIO_AF GPIO_AF9_QUADSPI
 #elif (QUADSPI_BK2_IO2_ID == 4)
@@ -897,9 +867,9 @@ uint8_t spi_change_speed(SPI_HandleTypeDef *hspi, uint8_t speed);
 #  define QUADSPI_BK2_IO3_GPIO_AF GPIO_AF9_QUADSPI
 #elif (QUADSPI_BK2_IO3_ID == 2)
 #  define QUADSPI_BK2_IO3_GPIO_AF GPIO_AF10_QUADSPI
-#  if (defined(STM32F446xx) || defined(STM32F479xx) || defined(STM32F469xx))
-#    error "PC5 can not be configured as QUADSPI BK2_IO3 on STM32F446xx, STM32F479xx, STM32F469xx! "
-#  endif  /* (defined(STM32F446xx) || defined(STM32F479xx) || defined(STM32F469xx)) */
+#  if (defined(STM32F469xx) || defined(STM32F479xx) || defined(STM32F446xx))
+#    error "PC5 can not be configured as QUADSPI BK2_IO3 on STM32F469xx, STM32F479xx, STM32F446xx! "
+#  endif  /* (defined(STM32F469xx) || defined(STM32F479xx) || defined(STM32F446xx)) */
 #elif (QUADSPI_BK2_IO3_ID == 3)
 #  define QUADSPI_BK2_IO3_GPIO_AF GPIO_AF9_QUADSPI
 #elif (QUADSPI_BK2_IO3_ID == 4)
@@ -922,16 +892,16 @@ uint8_t spi_change_speed(SPI_HandleTypeDef *hspi, uint8_t speed);
 #  endif  /* (defined(STM32F479xx) || defined(STM32F469xx)) */
 #elif (QUADSPI_BK2_NCS_ID == 4)
 #  define QUADSPI_BK2_NCS_GPIO_AF GPIO_AF9_QUADSPI
-#  if (defined(STM32F412Zx) || defined(STM32F413xx) || defined(STM32F412Rx) || defined(STM32F446xx) || defined(STM32F423xx) || defined(STM32F412Cx) || defined(STM32F412Vx))
-#    error "PB10 can not be configured as QUADSPI BK2_NCS on STM32F412Zx, STM32F413xx, STM32F412Rx, STM32F446xx, STM32F423xx, STM32F412Cx, STM32F412Vx! "
-#  endif  /* (defined(STM32F412Zx) || defined(STM32F413xx) || defined(STM32F412Rx) || defined(STM32F446xx) || defined(STM32F423xx) || defined(STM32F412Cx) || defined(STM32F412Vx)) */
+#  if (defined(STM32F423xx) || defined(STM32F446xx) || defined(STM32F412Rx) || defined(STM32F412Cx) || defined(STM32F412Zx) || defined(STM32F413xx) || defined(STM32F412Vx))
+#    error "PB10 can not be configured as QUADSPI BK2_NCS on STM32F423xx, STM32F446xx, STM32F412Rx, STM32F412Cx, STM32F412Zx, STM32F413xx, STM32F412Vx! "
+#  endif  /* (defined(STM32F423xx) || defined(STM32F446xx) || defined(STM32F412Rx) || defined(STM32F412Cx) || defined(STM32F412Zx) || defined(STM32F413xx) || defined(STM32F412Vx)) */
 #endif  /* QUADSPI_BK2_NCS_ID */
 
 #endif /* QUADSPI_BANK2_ENABLE */
 
 extern QSPI_HandleTypeDef qspi_handle;
 
-uint8_t quadspi_init(uint32_t clock_mode, uint32_t flash_size);
+uint8_t qspi_init(uint32_t clock_mode, uint32_t flash_size);
 
 #  if QUADSPI_DMA
 #    define QUADSPI_DMA_IRQn                                                  \
